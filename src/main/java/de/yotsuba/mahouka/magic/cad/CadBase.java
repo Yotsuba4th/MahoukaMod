@@ -6,8 +6,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.Vec3;
+import de.yotsuba.mahouka.core.PlayerData;
 import de.yotsuba.mahouka.magic.ActivationSequence;
-import de.yotsuba.mahouka.magic.MagicSequence;
 import de.yotsuba.mahouka.magic.Target;
 
 public class CadBase
@@ -19,10 +21,18 @@ public class CadBase
 
     private byte selectedSequence;
 
+    private boolean channeling;
+
+    private Target currentTarget;
+
+    /* ------------------------------------------------------------ */
+
     public CadBase()
     {
         id = UUID.randomUUID().toString();
     }
+
+    /* ------------------------------------------------------------ */
 
     public void writeToNBT(NBTTagCompound tag)
     {
@@ -60,6 +70,8 @@ public class CadBase
         }
     }
 
+    /* ------------------------------------------------------------ */
+
     public void rightClick(ItemStack stack, EntityPlayer player)
     {
         if (stack.getItemDamage() >= stack.getMaxDamage())
@@ -68,20 +80,66 @@ public class CadBase
             return;
         }
 
-        // TODO: Use cad
-        stack.setItemDamage(50);
-
         // if (!player.capabilities.isCreativeMode)
+
+        if (channeling)
+        {
+            cancelChanneling();
+        }
+        else
+        {
+            selectTarget(player);
+            if (currentTarget != null)
+            {
+                startChanneling();
+            }
+        }
+        updateItemStack(stack, player);
     }
 
-    public MagicSequence startChanneling(Target target, ActivationSequence sequence)
+    private void updateItemStack(ItemStack stack, EntityPlayer player)
     {
-        return null;
+        PlayerData data = new PlayerData(player);
+        stack.setItemDamage(data.getPsion() * 100 / data.getMaxPsion());
+        writeToNBT(stack.getTagCompound());
     }
 
-    public void channelComplete(MagicSequence cast, ActivationSequence sequence)
+    public void selectTarget(EntityPlayer player)
+    {
+        currentTarget = new Target.TargetPoint(getLookingAtPoint(player, 100));
+    }
+
+    public Vec3 getLookingAtPoint(EntityPlayer player, double maxDistance)
+    {
+        Vec3 lookAt = player.getLook(1);
+        Vec3 playerPos = Vec3.createVectorHelper(player.posX, player.posY + (player.getEyeHeight() - player.getDefaultEyeHeight()), player.posZ);
+        Vec3 start = playerPos.addVector(0, player.getEyeHeight(), 0);
+        Vec3 end = start.addVector(lookAt.xCoord * maxDistance, lookAt.yCoord * maxDistance, lookAt.zCoord * maxDistance);
+        MovingObjectPosition result = player.worldObj.rayTraceBlocks(start, end, false);
+        if (result != null)
+            return result.hitVec;
+        return end;
+    }
+
+    /* ------------------------------------------------------------ */
+
+    public void startChanneling()
     {
     }
+
+    public void channelComplete()
+    {
+    }
+
+    public void cancelChanneling()
+    {
+    }
+
+    public void stopCasting()
+    {
+    }
+
+    /* ------------------------------------------------------------ */
 
     public String getId()
     {

@@ -123,6 +123,11 @@ public abstract class Target
 
         private Vec3 point;
 
+        public TargetPoint(Vec3 point)
+        {
+            this.point = point;
+        }
+
         @Override
         public Type getType()
         {
@@ -140,6 +145,12 @@ public abstract class Target
     {
 
         private Vec3 sourcePoint;
+
+        public TargetDirectedPoint(Vec3 point, Vec3 sourcePoint)
+        {
+            super(point);
+            this.sourcePoint = sourcePoint;
+        }
 
         public Vec3 getSourcePoint()
         {

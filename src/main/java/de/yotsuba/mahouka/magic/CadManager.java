@@ -15,6 +15,8 @@ public class CadManager
 
     public Map<String, CadBase> cads = new HashMap<String, CadBase>();
 
+    /* ------------------------------------------------------------ */
+
     public CadManager()
     {
         FMLCommonHandler.instance().bus().register(this);
