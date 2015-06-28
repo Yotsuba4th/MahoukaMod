@@ -5,6 +5,8 @@ import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -43,15 +45,29 @@ public class ItemCad extends Item
     @Override
     public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player)
     {
+        if (world.isRemote)
+            return stack;
         CadBase cad = getCad(stack);
-        cad.rightClick(stack, player);
-        return stack;
-    }
 
-    @Override
-    public void onCreated(ItemStack stack, World world, EntityPlayer player)
-    {
-        getCad(stack);
+        // TODO: TEST KOT
+        if (cad == null)
+        {
+            cad = createNewCad();
+            if (stack.getTagCompound() == null)
+                stack.setTagCompound(new NBTTagCompound());
+            cad.writeToNBT(stack.getTagCompound());
+        }
+
+        if (cad == null)
+        {
+            // TODO: Play error sound
+            player.addChatMessage(new ChatComponentText("CAD not initialized"));
+        }
+        else
+        {
+            cad.rightClick(stack, player);
+        }
+        return stack;
     }
 
     /**
@@ -63,7 +79,7 @@ public class ItemCad extends Item
     public void addInformation(ItemStack stack, EntityPlayer player, List info, boolean shiftPressed)
     {
         CadBase cad = getCad(stack);
-        if (true)
+        if (cad != null)
         {
             info.add("Cad instance: " + cad.getId().substring(0, 6));
         }

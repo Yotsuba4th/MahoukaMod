@@ -11,6 +11,15 @@ public class ActivationSequence
 
     protected List<MagicProcess> processes = new ArrayList<MagicProcess>();
 
+    public ActivationSequence()
+    {
+    }
+
+    public ActivationSequence(NBTTagCompound tagSequence)
+    {
+        readFromNBT(tagSequence);
+    }
+
     public void getCasterChannelingEffects(/* cast target */)
     {
     }

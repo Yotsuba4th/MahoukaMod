@@ -30,28 +30,16 @@ public class CadManager
     {
         NBTTagCompound tag = stack.getTagCompound();
         if (tag == null)
+            return null;
+        CadBase cad = cads.get(tag.getString("id"));
+        if (cad == null)
         {
-            tag = new NBTTagCompound();
-            stack.setTagCompound(tag);
-        }
-        if (tag.hasKey("id"))
-        {
-            CadBase cad = cads.get(tag.getString("id"));
-            if (cad == null)
-            {
-                cad = ((ItemCad) stack.getItem()).createNewCad();
-                cad.readFromNBT(tag);
-            }
-            else if (tag.getBoolean("changed"))
-                cad.readFromNBT(tag);
-            return cad;
-        }
-        else
-        {
-            CadBase cad = ((ItemCad) stack.getItem()).createNewCad();
+            cad = ((ItemCad) stack.getItem()).createNewCad();
             cads.put(cad.getId(), cad);
-            cad.writeToNBT(tag);
-            return cad;
+            cad.readFromNBT(tag);
         }
+        else if (tag.getBoolean("changed"))
+            cad.readFromNBT(tag);
+        return cad;
     }
 }
