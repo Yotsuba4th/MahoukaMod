@@ -13,6 +13,7 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import cpw.mods.fml.common.registry.GameRegistry;
+import de.yotsuba.mahouka.block.BlockCadAssembler;
 import de.yotsuba.mahouka.gui.GuiHandler;
 import de.yotsuba.mahouka.item.ItemCad;
 import de.yotsuba.mahouka.magic.CadManager;
@@ -60,6 +61,7 @@ public class MahoukaMod
 
         loadConfig();
         registerItems();
+        registerBlocks();
         proxy.init(event);
     }
 
@@ -74,6 +76,11 @@ public class MahoukaMod
     private void registerItems()
     {
         GameRegistry.registerItem(cad, "cad");
+    }
+
+    private void registerBlocks()
+    {
+        GameRegistry.registerBlock(BlockCadAssembler.block, "cad_assembler");
     }
 
     public static CadManager getCadManager()
