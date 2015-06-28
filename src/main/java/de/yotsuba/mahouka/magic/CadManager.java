@@ -29,24 +29,29 @@ public class CadManager
     public CadBase getCad(ItemStack stack)
     {
         NBTTagCompound tag = stack.getTagCompound();
-        CadBase cad = (tag == null) ? null : cads.get(tag.getString("id"));
         if (tag == null)
         {
             tag = new NBTTagCompound();
             stack.setTagCompound(tag);
         }
-        if (cad == null)
+        if (tag.hasKey("id"))
         {
-            cad = ((ItemCad) stack.getItem()).createNewCad();
-            cads.put(cad.getId(), cad);
-            cad.writeToNBT(tag);
+            CadBase cad = cads.get(tag.getString("id"));
+            if (cad == null)
+            {
+                cad = ((ItemCad) stack.getItem()).createNewCad();
+                cad.readFromNBT(tag);
+            }
+            else if (tag.getBoolean("changed"))
+                cad.readFromNBT(tag);
+            return cad;
         }
         else
         {
-            if (tag.getBoolean("changed"))
-                cad.readFromNBT(tag);
+            CadBase cad = ((ItemCad) stack.getItem()).createNewCad();
+            cads.put(cad.getId(), cad);
+            cad.writeToNBT(tag);
+            return cad;
         }
-        return cad;
     }
-
 }

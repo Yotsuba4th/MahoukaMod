@@ -3,7 +3,6 @@ package de.yotsuba.mahouka;
 import java.io.File;
 
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraftforge.common.config.Configuration;
 import cpw.mods.fml.common.Mod;
@@ -46,7 +45,7 @@ public class MahoukaMod
         @Override
         public Item getTabIconItem()
         {
-            return Items.stick;
+            return cad;
         }
     };
 

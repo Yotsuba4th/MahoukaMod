@@ -16,7 +16,7 @@ public class ItemCad extends Item
 
     public ItemCad()
     {
-        this.maxStackSize = 1;
+        maxStackSize = 1;
         setFull3D();
         setUnlocalizedName("cad");
         setTextureName(MahoukaMod.MODID + ":cad");
@@ -46,6 +46,12 @@ public class ItemCad extends Item
         CadBase cad = getCad(stack);
         cad.rightClick(stack, player);
         return stack;
+    }
+
+    @Override
+    public void onCreated(ItemStack stack, World world, EntityPlayer player)
+    {
+        getCad(stack);
     }
 
     /**
