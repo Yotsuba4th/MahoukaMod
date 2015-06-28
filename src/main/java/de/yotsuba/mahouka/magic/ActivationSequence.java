@@ -22,12 +22,14 @@ public class ActivationSequence
         readFromNBT(tagSequence);
     }
 
-    public void writeToNBT(NBTTagCompound tag)
+    public NBTTagCompound writeToNBT()
     {
+        NBTTagCompound tag = new NBTTagCompound();
         NBTTagList tagProcesses = new NBTTagList();
         tag.setTag("proc", tagProcesses);
         for (MagicProcess process : processes)
             tagProcesses.appendTag(process.writeToNBT());
+        return tag;
     }
 
     public void readFromNBT(NBTTagCompound tag)

@@ -2,6 +2,7 @@ package de.yotsuba.mahouka.magic;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -13,7 +14,7 @@ import de.yotsuba.mahouka.magic.cad.CadBase;
 public class CadManager
 {
 
-    public Map<String, CadBase> cads = new HashMap<String, CadBase>();
+    public static Map<UUID, CadBase> cads = new HashMap<UUID, CadBase>();
 
     /* ------------------------------------------------------------ */
 
@@ -44,4 +45,5 @@ public class CadManager
             cad.readFromNBT(tag);
         return cad;
     }
+
 }

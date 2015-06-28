@@ -1,10 +1,17 @@
 package de.yotsuba.mahouka.core;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
+import de.yotsuba.mahouka.network.C0PlayerData;
+import de.yotsuba.mahouka.util.Utils;
 
 public class PlayerData
 {
+
+    public static final String TAG_NAME = "mahouka";
+
+    private EntityPlayer player;
 
     private NBTTagCompound tag;
 
@@ -12,22 +19,30 @@ public class PlayerData
 
     public PlayerData(EntityPlayer player)
     {
-        NBTTagCompound playerTag = player.getEntityData().getCompoundTag(EntityPlayer.PERSISTED_NBT_TAG);
-        player.getEntityData().setTag(EntityPlayer.PERSISTED_NBT_TAG, playerTag);
+        this.player = player;
 
-        tag = playerTag.getCompoundTag("mahouka");
-        if (!playerTag.hasKey("mahouka"))
+        NBTTagCompound playerTag = Utils.getPlayerPersistedTag(player);
+        tag = playerTag.getCompoundTag(TAG_NAME);
+        if (!playerTag.hasKey(TAG_NAME))
         {
             // TODO Proper initialization
             setMaxPsion(1000);
             setPsion(1000);
         }
-        playerTag.setTag("mahouka", tag);
+        playerTag.setTag(TAG_NAME, tag);
+
+        sendUpdate();
     }
 
     public NBTTagCompound getTag()
     {
         return tag;
+    }
+
+    public void sendUpdate()
+    {
+        if (player instanceof EntityPlayerMP)
+            C0PlayerData.send((EntityPlayerMP) player);
     }
 
     /* ------------------------------------------------------------ */
@@ -39,7 +54,7 @@ public class PlayerData
 
     public void setPsion(int value)
     {
-        tag.setInteger("psion", value);
+        tag.setInteger("psion", Math.min(getMaxPsion(), value));
     }
 
     public int getMaxPsion()

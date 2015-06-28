@@ -3,9 +3,9 @@ package de.yotsuba.mahouka.magic.process;
 import net.minecraft.nbt.NBTTagCompound;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import de.yotsuba.mahouka.magic.CastingProcess;
 import de.yotsuba.mahouka.magic.Target;
 import de.yotsuba.mahouka.magic.Target.TargetType;
-import de.yotsuba.mahouka.magic.cad.CadBase;
 
 public abstract class MagicProcess
 {
@@ -39,7 +39,7 @@ public abstract class MagicProcess
     {
     }
 
-    public Target cast(CadBase cad, Target target)
+    public Target cast(CastingProcess cp, Target target)
     {
         return target;
     }
@@ -50,12 +50,12 @@ public abstract class MagicProcess
      * @param cad
      * @param target
      */
-    public void castTick(CadBase cad, Target target)
+    public void castTick(CastingProcess cp, Target target)
     {
     }
 
     @SideOnly(Side.CLIENT)
-    public void castClient(CadBase cad, Target target)
+    public void castClient(CastingProcess cp, Target target)
     {
         /* do nothing */
     }
@@ -67,7 +67,7 @@ public abstract class MagicProcess
      * @param target
      */
     @SideOnly(Side.CLIENT)
-    public void castTickClient(CadBase cad, Target target)
+    public void castTickClient(CastingProcess cp, Target target)
     {
         /* do nothing */
     }

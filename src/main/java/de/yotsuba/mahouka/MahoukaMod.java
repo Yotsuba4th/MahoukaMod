@@ -10,13 +10,18 @@ import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLServerStoppedEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import cpw.mods.fml.common.registry.GameRegistry;
-import de.yotsuba.mahouka.block.BlockCadAssembler;
+import cpw.mods.fml.relauncher.Side;
+import de.yotsuba.mahouka.core.MahoukaEventHandler;
 import de.yotsuba.mahouka.gui.GuiHandler;
 import de.yotsuba.mahouka.item.ItemCad;
 import de.yotsuba.mahouka.magic.CadManager;
+import de.yotsuba.mahouka.magic.CastingManager;
+import de.yotsuba.mahouka.network.C0PlayerData;
+import de.yotsuba.mahouka.network.C1StartChanneling;
 
 @Mod(modid = MahoukaMod.MODID, version = MahoukaMod.VERSION)
 public class MahoukaMod
@@ -40,6 +45,9 @@ public class MahoukaMod
 
     private static CadManager cadManager = new CadManager();
 
+    @SuppressWarnings("unused")
+    private static MahoukaEventHandler eventHandler = new MahoukaEventHandler();
+
     /* ------------------------------------------------------------ */
 
     public static final CreativeTabs creativeTab = new CreativeTabs("Mahouka") {
@@ -61,8 +69,15 @@ public class MahoukaMod
 
         loadConfig();
         registerItems();
-        registerBlocks();
+        registerNetworkMessages();
         proxy.init(event);
+    }
+
+    @EventHandler
+    public void serverStoppedEvent(FMLServerStoppedEvent event)
+    {
+        cadManager.serverStoppedEvent(event);
+        CastingManager.serverStoppedEvent(event);
     }
 
     private void loadConfig()
@@ -78,9 +93,10 @@ public class MahoukaMod
         GameRegistry.registerItem(cad, "cad");
     }
 
-    private void registerBlocks()
+    private void registerNetworkMessages()
     {
-        GameRegistry.registerBlock(BlockCadAssembler.block, "cad_assembler");
+        netChannel.registerMessage(C0PlayerData.class, C0PlayerData.class, 0, Side.CLIENT);
+        netChannel.registerMessage(C1StartChanneling.class, C1StartChanneling.class, 1, Side.CLIENT);
     }
 
     public static CadManager getCadManager()

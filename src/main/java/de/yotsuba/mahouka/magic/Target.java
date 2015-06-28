@@ -1,5 +1,6 @@
 package de.yotsuba.mahouka.magic;
 
+import io.netty.buffer.ByteBuf;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityFlying;
@@ -14,19 +15,62 @@ import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntitySquid;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.Vec3;
+import net.minecraft.world.World;
 import de.yotsuba.mahouka.util.Shape;
+import de.yotsuba.mahouka.util.Utils;
 
 public abstract class Target
 {
 
     public static enum TargetType
     {
-        ENTITY, ITEM, LIVING, ANIMAL, MOB, PLAYER, SELF, BLOCK, AREA, POINT;
+        ENTITY, ITEM, LIVING, ANIMAL, MOB, PLAYER, SELF, BLOCK, AREA, POINT, POINT_DIR;
     }
+
+    /* ------------------------------------------------------------ */
 
     public abstract TargetType getType();
 
     public abstract TargetPoint toPoint();
+
+    /* ------------------------------------------------------------ */
+
+    public void toBytes(ByteBuf buf)
+    {
+        buf.writeByte(getType().ordinal());
+    }
+
+    public static Target fromBytes(World world, ByteBuf buf)
+    {
+        TargetType type = TargetType.values()[buf.readByte()];
+        Target target;
+        switch (type)
+        {
+        case ANIMAL:
+        case ENTITY:
+        case PLAYER:
+        case ITEM:
+        case LIVING:
+        case MOB:
+        case SELF:
+            target = new TargetEntity(world, buf, type);
+            break;
+        case POINT:
+            target = new TargetPoint(buf);
+            break;
+        case AREA:
+            target = new TargetArea(buf);
+            break;
+        case BLOCK:
+            target = new TargetBlock(world, buf);
+            break;
+        default:
+            return null;
+        }
+        return target;
+    }
+
+    /* ------------------------------------------------------------ */
 
     public static class TargetEntity extends Target
     {
@@ -53,6 +97,19 @@ public abstract class Target
                 type = TargetType.ITEM;
             else
                 type = TargetType.ENTITY;
+        }
+
+        public TargetEntity(World world, ByteBuf buf, TargetType type)
+        {
+            this.type = type;
+            this.entity = Utils.getEntityByUuid(world, Utils.uuidFromBytes(buf));
+        }
+
+        @Override
+        public void toBytes(ByteBuf buf)
+        {
+            super.toBytes(buf);
+            Utils.uuidToBytes(buf, entity.getPersistentID());
         }
 
         @Override
@@ -87,6 +144,8 @@ public abstract class Target
 
     }
 
+    /* ------------------------------------------------------------ */
+
     public static class TargetBlock extends Target
     {
 
@@ -97,6 +156,23 @@ public abstract class Target
         private int z;
 
         private Block block;
+
+        public TargetBlock(World world, ByteBuf buf)
+        {
+            x = buf.readInt();
+            y = buf.readInt();
+            z = buf.readInt();
+            block = world.getBlock(x, y, z);
+        }
+
+        @Override
+        public void toBytes(ByteBuf buf)
+        {
+            super.toBytes(buf);
+            buf.writeInt(x);
+            buf.writeInt(y);
+            buf.writeInt(z);
+        }
 
         @Override
         public TargetType getType()
@@ -132,6 +208,8 @@ public abstract class Target
 
     }
 
+    /* ------------------------------------------------------------ */
+
     public static class TargetPoint extends Target
     {
 
@@ -140,6 +218,18 @@ public abstract class Target
         public TargetPoint(Vec3 point)
         {
             this.point = point;
+        }
+
+        public TargetPoint(ByteBuf buf)
+        {
+            point = Vec3.createVectorHelper(buf.readDouble(), buf.readDouble(), buf.readDouble());
+        }
+
+        @Override
+        public void toBytes(ByteBuf buf)
+        {
+            super.toBytes(buf);
+            Utils.writeVec3(buf, point);
         }
 
         @Override
@@ -161,6 +251,8 @@ public abstract class Target
 
     }
 
+    /* ------------------------------------------------------------ */
+
     public static class TargetDirectedPoint extends TargetPoint
     {
 
@@ -170,6 +262,19 @@ public abstract class Target
         {
             super(point);
             this.sourcePoint = sourcePoint;
+        }
+
+        @Override
+        public void toBytes(ByteBuf buf)
+        {
+            super.toBytes(buf);
+            Utils.writeVec3(buf, sourcePoint);
+        }
+
+        @Override
+        public TargetType getType()
+        {
+            return TargetType.POINT_DIR;
         }
 
         @Override
@@ -185,6 +290,8 @@ public abstract class Target
 
     }
 
+    /* ------------------------------------------------------------ */
+
     public static class TargetArea extends Target
     {
 
@@ -193,6 +300,22 @@ public abstract class Target
         private Vec3 size;
 
         private Shape shape;
+
+        public TargetArea(ByteBuf buf)
+        {
+            center = Vec3.createVectorHelper(buf.readDouble(), buf.readDouble(), buf.readDouble());
+            size = Vec3.createVectorHelper(buf.readDouble(), buf.readDouble(), buf.readDouble());
+            shape = Shape.values()[buf.readByte()];
+        }
+
+        @Override
+        public void toBytes(ByteBuf buf)
+        {
+            super.toBytes(buf);
+            Utils.writeVec3(buf, center);
+            Utils.writeVec3(buf, size);
+            buf.writeByte(shape.ordinal());
+        }
 
         @Override
         public TargetType getType()

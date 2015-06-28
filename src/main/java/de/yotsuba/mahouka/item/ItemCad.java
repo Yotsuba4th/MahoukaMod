@@ -3,6 +3,7 @@ package de.yotsuba.mahouka.item;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -27,7 +28,7 @@ public class ItemCad extends Item
         setCreativeTab(MahoukaMod.creativeTab);
     }
 
-    public CadBase getCad(ItemStack stack)
+    public static CadBase getCad(ItemStack stack)
     {
         return MahoukaMod.getCadManager().getCad(stack);
     }
@@ -44,6 +45,12 @@ public class ItemCad extends Item
         return 100;
     }
 
+    @Override
+    public EnumAction getItemUseAction(ItemStack p_77661_1_)
+    {
+        return EnumAction.bow;
+    }
+    
     @Override
     public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player)
     {
@@ -89,7 +96,7 @@ public class ItemCad extends Item
         CadBase cad = getCad(stack);
         if (cad != null)
         {
-            info.add("Cad instance: " + cad.getId().substring(0, 6));
+            info.add("Cad instance: " + cad.getId().toString().substring(0, 6));
         }
     }
 
