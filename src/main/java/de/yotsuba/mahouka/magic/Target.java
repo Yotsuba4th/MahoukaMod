@@ -19,19 +19,21 @@ import de.yotsuba.mahouka.util.Shape;
 public abstract class Target
 {
 
-    public static enum Type
+    public static enum TargetType
     {
         ENTITY, ITEM, LIVING, ANIMAL, MOB, PLAYER, SELF, BLOCK, AREA, POINT;
     }
 
-    public abstract Type getType();
+    public abstract TargetType getType();
+
+    public abstract TargetPoint toPoint();
 
     public static class TargetEntity extends Target
     {
 
         private Entity entity;
 
-        private Type type;
+        private TargetType type;
 
         private boolean isConstructed;
 
@@ -40,23 +42,29 @@ public abstract class Target
             this.entity = entity;
             this.isConstructed = isConstructed;
             if (entity instanceof EntityPlayer)
-                type = isSelf ? Type.SELF : Type.PLAYER;
+                type = isSelf ? TargetType.SELF : TargetType.PLAYER;
             else if (entity instanceof EntityAnimal || entity instanceof EntityAmbientCreature || entity instanceof EntitySquid)
-                type = Type.ANIMAL;
+                type = TargetType.ANIMAL;
             else if (entity instanceof EntityMob || entity instanceof EntityDragon || entity instanceof EntityFlying || entity instanceof EntitySlime)
-                type = Type.MOB;
+                type = TargetType.MOB;
             else if (entity instanceof EntityLivingBase)
-                type = Type.LIVING;
+                type = TargetType.LIVING;
             else if (entity instanceof EntityItem || entity instanceof EntityXPOrb)
-                type = Type.ITEM;
+                type = TargetType.ITEM;
             else
-                type = Type.ENTITY;
+                type = TargetType.ENTITY;
         }
 
         @Override
-        public Type getType()
+        public TargetType getType()
         {
             return type;
+        }
+
+        @Override
+        public TargetPoint toPoint()
+        {
+            return new TargetPoint(Vec3.createVectorHelper(entity.posX, entity.posY, entity.posZ));
         }
 
         public Entity getEntity()
@@ -91,9 +99,15 @@ public abstract class Target
         private Block block;
 
         @Override
-        public Type getType()
+        public TargetType getType()
         {
-            return Type.BLOCK;
+            return TargetType.BLOCK;
+        }
+
+        @Override
+        public TargetPoint toPoint()
+        {
+            return new TargetPoint(Vec3.createVectorHelper(x, y, z));
         }
 
         public int getX()
@@ -129,9 +143,15 @@ public abstract class Target
         }
 
         @Override
-        public Type getType()
+        public TargetType getType()
         {
-            return Type.POINT;
+            return TargetType.POINT;
+        }
+
+        @Override
+        public TargetPoint toPoint()
+        {
+            return this;
         }
 
         public Vec3 getPoint()
@@ -152,6 +172,12 @@ public abstract class Target
             this.sourcePoint = sourcePoint;
         }
 
+        @Override
+        public TargetPoint toPoint()
+        {
+            return this;
+        }
+
         public Vec3 getSourcePoint()
         {
             return sourcePoint;
@@ -169,9 +195,16 @@ public abstract class Target
         private Shape shape;
 
         @Override
-        public Type getType()
+        public TargetType getType()
         {
-            return Type.AREA;
+            return TargetType.AREA;
+        }
+
+        @Override
+        public TargetPoint toPoint()
+        {
+            // TODO: Get random point!
+            return new TargetPoint(center);
         }
 
         public Vec3 getCenter()

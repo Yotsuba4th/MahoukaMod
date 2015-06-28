@@ -12,17 +12,17 @@ public class PlayerData
 
     public PlayerData(EntityPlayer player)
     {
-        NBTTagCompound playerTag = ((NBTTagCompound) player.getEntityData().getTag(EntityPlayer.PERSISTED_NBT_TAG));
-        tag = playerTag.getCompoundTag("mahouka");
-        if (tag == null)
-        {
-            tag = new NBTTagCompound();
-            playerTag.setTag("mahouka", tag);
+        NBTTagCompound playerTag = player.getEntityData().getCompoundTag(EntityPlayer.PERSISTED_NBT_TAG);
+        player.getEntityData().setTag(EntityPlayer.PERSISTED_NBT_TAG, playerTag);
 
-            // TODO
+        tag = playerTag.getCompoundTag("mahouka");
+        if (!playerTag.hasKey("mahouka"))
+        {
+            // TODO Proper initialization
             setMaxPsion(1000);
             setPsion(1000);
         }
+        playerTag.setTag("mahouka", tag);
     }
 
     public NBTTagCompound getTag()

@@ -6,8 +6,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
+import de.yotsuba.mahouka.MahoukaMod;
 import de.yotsuba.mahouka.core.PlayerData;
 import de.yotsuba.mahouka.magic.ActivationSequence;
 import de.yotsuba.mahouka.magic.Target;
@@ -23,7 +25,13 @@ public class CadBase
 
     private boolean channeling;
 
+    private boolean casting;
+
     private Target currentTarget;
+
+    private EntityPlayer caster;
+
+    private PlayerData playerData;
 
     /* ------------------------------------------------------------ */
 
@@ -74,6 +82,7 @@ public class CadBase
 
     public void rightClick(ItemStack stack, EntityPlayer player)
     {
+        setCaster(player);
         if (stack.getItemDamage() >= stack.getMaxDamage())
         {
             // TODO: Play error sound
@@ -99,8 +108,7 @@ public class CadBase
 
     private void updateItemStack(ItemStack stack, EntityPlayer player)
     {
-        PlayerData data = new PlayerData(player);
-        stack.setItemDamage(data.getPsion() * 100 / data.getMaxPsion());
+        stack.setItemDamage(playerData.getPsion() * 100 / playerData.getMaxPsion());
         writeToNBT(stack.getTagCompound());
     }
 
@@ -125,10 +133,40 @@ public class CadBase
 
     public void startChanneling()
     {
+        if (getSelectedSequence() == null)
+        {
+            // TODO: Error sound / message
+            caster.addChatMessage(new ChatComponentText("No sequence selected!"));
+            return;
+        }
+
+        if (!caster.worldObj.isRemote && playerData.getPsion() < 10)
+        {
+            // TODO: Error sound / message
+            caster.addChatMessage(new ChatComponentText("Not enough psion!"));
+            return;
+        }
+
+        channeling = true;
+
+        // TODO: Remove skipping of channeling
+        channelComplete();
     }
 
     public void channelComplete()
     {
+        if (!channeling)
+            return;
+        channeling = false;
+        casting = true;
+
+        playerData.setPsion(playerData.getPsion() - 10);
+
+        getSelectedSequence().getProcesses().get(0).cast(this, currentTarget);
+        MahoukaMod.proxy.clientCast(getSelectedSequence().getProcesses().get(0), this, currentTarget);
+
+        getSelectedSequence().getProcesses().get(0).castTick(this, currentTarget);
+        MahoukaMod.proxy.clientCastTick(getSelectedSequence().getProcesses().get(0), this, currentTarget);
     }
 
     public void cancelChanneling()
@@ -151,19 +189,47 @@ public class CadBase
         return activationSequences;
     }
 
-    public int getSelectedSequence()
+    public int getSelectedSequenceIndex()
     {
         return selectedSequence;
     }
 
-    public void setSelectedSequence(byte index)
+    public void setSelectedSequenceIndex(byte index)
     {
+        if (channeling || casting)
+            return;
         if (index < 0)
             selectedSequence = (byte) (activationSequences.length - 1);
         else if (index >= activationSequences.length)
             selectedSequence = 0;
         else
             selectedSequence = index;
+    }
+
+    public ActivationSequence getSelectedSequence()
+    {
+        return activationSequences[selectedSequence];
+    }
+
+    public EntityPlayer getCaster()
+    {
+        return caster;
+    }
+
+    private void setCaster(EntityPlayer player)
+    {
+        caster = player;
+        playerData = new PlayerData(caster);
+    }
+
+    public boolean isChanneling()
+    {
+        return channeling;
+    }
+
+    public boolean isCasting()
+    {
+        return casting;
     }
 
 }

@@ -11,7 +11,9 @@ import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import de.yotsuba.mahouka.MahoukaMod;
+import de.yotsuba.mahouka.magic.ActivationSequence;
 import de.yotsuba.mahouka.magic.cad.CadBase;
+import de.yotsuba.mahouka.magic.process.ProcessParticle;
 
 public class ItemCad extends Item
 {
@@ -45,14 +47,17 @@ public class ItemCad extends Item
     @Override
     public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player)
     {
-        if (world.isRemote)
-            return stack;
         CadBase cad = getCad(stack);
 
         // TODO: TEST KOT
-        if (cad == null)
+        if (cad == null && !world.isRemote)
         {
             cad = createNewCad();
+            
+            ActivationSequence seq = new ActivationSequence();
+            seq.getProcesses().add(new ProcessParticle());
+            cad.getActivationSequences()[0] = seq;
+            
             if (stack.getTagCompound() == null)
                 stack.setTagCompound(new NBTTagCompound());
             cad.writeToNBT(stack.getTagCompound());
@@ -60,8 +65,11 @@ public class ItemCad extends Item
 
         if (cad == null)
         {
-            // TODO: Play error sound
-            player.addChatMessage(new ChatComponentText("CAD not initialized"));
+            if (world.isRemote)
+            {
+                // TODO: Play error sound
+                player.addChatMessage(new ChatComponentText("CAD not initialized"));
+            }
         }
         else
         {

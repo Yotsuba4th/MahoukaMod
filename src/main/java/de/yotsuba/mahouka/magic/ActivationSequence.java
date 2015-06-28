@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import de.yotsuba.mahouka.magic.process.MagicProcess;
+import de.yotsuba.mahouka.magic.process.MagicProcessManager;
 
 public class ActivationSequence
 {
@@ -20,6 +22,24 @@ public class ActivationSequence
         readFromNBT(tagSequence);
     }
 
+    public void writeToNBT(NBTTagCompound tag)
+    {
+        NBTTagList tagProcesses = new NBTTagList();
+        tag.setTag("proc", tagProcesses);
+        for (MagicProcess process : processes)
+            tagProcesses.appendTag(process.writeToNBT());
+    }
+
+    public void readFromNBT(NBTTagCompound tag)
+    {
+        NBTTagList tagProcesses = tag.getTagList("proc", 10);
+        for (int i = 0; i < tagProcesses.tagCount(); i++)
+        {
+            NBTTagCompound tagProcess = tagProcesses.getCompoundTagAt(i);
+            processes.add(MagicProcessManager.readFromNBT(tagProcess));
+        }
+    }
+
     public void getCasterChannelingEffects(/* cast target */)
     {
     }
@@ -28,12 +48,9 @@ public class ActivationSequence
     {
     }
 
-    public void writeToNBT(NBTTagCompound tag)
+    public List<MagicProcess> getProcesses()
     {
-    }
-
-    public void readFromNBT(NBTTagCompound tag)
-    {
+        return processes;
     }
 
 }
