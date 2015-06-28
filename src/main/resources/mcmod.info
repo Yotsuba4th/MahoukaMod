@@ -1,0 +1,16 @@
+[
+{
+  "modid": "Mahouka",
+  "name": "Mahouka Koukou mod",
+  "description": "A mod about combining technic and magic, inspired by the light novel and anime 'Mahouka Koukou no Rettousei'",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["Gakai","olee"],
+  "credits": "",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": ["ThermalExpansion", "EnderIO"]
+}
+]
