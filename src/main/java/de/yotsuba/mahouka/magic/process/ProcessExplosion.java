@@ -49,13 +49,13 @@ public class ProcessExplosion extends MagicProcess
     @Override
     public int getChannelingDuration()
     {
-        return Utils.secondsToTicks(3);
+        return Utils.millisecondsToTicks(3000);
     }
 
     @Override
     public int getCastDuration(Target target)
     {
-        return Utils.secondsToTicks(3);
+        return 0;
     }
 
     @Override

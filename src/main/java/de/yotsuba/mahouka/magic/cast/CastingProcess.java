@@ -1,13 +1,19 @@
 package de.yotsuba.mahouka.magic.cast;
 
+import io.netty.buffer.ByteBuf;
+
 import java.util.Random;
 import java.util.UUID;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.Vec3;
+import net.minecraft.world.World;
+import cpw.mods.fml.common.network.ByteBufUtils;
 import de.yotsuba.mahouka.MahoukaMod;
 import de.yotsuba.mahouka.core.PlayerData;
 import de.yotsuba.mahouka.magic.ActivationSequence;
+import de.yotsuba.mahouka.util.BufUtils;
+import de.yotsuba.mahouka.util.Utils;
 import de.yotsuba.mahouka.util.target.Target;
 
 public class CastingProcess
@@ -22,26 +28,53 @@ public class CastingProcess
     private UUID id;
 
     private int t;
-    
+
     private int channelTime;
-    
+
     private int castTime;
 
     private int psion;
 
     private boolean active = true;
 
-    public CastingProcess(EntityPlayer caster, ActivationSequence sequence, Target target, UUID id)
+    protected CastingProcess()
     {
+    }
+
+    public CastingProcess(EntityPlayer caster, ActivationSequence sequence, Target target, UUID id, int psion, int channelTime)
+    {
+        this.id = id;
         this.sequence = sequence;
         this.caster = caster;
         this.target = target;
-        this.id = id;
-        this.t = 0;
+        this.psion = psion;
+        this.channelTime = channelTime;
+        t = 0;
+    }
 
-        psion = 10;
-        channelTime = 50;
-        castTime = 30;
+    public static CastingProcess fromBytes(World world, ByteBuf buf)
+    {
+        CastingProcess cast = new CastingProcess();
+
+        cast.id = BufUtils.uuidFromBytes(buf);
+        cast.caster = Utils.getClientPlayerByUuid(BufUtils.uuidFromBytes(buf));
+        cast.target = Target.fromBytes(world, buf);
+        cast.sequence = new ActivationSequence(ByteBufUtils.readTag(buf));
+        cast.psion = buf.readInt();
+        cast.channelTime = buf.readInt();
+        if (cast.id == null || cast.caster == null || cast.target == null || cast.sequence == null)
+            return null;
+        return cast;
+    }
+
+    public void toBytes(ByteBuf buf)
+    {
+        BufUtils.uuidToBytes(buf, id);
+        BufUtils.uuidToBytes(buf, caster.getPersistentID());
+        target.toBytes(buf);
+        ByteBufUtils.writeTag(buf, sequence.writeToNBT());
+        buf.writeInt(psion);
+        buf.writeInt(channelTime);
     }
 
     public void cancel()
