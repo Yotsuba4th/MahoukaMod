@@ -5,14 +5,15 @@ import io.netty.buffer.ByteBuf;
 import java.util.List;
 import java.util.UUID;
 
-import net.minecraft.entity.Entity;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
-import net.minecraft.world.World;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class Utils
 {
@@ -49,12 +50,27 @@ public class Utils
         return MinecraftServer.getServer().getConfigurationManager().playerEntityList;
     }
 
-    @SuppressWarnings("unchecked")
-    public static Entity getEntityByUuid(World world, UUID uuid)
+    public static EntityPlayer getPlayerByUuid(UUID uuid)
     {
-        for (Entity entity : (List<Entity>) world.getLoadedEntityList())
-            if (entity.getPersistentID().equals(uuid))
-                return entity;
+        for (EntityPlayer player : getPlayerList())
+            if (player.getPersistentID().equals(uuid))
+                return player;
+        return null;
+    }
+
+    @SideOnly(Side.CLIENT)
+    @SuppressWarnings("unchecked")
+    public static List<EntityPlayer> getClientPlayerList()
+    {
+        return Minecraft.getMinecraft().theWorld.playerEntities;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public static EntityPlayer getClientPlayerByUuid(UUID uuid)
+    {
+        for (EntityPlayer player : getClientPlayerList())
+            if (player.getPersistentID().equals(uuid))
+                return player;
         return null;
     }
 

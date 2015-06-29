@@ -45,7 +45,7 @@ public class ProcessParticle extends MagicProcess
         //if (new Random().nextInt(3) == 0)
         {
             World world = cp.getCaster().worldObj;
-            world.spawnParticle("heart", point.getPoint().xCoord, point.getPoint().yCoord, point.getPoint().zCoord, 0, 0, 0);
+            world.spawnParticle("heart", point.getPoint().xCoord, point.getPoint().yCoord + 0.5, point.getPoint().zCoord, 0, 0, 0);
         }
     }
 

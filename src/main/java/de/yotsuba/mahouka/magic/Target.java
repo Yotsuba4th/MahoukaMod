@@ -54,6 +54,8 @@ public abstract class Target
         case MOB:
         case SELF:
             target = new TargetEntity(world, buf, type);
+            if (((TargetEntity) target).getEntity() == null)
+                return null;
             break;
         case POINT:
             target = new TargetPoint(buf);
@@ -102,14 +104,16 @@ public abstract class Target
         public TargetEntity(World world, ByteBuf buf, TargetType type)
         {
             this.type = type;
-            this.entity = Utils.getEntityByUuid(world, Utils.uuidFromBytes(buf));
+            this.entity = world.getEntityByID(buf.readInt());
+            this.isConstructed = buf.readBoolean();
         }
 
         @Override
         public void toBytes(ByteBuf buf)
         {
             super.toBytes(buf);
-            Utils.uuidToBytes(buf, entity.getPersistentID());
+            buf.writeInt(entity.getEntityId());
+            buf.writeBoolean(isConstructed);
         }
 
         @Override
@@ -140,70 +144,6 @@ public abstract class Target
         public boolean isConstructed()
         {
             return isConstructed;
-        }
-
-    }
-
-    /* ------------------------------------------------------------ */
-
-    public static class TargetBlock extends Target
-    {
-
-        private int x;
-
-        private int y;
-
-        private int z;
-
-        private Block block;
-
-        public TargetBlock(World world, ByteBuf buf)
-        {
-            x = buf.readInt();
-            y = buf.readInt();
-            z = buf.readInt();
-            block = world.getBlock(x, y, z);
-        }
-
-        @Override
-        public void toBytes(ByteBuf buf)
-        {
-            super.toBytes(buf);
-            buf.writeInt(x);
-            buf.writeInt(y);
-            buf.writeInt(z);
-        }
-
-        @Override
-        public TargetType getType()
-        {
-            return TargetType.BLOCK;
-        }
-
-        @Override
-        public TargetPoint toPoint()
-        {
-            return new TargetPoint(Vec3.createVectorHelper(x, y, z));
-        }
-
-        public int getX()
-        {
-            return x;
-        }
-
-        public int getY()
-        {
-            return y;
-        }
-
-        public int getZ()
-        {
-            return z;
-        }
-
-        public Block getBlock()
-        {
-            return block;
         }
 
     }
@@ -247,6 +187,74 @@ public abstract class Target
         public Vec3 getPoint()
         {
             return point;
+        }
+
+    }
+
+    /* ------------------------------------------------------------ */
+
+    public static class TargetBlock extends TargetPoint
+    {
+
+        private int x;
+
+        private int y;
+
+        private int z;
+
+        private Block block;
+
+        public TargetBlock(World world, ByteBuf buf)
+        {
+            super(buf);
+            x = buf.readInt();
+            y = buf.readInt();
+            z = buf.readInt();
+            block = world.getBlock(x, y, z);
+        }
+
+        public TargetBlock(World world, int x, int y, int z, Vec3 point)
+        {
+            super(point);
+            this.x = x;
+            this.y = y;
+            this.z = z;
+            block = world.getBlock(x, y, z);
+        }
+
+        @Override
+        public void toBytes(ByteBuf buf)
+        {
+            super.toBytes(buf);
+            buf.writeInt(x);
+            buf.writeInt(y);
+            buf.writeInt(z);
+        }
+
+        @Override
+        public TargetType getType()
+        {
+            return TargetType.BLOCK;
+        }
+
+        public int getX()
+        {
+            return x;
+        }
+
+        public int getY()
+        {
+            return y;
+        }
+
+        public int getZ()
+        {
+            return z;
+        }
+
+        public Block getBlock()
+        {
+            return block;
         }
 
     }

@@ -22,6 +22,7 @@ import de.yotsuba.mahouka.magic.CadManager;
 import de.yotsuba.mahouka.magic.CastingManager;
 import de.yotsuba.mahouka.network.C0PlayerData;
 import de.yotsuba.mahouka.network.C1StartChanneling;
+import de.yotsuba.mahouka.network.S2StartChanneling;
 
 @Mod(modid = MahoukaMod.MODID, version = MahoukaMod.VERSION)
 public class MahoukaMod
@@ -76,7 +77,7 @@ public class MahoukaMod
     @EventHandler
     public void serverStoppedEvent(FMLServerStoppedEvent event)
     {
-        cadManager.serverStoppedEvent(event);
+        CadManager.serverStoppedEvent(event);
         CastingManager.serverStoppedEvent(event);
     }
 
@@ -97,6 +98,7 @@ public class MahoukaMod
     {
         netChannel.registerMessage(C0PlayerData.class, C0PlayerData.class, 0, Side.CLIENT);
         netChannel.registerMessage(C1StartChanneling.class, C1StartChanneling.class, 1, Side.CLIENT);
+        netChannel.registerMessage(S2StartChanneling.class, S2StartChanneling.class, 2, Side.SERVER);
     }
 
     public static CadManager getCadManager()

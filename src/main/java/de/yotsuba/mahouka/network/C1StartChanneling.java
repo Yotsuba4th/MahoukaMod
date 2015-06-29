@@ -40,7 +40,7 @@ public class C1StartChanneling implements IMessage, IMessageHandler<C1StartChann
     public void fromBytes(ByteBuf buf)
     {
         UUID cadId = Utils.uuidFromBytes(buf);
-        EntityPlayer caster = (EntityPlayer) Utils.getEntityByUuid(Minecraft.getMinecraft().theWorld, Utils.uuidFromBytes(buf));
+        EntityPlayer caster = Utils.getClientPlayerByUuid(Utils.uuidFromBytes(buf));
         Target target = Target.fromBytes(Minecraft.getMinecraft().theWorld, buf);
         ActivationSequence sequence = new ActivationSequence(ByteBufUtils.readTag(buf));
 

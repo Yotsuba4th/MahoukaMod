@@ -13,6 +13,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import de.yotsuba.mahouka.MahoukaMod;
 import de.yotsuba.mahouka.magic.ActivationSequence;
+import de.yotsuba.mahouka.magic.CadManager;
 import de.yotsuba.mahouka.magic.cad.CadBase;
 import de.yotsuba.mahouka.magic.process.ProcessParticle;
 
@@ -26,11 +27,6 @@ public class ItemCad extends Item
         setUnlocalizedName("cad");
         setTextureName(MahoukaMod.MODID + ":cad");
         setCreativeTab(MahoukaMod.creativeTab);
-    }
-
-    public static CadBase getCad(ItemStack stack)
-    {
-        return MahoukaMod.getCadManager().getCad(stack);
     }
 
     public CadBase createNewCad()
@@ -54,7 +50,7 @@ public class ItemCad extends Item
     @Override
     public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player)
     {
-        CadBase cad = getCad(stack);
+        CadBase cad = CadManager.getCad(stack);
 
         // TODO: TEST KOT
         if (cad == null && !world.isRemote)
@@ -93,7 +89,7 @@ public class ItemCad extends Item
     @SuppressWarnings({ "unchecked", "rawtypes" })
     public void addInformation(ItemStack stack, EntityPlayer player, List info, boolean shiftPressed)
     {
-        CadBase cad = getCad(stack);
+        CadBase cad = CadManager.getCad(stack);
         if (cad != null)
         {
             info.add("Cad instance: " + cad.getId().toString().substring(0, 6));
