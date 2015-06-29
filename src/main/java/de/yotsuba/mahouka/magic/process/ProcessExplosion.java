@@ -1,15 +1,14 @@
 package de.yotsuba.mahouka.magic.process;
 
+import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import de.yotsuba.mahouka.magic.CastingProcess;
 import de.yotsuba.mahouka.magic.Target;
 import de.yotsuba.mahouka.magic.Target.TargetPoint;
 import de.yotsuba.mahouka.magic.Target.TargetType;
 import de.yotsuba.mahouka.util.Utils;
 
-public class ProcessParticle extends MagicProcess
+public class ProcessExplosion extends MagicProcess
 {
 
     @Override
@@ -21,7 +20,7 @@ public class ProcessParticle extends MagicProcess
     @Override
     public int getChannelingDuration()
     {
-        return Utils.secondsToTicks(1);
+        return Utils.secondsToTicks(3);
     }
 
     @Override
@@ -31,15 +30,15 @@ public class ProcessParticle extends MagicProcess
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void castTickClient(CastingProcess cp, Target target)
+    public Target cast(CastingProcess cp, Target target)
     {
-        TargetPoint point = target.toPoint();
-        // if (new Random().nextInt(3) == 0)
+        if (target instanceof TargetPoint)
         {
+            Vec3 point = ((TargetPoint) target).getPoint();
             World world = cp.getCaster().worldObj;
-            world.spawnParticle("heart", point.getPoint().xCoord, point.getPoint().yCoord + 0.5, point.getPoint().zCoord, 0, 0, 0);
+            return super.cast(cp, target);
         }
+        return target;
     }
 
 }

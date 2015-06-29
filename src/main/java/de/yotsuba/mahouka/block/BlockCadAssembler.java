@@ -21,7 +21,7 @@ public class BlockCadAssembler extends Block
 
     public static BlockCadAssembler block;
 
-    public static String identifier = "cad_assembler";
+    public static String id = "cad_assembler";
 
     static
     {
@@ -37,8 +37,8 @@ public class BlockCadAssembler extends Block
         setHardness(2.0F);
         setResistance(10.0F);
         setLightLevel(0.0F);
-        setBlockName(identifier);
-        setBlockTextureName(MahoukaMod.MODID + ":" + identifier);
+        setBlockName(id);
+        setBlockTextureName(MahoukaMod.MODID + ":" + id);
         setCreativeTab(MahoukaMod.creativeTab);
         setLightOpacity(0);
         setStepSound(Block.soundTypeStone);

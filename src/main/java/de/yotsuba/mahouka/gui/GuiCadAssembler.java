@@ -15,7 +15,7 @@ public class GuiCadAssembler extends GuiContainer
     public static final int GUIID = 0;
 
     // TODO: design gui texture
-    private static final ResourceLocation texture = new ResourceLocation(MahoukaMod.MODID + ":textures/gui/" + BlockCadAssembler.identifier + ".png");
+    private static final ResourceLocation texture = new ResourceLocation(MahoukaMod.MODID + ":textures/gui/" + BlockCadAssembler.id + ".png");
 
     public GuiCadAssembler(InventoryPlayer playerInventory)
     {

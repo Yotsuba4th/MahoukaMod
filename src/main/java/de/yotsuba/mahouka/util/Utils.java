@@ -20,9 +20,14 @@ public class Utils
 
     public static final int TICKS_PER_SECOND = 20;
 
-    public static int millisecondsToTicks(int ms)
+    public static int millisecondsToTicks(int milliseconds)
     {
-        return TICKS_PER_SECOND * ms / 1000;
+        return secondsToTicks(milliseconds) / 1000;
+    }
+
+    public static int secondsToTicks(int seconds)
+    {
+        return TICKS_PER_SECOND * seconds;
     }
 
     public static Vec3 getLookingAtPoint(EntityPlayer player, double maxDistance)
