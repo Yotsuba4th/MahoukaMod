@@ -82,10 +82,10 @@ public class CadBase
             return;
         if (MahoukaMod.getCastingManagerClient().isCasting(id))
         {
-            // TODO: Cancel cast if shift is hold
-            // MahoukaMod.getCastingManagerClient().cancelCast(id);
-
-            player.addChatMessage(new ChatComponentText("Another magic is still active!"));
+            if (player.isSneaking())
+                MahoukaMod.getCastingManagerClient().cancelCast(id);
+            else
+                player.addChatMessage(new ChatComponentText("Another magic is still active!"));
         }
         else
         {
