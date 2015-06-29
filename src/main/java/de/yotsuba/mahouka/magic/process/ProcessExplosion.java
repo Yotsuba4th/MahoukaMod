@@ -1,28 +1,28 @@
 package de.yotsuba.mahouka.magic.process;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.Vec3;
-import net.minecraft.world.World;
 import de.yotsuba.mahouka.magic.cast.CastingProcess;
 import de.yotsuba.mahouka.util.Utils;
 import de.yotsuba.mahouka.util.target.Target;
-import de.yotsuba.mahouka.util.target.TargetPoint;
+import de.yotsuba.mahouka.util.target.TargetEntity;
 import de.yotsuba.mahouka.util.target.TargetType;
 
 public class ProcessExplosion extends MagicProcess
 {
 
-    private boolean smoke;
+    private boolean blockDamage;
     private boolean fire;
 
     public ProcessExplosion()
     {
     }
 
-    public ProcessExplosion(boolean withFire, boolean withSmoke)
+    public ProcessExplosion(boolean fire, boolean blockDamage)
     {
-        smoke = withSmoke;
-        fire = withFire;
+        this.blockDamage = blockDamage;
+        this.fire = fire;
     }
 
     @Override
@@ -35,7 +35,7 @@ public class ProcessExplosion extends MagicProcess
     public NBTTagCompound writeToNBT()
     {
         NBTTagCompound tag = super.writeToNBT();
-        tag.setBoolean("smoke", smoke);
+        tag.setBoolean("blkdmg", blockDamage);
         tag.setBoolean("fire", fire);
         return tag;
     }
@@ -43,7 +43,7 @@ public class ProcessExplosion extends MagicProcess
     @Override
     public void readFromNBT(NBTTagCompound tag)
     {
-        smoke = tag.getBoolean("smoke");
+        blockDamage = tag.getBoolean("blkdmg");
         fire = tag.getBoolean("fire");
     }
 
@@ -62,16 +62,15 @@ public class ProcessExplosion extends MagicProcess
     @Override
     public Target cast(CastingProcess cp, Target target)
     {
-        if (target instanceof TargetPoint)
-        {
-            float size = 4f;
-            Vec3 point = ((TargetPoint) target).getPoint();
-            double x = point.xCoord;
-            double y = point.yCoord;
-            double z = point.zCoord;
-            World world = cp.getCaster().worldObj;
-            world.newExplosion(null, x, y, z, size, fire, smoke);
-        }
+        float strength = 4f;
+
+        Entity entity = null;
+        if (target instanceof TargetEntity)
+            entity = ((TargetEntity) target).getEntity();
+
+        Vec3 point = target.toTargetPoint().getPoint();
+        cp.getCaster().worldObj.newExplosion(entity, point.xCoord, point.yCoord, point.zCoord, strength, fire, blockDamage);
+
         return target;
     }
 
