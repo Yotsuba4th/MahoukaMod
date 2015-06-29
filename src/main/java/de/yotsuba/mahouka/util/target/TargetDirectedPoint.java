@@ -2,7 +2,7 @@ package de.yotsuba.mahouka.util.target;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.util.Vec3;
-import de.yotsuba.mahouka.util.Utils;
+import de.yotsuba.mahouka.util.BufUtils;
 
 public class TargetDirectedPoint extends TargetPoint
 {
@@ -19,7 +19,7 @@ public class TargetDirectedPoint extends TargetPoint
     public void toBytes(ByteBuf buf)
     {
         super.toBytes(buf);
-        Utils.writeVec3(buf, sourcePoint);
+        BufUtils.writeVec3(buf, sourcePoint);
     }
 
     @Override

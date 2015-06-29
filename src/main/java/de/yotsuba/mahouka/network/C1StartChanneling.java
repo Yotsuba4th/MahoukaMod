@@ -18,6 +18,7 @@ import de.yotsuba.mahouka.MahoukaMod;
 import de.yotsuba.mahouka.magic.ActivationSequence;
 import de.yotsuba.mahouka.magic.CastingManager;
 import de.yotsuba.mahouka.magic.CastingProcess;
+import de.yotsuba.mahouka.util.BufUtils;
 import de.yotsuba.mahouka.util.Utils;
 import de.yotsuba.mahouka.util.target.Target;
 
@@ -39,8 +40,8 @@ public class C1StartChanneling implements IMessage, IMessageHandler<C1StartChann
     @SideOnly(Side.CLIENT)
     public void fromBytes(ByteBuf buf)
     {
-        UUID cadId = Utils.uuidFromBytes(buf);
-        EntityPlayer caster = Utils.getClientPlayerByUuid(Utils.uuidFromBytes(buf));
+        UUID cadId = BufUtils.uuidFromBytes(buf);
+        EntityPlayer caster = Utils.getClientPlayerByUuid(BufUtils.uuidFromBytes(buf));
         Target target = Target.fromBytes(Minecraft.getMinecraft().theWorld, buf);
         ActivationSequence sequence = new ActivationSequence(ByteBufUtils.readTag(buf));
 
@@ -50,8 +51,8 @@ public class C1StartChanneling implements IMessage, IMessageHandler<C1StartChann
     @Override
     public void toBytes(ByteBuf buf)
     {
-        Utils.uuidToBytes(buf, cast.getId());
-        Utils.uuidToBytes(buf, cast.getCaster().getPersistentID());
+        BufUtils.uuidToBytes(buf, cast.getId());
+        BufUtils.uuidToBytes(buf, cast.getCaster().getPersistentID());
         cast.getTarget().toBytes(buf);
         ByteBufUtils.writeTag(buf, cast.getSequence().writeToNBT());
     }

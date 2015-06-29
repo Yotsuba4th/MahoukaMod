@@ -14,6 +14,7 @@ import de.yotsuba.mahouka.magic.CadManager;
 import de.yotsuba.mahouka.magic.CastingManager;
 import de.yotsuba.mahouka.magic.CastingProcess;
 import de.yotsuba.mahouka.magic.cad.CadBase;
+import de.yotsuba.mahouka.util.BufUtils;
 import de.yotsuba.mahouka.util.Utils;
 import de.yotsuba.mahouka.util.target.Target;
 
@@ -42,16 +43,16 @@ public class S2StartChanneling implements IMessage, IMessageHandler<S2StartChann
     @Override
     public void fromBytes(ByteBuf buf)
     {
-        cadId = Utils.uuidFromBytes(buf);
-        caster = Utils.getPlayerByUuid(Utils.uuidFromBytes(buf));
+        cadId = BufUtils.uuidFromBytes(buf);
+        caster = Utils.getPlayerByUuid(BufUtils.uuidFromBytes(buf));
         tmpBuf = buf;
     }
 
     @Override
     public void toBytes(ByteBuf buf)
     {
-        Utils.uuidToBytes(buf, cadId);
-        Utils.uuidToBytes(buf, caster.getPersistentID());
+        BufUtils.uuidToBytes(buf, cadId);
+        BufUtils.uuidToBytes(buf, caster.getPersistentID());
         target.toBytes(buf);
     }
 

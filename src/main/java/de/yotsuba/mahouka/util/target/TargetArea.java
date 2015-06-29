@@ -2,8 +2,8 @@ package de.yotsuba.mahouka.util.target;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.util.Vec3;
+import de.yotsuba.mahouka.util.BufUtils;
 import de.yotsuba.mahouka.util.Shape;
-import de.yotsuba.mahouka.util.Utils;
 
 public class TargetArea extends Target
 {
@@ -25,8 +25,8 @@ public class TargetArea extends Target
     public void toBytes(ByteBuf buf)
     {
         super.toBytes(buf);
-        Utils.writeVec3(buf, center);
-        Utils.writeVec3(buf, size);
+        BufUtils.writeVec3(buf, center);
+        BufUtils.writeVec3(buf, size);
         buf.writeByte(shape.ordinal());
     }
 

@@ -2,7 +2,6 @@ package de.yotsuba.mahouka.magic.cad;
 
 import java.util.UUID;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -10,13 +9,13 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.MovingObjectPosition.MovingObjectType;
-import net.minecraft.util.Vec3;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import de.yotsuba.mahouka.core.PlayerData;
 import de.yotsuba.mahouka.magic.ActivationSequence;
 import de.yotsuba.mahouka.magic.CastingManager;
 import de.yotsuba.mahouka.network.S2StartChanneling;
+import de.yotsuba.mahouka.util.WorldUtils;
 import de.yotsuba.mahouka.util.target.Target;
 import de.yotsuba.mahouka.util.target.TargetBlock;
 import de.yotsuba.mahouka.util.target.TargetEntity;
@@ -111,7 +110,6 @@ public class CadBase
             }
 
             S2StartChanneling.send(player, id, target);
-
             // CastingProcess cast = new CastingProcess(player, getSelectedSequence(), target, id);
             // CastingManager.startChanneling(cast);
         }
@@ -128,26 +126,12 @@ public class CadBase
     @SideOnly(Side.CLIENT)
     public Target selectTarget(EntityPlayer player)
     {
-        MovingObjectPosition result = Minecraft.getMinecraft().objectMouseOver;
+        MovingObjectPosition result = WorldUtils.rayTraceClient(64);
         if (result.typeOfHit == MovingObjectType.ENTITY)
             return new TargetEntity(result.entityHit, false, false);
         if (result.typeOfHit == MovingObjectType.BLOCK)
             return new TargetBlock(player.worldObj, result.blockX, result.blockY, result.blockZ, result.hitVec);
-
-        double maxDistance = 32;
-        Vec3 lookAt = player.getLook(1);
-        Vec3 playerPos = Vec3.createVectorHelper(player.posX, player.posY + (player.getEyeHeight() - player.getDefaultEyeHeight()), player.posZ);
-        Vec3 start = playerPos.addVector(0, player.getEyeHeight(), 0);
-        Vec3 end = start.addVector(lookAt.xCoord * maxDistance, lookAt.yCoord * maxDistance, lookAt.zCoord * maxDistance);
-        // start = start.addVector(lookAt.xCoord * 1, lookAt.yCoord * 1, lookAt.zCoord * 1);
-        result = player.worldObj.func_147447_a(start, end, false, false, false);
-        if (result == null || result.typeOfHit == MovingObjectType.MISS)
-            return new TargetPoint(end);
-
-        if (result.entityHit != null)
-            return new TargetEntity(result.entityHit, false, false);
-
-        return new TargetBlock(player.worldObj, result.blockX, result.blockY, result.blockZ, result.hitVec);
+        return new TargetPoint(result.hitVec);
     }
 
     /* ------------------------------------------------------------ */
