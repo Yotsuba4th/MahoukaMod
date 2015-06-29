@@ -32,7 +32,6 @@ public class ItemMagicSequence extends Item
     public ItemMagicSequence()
     {
         setFull3D();
-        setCreativeTab(MahoukaMod.creativeTab);
     }
 
     public NBTTagCompound getStackData(ItemStack stack)

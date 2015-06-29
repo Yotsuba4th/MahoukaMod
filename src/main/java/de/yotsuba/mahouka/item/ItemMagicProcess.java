@@ -19,7 +19,6 @@ public class ItemMagicProcess extends ItemMagicSequence
     public ItemMagicProcess(MagicProcess process)
     {
         super();
-        setFull3D();
         setCreativeTab(MahoukaMod.creativeTab);
         this.process = process;
         ItemMagicSequence.registerIcon(process.getTextureName());
