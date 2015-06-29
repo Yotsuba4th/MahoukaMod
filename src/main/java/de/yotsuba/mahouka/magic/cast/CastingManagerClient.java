@@ -35,7 +35,6 @@ public class CastingManagerClient extends CastingManager
     public void startChanneling(CastingProcess cast)
     {
         casts.put(cast.getId(), cast);
-        cast.channelStart();
     }
 
     public void cancelCast(UUID id)

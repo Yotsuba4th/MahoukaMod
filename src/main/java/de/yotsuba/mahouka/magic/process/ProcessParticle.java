@@ -42,9 +42,7 @@ public class ProcessParticle extends MagicProcess
             Vec3 point = target.toTargetPoint().getPoint();
             double x = point.xCoord + new Random().nextGaussian() * 0.5;
             double z = point.zCoord + new Random().nextGaussian() * 0.5;
-            world.spawnParticle("heart", x, point.yCoord + 0, z, 0, 0, 0);
-            world.spawnParticle("heart", x, point.yCoord + 1, z, 0, 0, 0);
-            world.spawnParticle("heart", x, point.yCoord + 2, z, 0, 0, 0);
+            world.spawnParticle("witchMagic", x, point.yCoord + 1, z, 0, 0, 0);
         }
     }
 

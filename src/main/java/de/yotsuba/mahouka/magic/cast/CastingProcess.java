@@ -22,10 +22,14 @@ public class CastingProcess
     private UUID id;
 
     private int t;
+    
+    private int channelTime;
+    
+    private int castTime;
 
     private int psion;
 
-    private boolean active;
+    private boolean active = true;
 
     public CastingProcess(EntityPlayer caster, ActivationSequence sequence, Target target, UUID id)
     {
@@ -36,12 +40,8 @@ public class CastingProcess
         this.t = 0;
 
         psion = 10;
-    }
-
-    public void channelStart()
-    {
-        // TODO Auto-generated method stub
-        active = true;
+        channelTime = 50;
+        castTime = 30;
     }
 
     public void cancel()
@@ -52,18 +52,20 @@ public class CastingProcess
 
     public void tick()
     {
-        t++;
-
-        if (t < 50)
+        if (t == 0)
+        {
+            channelStart();
+        }
+        if (t < channelTime)
         {
             channelTick();
         }
-        else if (t == 50)
+        else if (t == channelTime)
         {
             channelEnd();
             cast();
         }
-        else if (t < 80)
+        else if (t < channelTime + castTime)
         {
             castTick();
         }
@@ -72,16 +74,27 @@ public class CastingProcess
             castEnd();
             active = false;
         }
+        t++;
+    }
+
+    private void channelStart()
+    {
+        // TODO Auto-generated method stub
+        if (caster.worldObj.isRemote) // TODO: DEBUG
+        {
+            Vec3 point = target.toTargetPoint().getPoint();
+            caster.worldObj.spawnParticle("heart", point.xCoord, point.yCoord + 1, point.zCoord, 0, 0, 0);
+        }
     }
 
     private void channelTick()
     {
-        if (caster.worldObj.isRemote)
+        if (caster.worldObj.isRemote) // TODO: DEBUG
         {
             Vec3 point = target.toTargetPoint().getPoint();
             double x = point.xCoord + new Random().nextGaussian() * 0.5;
             double z = point.zCoord + new Random().nextGaussian() * 0.5;
-            caster.worldObj.spawnParticle("witchMagic", x, point.yCoord + 1, z, 0, 0, 0);
+            caster.worldObj.spawnParticle("instantSpell", x, point.yCoord + 1, z, 0, 0, 0);
         }
     }
 
@@ -95,7 +108,7 @@ public class CastingProcess
             playerData.sendUpdate();
         }
 
-        if (caster.worldObj.isRemote)
+        if (caster.worldObj.isRemote) // TODO: DEBUG
         {
             Vec3 point = target.toTargetPoint().getPoint();
             caster.worldObj.spawnParticle("heart", point.xCoord, point.yCoord + 1, point.zCoord, 0, 0, 0);

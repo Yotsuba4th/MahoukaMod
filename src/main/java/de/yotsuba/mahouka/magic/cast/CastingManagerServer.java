@@ -37,7 +37,6 @@ public class CastingManagerServer extends CastingManager
         }
         C2StartChanneling.send(cast);
         casts.put(cast.getId(), cast);
-        cast.channelStart();
         return true;
     }
 
