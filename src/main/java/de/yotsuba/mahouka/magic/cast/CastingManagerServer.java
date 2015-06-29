@@ -43,13 +43,17 @@ public class CastingManagerServer extends CastingManager
         return true;
     }
 
-    public void cancelCast(UUID cadId)
+    public void cancelCast(UUID id)
     {
-        CastingProcess cast = casts.get(cadId);
-        if (cast == null)
-            return;
-        cast.cancel();
-        C3CancelCast.send(cast);
+        CastingProcess cast = casts.get(id);
+        if (cast != null)
+        {
+            if (cast.cancel())
+            {
+                casts.remove(id);
+                C3CancelCast.send(cast);
+            }
+        }
     }
 
     public void startChanneling(CadBase cad, EntityPlayerMP caster, Target target)

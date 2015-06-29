@@ -40,7 +40,7 @@ public class C3CancelCast implements IMessage, IMessageHandler<C3CancelCast, IMe
     @Override
     public IMessage onMessage(C3CancelCast message, MessageContext ctx)
     {
-        MahoukaMod.getCastingManagerClient().cancelCast(id);
+        MahoukaMod.getCastingManagerClient().cancelCast(message.id);
         return null;
     }
 

@@ -39,7 +39,7 @@ public class S4CancelCast implements IMessage, IMessageHandler<S4CancelCast, IMe
     @Override
     public IMessage onMessage(S4CancelCast message, MessageContext ctx)
     {
-        MahoukaMod.getCastingManagerServer().cancelCast(id);
+        MahoukaMod.getCastingManagerServer().cancelCast(message.id);
         return null;
     }
 

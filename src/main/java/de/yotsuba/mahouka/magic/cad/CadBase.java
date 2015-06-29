@@ -15,6 +15,7 @@ import de.yotsuba.mahouka.MahoukaMod;
 import de.yotsuba.mahouka.core.PlayerData;
 import de.yotsuba.mahouka.magic.ActivationSequence;
 import de.yotsuba.mahouka.network.S1StartChanneling;
+import de.yotsuba.mahouka.network.S4CancelCast;
 import de.yotsuba.mahouka.util.WorldUtils;
 import de.yotsuba.mahouka.util.target.Target;
 import de.yotsuba.mahouka.util.target.TargetBlock;
@@ -83,7 +84,7 @@ public class CadBase
         if (MahoukaMod.getCastingManagerClient().isCasting(id))
         {
             if (player.isSneaking())
-                MahoukaMod.getCastingManagerClient().cancelCast(id);
+                S4CancelCast.send(id);
             else
                 player.addChatMessage(new ChatComponentText("Another magic is still active!"));
         }

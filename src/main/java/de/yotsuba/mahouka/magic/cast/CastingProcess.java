@@ -77,10 +77,11 @@ public class CastingProcess
         buf.writeInt(channelTime);
     }
 
-    public void cancel()
+    public boolean cancel()
     {
         // TODO Auto-generated method stub
 
+        return true;
     }
 
     public void tick()
@@ -113,7 +114,7 @@ public class CastingProcess
     private void channelStart()
     {
         // TODO Auto-generated method stub
-        if (caster.worldObj.isRemote) // TODO: DEBUG
+        if (isClient()) // TODO: DEBUG
         {
             Vec3 point = target.toTargetPoint().getPoint();
             caster.worldObj.spawnParticle("heart", point.xCoord, point.yCoord + 1, point.zCoord, 0, 0, 0);
@@ -122,7 +123,7 @@ public class CastingProcess
 
     private void channelTick()
     {
-        if (caster.worldObj.isRemote) // TODO: DEBUG
+        if (isClient()) // TODO: DEBUG
         {
             Vec3 point = target.toTargetPoint().getPoint();
             double x = point.xCoord + new Random().nextGaussian() * 0.5;
@@ -141,7 +142,7 @@ public class CastingProcess
             playerData.sendUpdate();
         }
 
-        if (caster.worldObj.isRemote) // TODO: DEBUG
+        if (isClient()) // TODO: DEBUG
         {
             Vec3 point = target.toTargetPoint().getPoint();
             caster.worldObj.spawnParticle("heart", point.xCoord, point.yCoord + 1, point.zCoord, 0, 0, 0);
@@ -150,7 +151,7 @@ public class CastingProcess
 
     private void cast()
     {
-        if (caster.worldObj.isRemote)
+        if (isClient())
         {
             MahoukaMod.proxy.clientCast(sequence.getProcesses().get(0), this, target);
         }
@@ -163,7 +164,7 @@ public class CastingProcess
     private void castTick()
     {
         // TODO Auto-generated method stub
-        if (caster.worldObj.isRemote)
+        if (isClient())
         {
             MahoukaMod.proxy.clientCastTick(sequence.getProcesses().get(0), this, target);
         }
@@ -201,6 +202,16 @@ public class CastingProcess
     public boolean isActive()
     {
         return active;
+    }
+
+    public boolean isServer()
+    {
+        return !caster.worldObj.isRemote;
+    }
+
+    public boolean isClient()
+    {
+        return caster.worldObj.isRemote;
     }
 
 }

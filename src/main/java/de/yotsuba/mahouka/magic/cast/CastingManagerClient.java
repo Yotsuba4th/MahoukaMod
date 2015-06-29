@@ -7,7 +7,6 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedOutEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.ClientTickEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.Phase;
-import de.yotsuba.mahouka.network.S4CancelCast;
 
 public class CastingManagerClient extends CastingManager
 {
@@ -39,7 +38,12 @@ public class CastingManagerClient extends CastingManager
 
     public void cancelCast(UUID id)
     {
-        S4CancelCast.send(id);
+        CastingProcess cast = casts.get(id);
+        if (cast != null)
+        {
+            cast.cancel();
+            casts.remove(id);
+        }
     }
 
 }
