@@ -1,5 +1,6 @@
 package de.yotsuba.mahouka.magic.process;
 
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import de.yotsuba.mahouka.magic.CastingProcess;
@@ -31,6 +32,22 @@ public class ProcessExplosion extends MagicProcess
     }
 
     @Override
+    public NBTTagCompound writeToNBT()
+    {
+        NBTTagCompound tag = super.writeToNBT();
+        tag.setBoolean("smoke", smoke);
+        tag.setBoolean("fire", fire);
+        return tag;
+    }
+
+    @Override
+    public void readFromNBT(NBTTagCompound tag)
+    {
+        smoke = tag.getBoolean("smoke");
+        fire = tag.getBoolean("fire");
+    }
+
+    @Override
     public int getChannelingDuration()
     {
         return Utils.secondsToTicks(3);
@@ -53,10 +70,9 @@ public class ProcessExplosion extends MagicProcess
             double y = point.yCoord;
             double z = point.zCoord;
             World world = cp.getCaster().worldObj;
-            if (!world.isRemote)
-                world.newExplosion(null, x, y, z, size, fire, smoke);
-            return super.cast(cp, target);
+            world.newExplosion(null, x, y, z, size, fire, smoke);
         }
         return target;
     }
+
 }

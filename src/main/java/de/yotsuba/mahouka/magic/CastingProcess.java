@@ -35,11 +35,16 @@ public class CastingProcess
             playerData.sendUpdate();
         }
 
-        sequence.getProcesses().get(0).cast(this, target);
-        MahoukaMod.proxy.clientCast(sequence.getProcesses().get(0), this, target);
-
-        sequence.getProcesses().get(0).castTick(this, target);
-        MahoukaMod.proxy.clientCastTick(sequence.getProcesses().get(0), this, target);
+        if (caster.worldObj.isRemote)
+        {
+            MahoukaMod.proxy.clientCast(sequence.getProcesses().get(0), this, target);
+            MahoukaMod.proxy.clientCastTick(sequence.getProcesses().get(0), this, target);
+        }
+        else
+        {
+            sequence.getProcesses().get(0).cast(this, target);
+            sequence.getProcesses().get(0).castTick(this, target);
+        }
     }
 
     public UUID getId()

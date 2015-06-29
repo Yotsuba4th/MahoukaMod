@@ -58,7 +58,7 @@ public class ItemCad extends Item
             cad = createNewCad();
 
             ActivationSequence seq = new ActivationSequence();
-            seq.getProcesses().add(new ProcessExplosion(true, true));
+            seq.getProcesses().add(new ProcessExplosion(false, true));
             cad.getActivationSequences()[0] = seq;
 
             if (stack.getTagCompound() == null)
