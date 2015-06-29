@@ -11,6 +11,8 @@ import de.yotsuba.mahouka.magic.process.MagicProcessManager;
 public class ActivationSequence
 {
 
+    public static final String NBT_PROCESSES = "proc";
+    
     protected List<MagicProcess> processes = new ArrayList<MagicProcess>();
 
     public ActivationSequence()
@@ -26,7 +28,7 @@ public class ActivationSequence
     {
         NBTTagCompound tag = new NBTTagCompound();
         NBTTagList tagProcesses = new NBTTagList();
-        tag.setTag("proc", tagProcesses);
+        tag.setTag(NBT_PROCESSES, tagProcesses);
         for (MagicProcess process : processes)
             tagProcesses.appendTag(process.writeToNBT());
         return tag;
@@ -34,7 +36,7 @@ public class ActivationSequence
 
     public void readFromNBT(NBTTagCompound tag)
     {
-        NBTTagList tagProcesses = tag.getTagList("proc", 10);
+        NBTTagList tagProcesses = tag.getTagList(NBT_PROCESSES, 10);
         for (int i = 0; i < tagProcesses.tagCount(); i++)
         {
             NBTTagCompound tagProcess = tagProcesses.getCompoundTagAt(i);

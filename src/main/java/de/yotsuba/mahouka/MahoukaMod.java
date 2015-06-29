@@ -1,8 +1,6 @@
 package de.yotsuba.mahouka;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -76,9 +74,11 @@ public class MahoukaMod
         }
     };
 
+    /* ------------------------------------------------------------ */
+
     public static final ItemCad cad = new ItemCad();
 
-    public static final List<Item> magic_processes = new ArrayList<Item>();
+    public static final Item item_magic_sequence = new ItemMagicSequence();
 
     /* ------------------------------------------------------------ */
 
@@ -112,8 +112,7 @@ public class MahoukaMod
     private void registerItems()
     {
         GameRegistry.registerItem(cad, "cad");
-        GameRegistry.registerItem(new ItemMagicSequence(), "magic_sequence");
-
+        GameRegistry.registerItem(item_magic_sequence, "magic_sequence");
         registerItem(new ItemMagicProcess(new ProcessParticle()), "process_particle");
         registerItem(new ItemMagicProcess(new ProcessExplosion(false, true)), "process_explosion");
         registerItem(new ItemMagicProcess(new ProcessExplosion(true, true)), "process_firebomb");
