@@ -16,7 +16,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
-public class TargetEntity extends Target
+public class TargetEntity extends TargetPoint
 {
 
     private Entity entity;
@@ -25,8 +25,9 @@ public class TargetEntity extends Target
 
     private boolean isConstructed;
 
-    public TargetEntity(Entity entity, boolean isSelf, boolean isConstructed)
+    public TargetEntity(Entity entity, boolean isSelf, boolean isConstructed, Vec3 point)
     {
+        super(point);
         this.entity = entity;
         this.isConstructed = isConstructed;
         if (entity instanceof EntityPlayer)
@@ -43,8 +44,14 @@ public class TargetEntity extends Target
             type = TargetType.ENTITY;
     }
 
+    public TargetEntity(Entity entity, boolean isSelf, boolean isConstructed)
+    {
+        this(entity, isSelf, isConstructed, Vec3.createVectorHelper(entity.posX, entity.posY, entity.posZ));
+    }
+
     public TargetEntity(World world, ByteBuf buf, TargetType type)
     {
+        super(buf);
         this.type = type;
         this.entity = world.getEntityByID(buf.readInt());
         this.isConstructed = buf.readBoolean();
@@ -62,12 +69,6 @@ public class TargetEntity extends Target
     public TargetType getType()
     {
         return type;
-    }
-
-    @Override
-    public TargetPoint toTargetPoint()
-    {
-        return new TargetPoint(Vec3.createVectorHelper(entity.posX, entity.posY, entity.posZ));
     }
 
     public Entity getEntity()
