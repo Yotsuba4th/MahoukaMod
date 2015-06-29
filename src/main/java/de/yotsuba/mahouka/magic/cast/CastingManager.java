@@ -1,21 +1,27 @@
 package de.yotsuba.mahouka.magic.cast;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.UUID;
 
+import net.minecraft.entity.player.EntityPlayer;
 import cpw.mods.fml.common.FMLCommonHandler;
+import de.yotsuba.mahouka.magic.ActivationSequence;
+import de.yotsuba.mahouka.util.target.Target;
 
 public abstract class CastingManager
 {
 
     protected Map<UUID, CastingProcess> casts = new HashMap<UUID, CastingProcess>();
 
+    /* ------------------------------------------------------------ */
+
     public CastingManager()
     {
         FMLCommonHandler.instance().bus().register(this);
     }
+
+    /* ------------------------------------------------------------ */
 
     public boolean isCasting(UUID cadId)
     {
@@ -23,15 +29,12 @@ public abstract class CastingManager
         return cast != null && cast.isActive();
     }
 
-    public void tick()
+    public CastingProcess constructCastingProcess(EntityPlayer caster, ActivationSequence sequence, Target target, UUID id)
     {
-        for (Iterator<CastingProcess> it = casts.values().iterator(); it.hasNext();)
-        {
-            CastingProcess cast = it.next();
-            cast.tick();
-            if (!cast.isActive())
-                it.remove();
-        }
+        // TODO: Check and construct magic sequence?
+
+        CastingProcess cast = new CastingProcess(caster, sequence, target, id, 10, 50);
+        return cast;
     }
 
 }

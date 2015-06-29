@@ -18,8 +18,17 @@ public class MagicProcessManager
         registerProcess(ProcessExplosion.class, (short) 2);
     }
 
+    public static void registerProcess(Class<? extends MagicProcess> clazz, short id)
+    {
+        if (processTypes.containsKey(id))
+            throw new RuntimeException(String.format("Duplicate assignment of magic process id %d", id));
+        processTypes.put(id, clazz);
+        processIds.put(clazz, id);
+    }
+
     public static MagicProcess readFromNBT(NBTTagCompound tag)
     {
+        // ((ItemMagicProcess) Item.getItemById(tag.getShort("id"))).getProcess().getClass();
         Class<? extends MagicProcess> clazz = processTypes.get(tag.getShort("id"));
         if (clazz == null)
         {
@@ -38,14 +47,6 @@ public class MagicProcessManager
             e.printStackTrace();
             return null;
         }
-    }
-
-    public static void registerProcess(Class<? extends MagicProcess> clazz, short id)
-    {
-        if (processTypes.containsKey(id))
-            throw new RuntimeException(String.format("Duplicate assignment of magic process id %d", id));
-        processTypes.put(id, clazz);
-        processIds.put(clazz, id);
     }
 
     public static short getId(Class<? extends MagicProcess> clazz)

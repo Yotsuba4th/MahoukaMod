@@ -12,6 +12,8 @@ import cpw.mods.fml.common.network.ByteBufUtils;
 import de.yotsuba.mahouka.MahoukaMod;
 import de.yotsuba.mahouka.core.PlayerData;
 import de.yotsuba.mahouka.magic.ActivationSequence;
+import de.yotsuba.mahouka.magic.process.MagicProcess;
+import de.yotsuba.mahouka.network.C5CastUpdate;
 import de.yotsuba.mahouka.util.BufUtils;
 import de.yotsuba.mahouka.util.Utils;
 import de.yotsuba.mahouka.util.target.Target;
@@ -27,19 +29,23 @@ public class CastingProcess
 
     private UUID id;
 
-    private int t;
-
     private int channelTime;
-
-    private int castTime;
 
     private int psion;
 
+    /* ------------------------------------------------------------ */
+
+    private int t;
+
+    private int ct;
+
     private boolean active = true;
 
-    protected CastingProcess()
-    {
-    }
+    private int processIndex = -1;
+
+    private Target currentTarget;
+
+    /* ------------------------------------------------------------ */
 
     public CastingProcess(EntityPlayer caster, ActivationSequence sequence, Target target, UUID id, int psion, int channelTime)
     {
@@ -50,21 +56,22 @@ public class CastingProcess
         this.psion = psion;
         this.channelTime = channelTime;
         t = 0;
+        currentTarget = target;
     }
+
+    /* ------------------------------------------------------------ */
 
     public static CastingProcess fromBytes(World world, ByteBuf buf)
     {
-        CastingProcess cast = new CastingProcess();
-
-        cast.id = BufUtils.uuidFromBytes(buf);
-        cast.caster = Utils.getClientPlayerByUuid(BufUtils.uuidFromBytes(buf));
-        cast.target = Target.fromBytes(world, buf);
-        cast.sequence = new ActivationSequence(ByteBufUtils.readTag(buf));
-        cast.psion = buf.readInt();
-        cast.channelTime = buf.readInt();
-        if (cast.id == null || cast.caster == null || cast.target == null || cast.sequence == null)
+        UUID id = BufUtils.uuidFromBytes(buf);
+        EntityPlayer caster = Utils.getClientPlayerByUuid(BufUtils.uuidFromBytes(buf));
+        Target target = Target.fromBytes(world, buf);
+        ActivationSequence sequence = new ActivationSequence(ByteBufUtils.readTag(buf));
+        int psion = buf.readInt();
+        int channelTime = buf.readInt();
+        if (id == null || caster == null || target == null || sequence == null)
             return null;
-        return cast;
+        return new CastingProcess(caster, sequence, target, id, psion, channelTime);
     }
 
     public void toBytes(ByteBuf buf)
@@ -77,6 +84,8 @@ public class CastingProcess
         buf.writeInt(channelTime);
     }
 
+    /* ------------------------------------------------------------ */
+
     public boolean cancel()
     {
         // TODO Auto-generated method stub
@@ -84,7 +93,29 @@ public class CastingProcess
         return true;
     }
 
-    public void tick()
+    public void clientUpdate(int newProcess, Target target)
+    {
+        if (processIndex < 0)
+        {
+            channelEndClient();
+            castStartClient();
+        }
+        processIndex = newProcess;
+        currentTarget = target;
+        if (processIndex < sequence.getProcesses().size())
+        {
+            MagicProcess process = sequence.getProcesses().get(processIndex);
+            MahoukaMod.proxy.clientCast(process, this, currentTarget);
+        }
+        else
+        {
+            castEndClient();
+        }
+    }
+
+    /* ------------------------------------------------------------ */
+
+    public void serverTick()
     {
         if (t == 0)
         {
@@ -97,40 +128,60 @@ public class CastingProcess
         else if (t == channelTime)
         {
             channelEnd();
-            cast();
-        }
-        else if (t < channelTime + castTime)
-        {
+            castStart();
             castTick();
         }
         else
         {
-            castEnd();
-            active = false;
+            castTick();
         }
         t++;
     }
 
+    public void clientTick()
+    {
+        if (processIndex < 0)
+        {
+            if (t == 0)
+                channelStartClient();
+            channelTickClient();
+        }
+        else if (processIndex < sequence.getProcesses().size())
+        {
+            castTickClient();
+        }
+        t++;
+    }
+
+    /* ------------------------------------------------------------ */
+
     private void channelStart()
     {
-        // TODO Auto-generated method stub
-        if (isClient()) // TODO: DEBUG
-        {
-            Vec3 point = target.toTargetPoint().getPoint();
-            caster.worldObj.spawnParticle("heart", point.xCoord, point.yCoord + 1, point.zCoord, 0, 0, 0);
-        }
     }
+
+    private void channelStartClient()
+    {
+        // TODO: DEBUG
+        Vec3 point = currentTarget.toTargetPoint().getPoint();
+        caster.worldObj.spawnParticle("heart", point.xCoord, point.yCoord + 1, point.zCoord, 0, 0, 0);
+    }
+
+    /* ------------------------------------------------------------ */
 
     private void channelTick()
     {
-        if (isClient()) // TODO: DEBUG
-        {
-            Vec3 point = target.toTargetPoint().getPoint();
-            double x = point.xCoord + new Random().nextGaussian() * 0.5;
-            double z = point.zCoord + new Random().nextGaussian() * 0.5;
-            caster.worldObj.spawnParticle("instantSpell", x, point.yCoord + 1, z, 0, 0, 0);
-        }
     }
+
+    private void channelTickClient()
+    {
+        // TODO: DEBUG
+        Vec3 point = currentTarget.toTargetPoint().getPoint();
+        double x = point.xCoord + new Random().nextGaussian() * 0.5;
+        double z = point.zCoord + new Random().nextGaussian() * 0.5;
+        caster.worldObj.spawnParticle("instantSpell", x, point.yCoord + 1, z, 0, 0, 0);
+    }
+
+    /* ------------------------------------------------------------ */
 
     private void channelEnd()
     {
@@ -141,43 +192,79 @@ public class CastingProcess
             playerData.setPsion(playerData.getPsion() - psion);
             playerData.sendUpdate();
         }
-
-        if (isClient()) // TODO: DEBUG
-        {
-            Vec3 point = target.toTargetPoint().getPoint();
-            caster.worldObj.spawnParticle("heart", point.xCoord, point.yCoord + 1, point.zCoord, 0, 0, 0);
-        }
     }
 
-    private void cast()
+    private void channelEndClient()
     {
-        if (isClient())
-        {
-            MahoukaMod.proxy.clientCast(sequence.getProcesses().get(0), this, target);
-        }
-        else
-        {
-            sequence.getProcesses().get(0).cast(this, target);
-        }
+        // TODO: DEBUG
+        Vec3 point = currentTarget.toTargetPoint().getPoint();
+        caster.worldObj.spawnParticle("heart", point.xCoord, point.yCoord + 1, point.zCoord, 0, 0, 0);
     }
+
+    /* ------------------------------------------------------------ */
+
+    private void castStart()
+    {
+    }
+
+    private void castStartClient()
+    {
+    }
+
+    /* ------------------------------------------------------------ */
 
     private void castTick()
     {
-        // TODO Auto-generated method stub
-        if (isClient())
+        if (processIndex >= sequence.getProcesses().size())
+            return;
+
+        MagicProcess process = (processIndex < 0) ? null : sequence.getProcesses().get(processIndex);
+        if (process != null)
+            process.castTick(this, currentTarget);
+
+        // Check if next process should be started
+        if (process == null || ct++ >= process.getCastDuration(currentTarget))
         {
-            MahoukaMod.proxy.clientCastTick(sequence.getProcesses().get(0), this, target);
-        }
-        else
-        {
-            sequence.getProcesses().get(0).castTick(this, target);
+            ct = 0;
+            processIndex++;
+
+            // Send update to clients
+            C5CastUpdate message = new C5CastUpdate(id, processIndex, currentTarget);
+            MahoukaMod.getNetChannel().sendToDimension(message, caster.worldObj.provider.dimensionId);
+
+            if (processIndex < sequence.getProcesses().size())
+            {
+                process = sequence.getProcesses().get(processIndex);
+                currentTarget = process.cast(this, currentTarget);
+            }
+            else
+            {
+                castEnd();
+            }
         }
     }
 
+    private void castTickClient()
+    {
+        MagicProcess process = sequence.getProcesses().get(processIndex);
+        MahoukaMod.proxy.clientCastTick(process, this, currentTarget);
+    }
+
+    /* ------------------------------------------------------------ */
+
     private void castEnd()
     {
+        active = false;
         // TODO Auto-generated method stub
     }
+
+    private void castEndClient()
+    {
+        active = false;
+        // TODO Auto-generated method stub
+    }
+
+    /* ------------------------------------------------------------ */
 
     public UUID getId()
     {
@@ -199,6 +286,11 @@ public class CastingProcess
         return target;
     }
 
+    public Target getCurrentTarget()
+    {
+        return currentTarget;
+    }
+
     public boolean isActive()
     {
         return active;
@@ -212,6 +304,11 @@ public class CastingProcess
     public boolean isClient()
     {
         return caster.worldObj.isRemote;
+    }
+
+    public int getCurrentProcess()
+    {
+        return processIndex;
     }
 
 }

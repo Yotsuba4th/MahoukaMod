@@ -13,7 +13,7 @@ public abstract class MagicProcess
     public NBTTagCompound writeToNBT()
     {
         NBTTagCompound tag = new NBTTagCompound();
-        tag.setShort("id", MagicProcessManager.getId(getClass()));
+        tag.setShort("id", getId());
         return tag;
     }
 
@@ -77,4 +77,9 @@ public abstract class MagicProcess
         return getCastDuration(target) > 0;
     }
 
+    public short getId()
+    {
+        return MagicProcessManager.getId(getClass());
+    }
+    
 }

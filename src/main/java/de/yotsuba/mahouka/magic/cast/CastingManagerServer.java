@@ -1,5 +1,6 @@
 package de.yotsuba.mahouka.magic.cast;
 
+import java.util.Iterator;
 import java.util.UUID;
 
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -24,8 +25,16 @@ public class CastingManagerServer extends CastingManager
     @SubscribeEvent
     public void serverTickEvent(ServerTickEvent event)
     {
-        if (event.phase == Phase.START)
-            tick();
+        if (event.phase != Phase.START)
+            return;
+
+        for (Iterator<CastingProcess> it = casts.values().iterator(); it.hasNext();)
+        {
+            CastingProcess cast = it.next();
+            cast.serverTick();
+            if (!cast.isActive())
+                it.remove();
+        }
     }
 
     /* ------------------------------------------------------------ */
@@ -58,7 +67,7 @@ public class CastingManagerServer extends CastingManager
 
     public void startChanneling(CadBase cad, EntityPlayerMP caster, Target target)
     {
-        CastingProcess cast = new CastingProcess(caster, cad.getSelectedSequence(), target, cad.getId(), 10, 50);
+        CastingProcess cast = constructCastingProcess(caster, cad.getSelectedSequence(), target, cad.getId());
         startChanneling(cast);
     }
 
