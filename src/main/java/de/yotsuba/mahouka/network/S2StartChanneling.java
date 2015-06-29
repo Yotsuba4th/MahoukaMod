@@ -13,9 +13,9 @@ import de.yotsuba.mahouka.MahoukaMod;
 import de.yotsuba.mahouka.magic.CadManager;
 import de.yotsuba.mahouka.magic.CastingManager;
 import de.yotsuba.mahouka.magic.CastingProcess;
-import de.yotsuba.mahouka.magic.Target;
 import de.yotsuba.mahouka.magic.cad.CadBase;
 import de.yotsuba.mahouka.util.Utils;
+import de.yotsuba.mahouka.util.target.Target;
 
 public class S2StartChanneling implements IMessage, IMessageHandler<S2StartChanneling, IMessage>
 {

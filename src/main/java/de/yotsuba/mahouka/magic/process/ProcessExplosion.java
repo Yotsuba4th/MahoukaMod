@@ -3,10 +3,10 @@ package de.yotsuba.mahouka.magic.process;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import de.yotsuba.mahouka.magic.CastingProcess;
-import de.yotsuba.mahouka.magic.Target;
-import de.yotsuba.mahouka.magic.Target.TargetPoint;
-import de.yotsuba.mahouka.magic.Target.TargetType;
 import de.yotsuba.mahouka.util.Utils;
+import de.yotsuba.mahouka.util.target.Target;
+import de.yotsuba.mahouka.util.target.TargetPoint;
+import de.yotsuba.mahouka.util.target.TargetType;
 
 public class ProcessExplosion extends MagicProcess
 {

@@ -18,8 +18,8 @@ import de.yotsuba.mahouka.MahoukaMod;
 import de.yotsuba.mahouka.magic.ActivationSequence;
 import de.yotsuba.mahouka.magic.CastingManager;
 import de.yotsuba.mahouka.magic.CastingProcess;
-import de.yotsuba.mahouka.magic.Target;
 import de.yotsuba.mahouka.util.Utils;
+import de.yotsuba.mahouka.util.target.Target;
 
 public class C1StartChanneling implements IMessage, IMessageHandler<C1StartChanneling, IMessage>
 {
@@ -66,7 +66,7 @@ public class C1StartChanneling implements IMessage, IMessageHandler<C1StartChann
     public static void send(CastingProcess cast)
     {
         C1StartChanneling message = new C1StartChanneling(cast);
-        Vec3 pos = cast.getTarget().toPoint().getPoint();
+        Vec3 pos = cast.getTarget().toTargetPoint().getPoint();
         TargetPoint tpoint = new TargetPoint(cast.getCaster().worldObj.provider.dimensionId, pos.xCoord, pos.yCoord, pos.zCoord, 16 * 64);
         MahoukaMod.getNetChannel().sendToAllAround(message, tpoint);
     }

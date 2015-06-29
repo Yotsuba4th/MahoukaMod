@@ -2,8 +2,8 @@ package de.yotsuba.mahouka.client;
 
 import de.yotsuba.mahouka.CommonProxy;
 import de.yotsuba.mahouka.magic.CastingProcess;
-import de.yotsuba.mahouka.magic.Target;
 import de.yotsuba.mahouka.magic.process.MagicProcess;
+import de.yotsuba.mahouka.util.target.Target;
 
 public class ClientProxy extends CommonProxy
 {

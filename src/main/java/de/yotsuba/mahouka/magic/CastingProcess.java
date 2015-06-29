@@ -5,6 +5,7 @@ import java.util.UUID;
 import net.minecraft.entity.player.EntityPlayer;
 import de.yotsuba.mahouka.MahoukaMod;
 import de.yotsuba.mahouka.core.PlayerData;
+import de.yotsuba.mahouka.util.target.Target;
 
 public class CastingProcess
 {

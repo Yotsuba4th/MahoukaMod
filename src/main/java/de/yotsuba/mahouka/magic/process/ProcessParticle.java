@@ -4,10 +4,10 @@ import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import de.yotsuba.mahouka.magic.CastingProcess;
-import de.yotsuba.mahouka.magic.Target;
-import de.yotsuba.mahouka.magic.Target.TargetPoint;
-import de.yotsuba.mahouka.magic.Target.TargetType;
 import de.yotsuba.mahouka.util.Utils;
+import de.yotsuba.mahouka.util.target.Target;
+import de.yotsuba.mahouka.util.target.TargetPoint;
+import de.yotsuba.mahouka.util.target.TargetType;
 
 public class ProcessParticle extends MagicProcess
 {
@@ -34,7 +34,7 @@ public class ProcessParticle extends MagicProcess
     @SideOnly(Side.CLIENT)
     public void castTickClient(CastingProcess cp, Target target)
     {
-        TargetPoint point = target.toPoint();
+        TargetPoint point = target.toTargetPoint();
         // if (new Random().nextInt(3) == 0)
         {
             World world = cp.getCaster().worldObj;

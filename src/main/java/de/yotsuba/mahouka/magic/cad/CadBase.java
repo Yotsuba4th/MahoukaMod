@@ -16,8 +16,11 @@ import cpw.mods.fml.relauncher.SideOnly;
 import de.yotsuba.mahouka.core.PlayerData;
 import de.yotsuba.mahouka.magic.ActivationSequence;
 import de.yotsuba.mahouka.magic.CastingManager;
-import de.yotsuba.mahouka.magic.Target;
 import de.yotsuba.mahouka.network.S2StartChanneling;
+import de.yotsuba.mahouka.util.target.Target;
+import de.yotsuba.mahouka.util.target.TargetBlock;
+import de.yotsuba.mahouka.util.target.TargetEntity;
+import de.yotsuba.mahouka.util.target.TargetPoint;
 
 public class CadBase
 {
@@ -127,9 +130,9 @@ public class CadBase
     {
         MovingObjectPosition result = Minecraft.getMinecraft().objectMouseOver;
         if (result.typeOfHit == MovingObjectType.ENTITY)
-            return new Target.TargetEntity(result.entityHit, false, false);
+            return new TargetEntity(result.entityHit, false, false);
         if (result.typeOfHit == MovingObjectType.BLOCK)
-            return new Target.TargetBlock(player.worldObj, result.blockX, result.blockY, result.blockZ, result.hitVec);
+            return new TargetBlock(player.worldObj, result.blockX, result.blockY, result.blockZ, result.hitVec);
 
         double maxDistance = 32;
         Vec3 lookAt = player.getLook(1);
@@ -139,12 +142,12 @@ public class CadBase
         // start = start.addVector(lookAt.xCoord * 1, lookAt.yCoord * 1, lookAt.zCoord * 1);
         result = player.worldObj.func_147447_a(start, end, false, false, false);
         if (result == null || result.typeOfHit == MovingObjectType.MISS)
-            return new Target.TargetPoint(end);
+            return new TargetPoint(end);
 
         if (result.entityHit != null)
-            return new Target.TargetEntity(result.entityHit, false, false);
+            return new TargetEntity(result.entityHit, false, false);
 
-        return new Target.TargetBlock(player.worldObj, result.blockX, result.blockY, result.blockZ, result.hitVec);
+        return new TargetBlock(player.worldObj, result.blockX, result.blockY, result.blockZ, result.hitVec);
     }
 
     /* ------------------------------------------------------------ */
