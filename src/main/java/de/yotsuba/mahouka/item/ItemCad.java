@@ -15,7 +15,7 @@ import de.yotsuba.mahouka.MahoukaMod;
 import de.yotsuba.mahouka.magic.ActivationSequence;
 import de.yotsuba.mahouka.magic.CadManager;
 import de.yotsuba.mahouka.magic.cad.CadBase;
-import de.yotsuba.mahouka.magic.process.ProcessParticle;
+import de.yotsuba.mahouka.magic.process.ProcessExplosion;
 
 public class ItemCad extends Item
 {
@@ -46,7 +46,7 @@ public class ItemCad extends Item
     {
         return EnumAction.bow;
     }
-    
+
     @Override
     public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player)
     {
@@ -56,11 +56,11 @@ public class ItemCad extends Item
         if (cad == null && !world.isRemote)
         {
             cad = createNewCad();
-            
+
             ActivationSequence seq = new ActivationSequence();
-            seq.getProcesses().add(new ProcessParticle());
+            seq.getProcesses().add(new ProcessExplosion(true, true));
             cad.getActivationSequences()[0] = seq;
-            
+
             if (stack.getTagCompound() == null)
                 stack.setTagCompound(new NBTTagCompound());
             cad.writeToNBT(stack.getTagCompound());

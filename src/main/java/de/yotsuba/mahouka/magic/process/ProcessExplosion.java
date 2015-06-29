@@ -11,6 +11,19 @@ import de.yotsuba.mahouka.util.target.TargetType;
 public class ProcessExplosion extends MagicProcess
 {
 
+    private boolean smoke;
+    private boolean fire;
+
+    public ProcessExplosion()
+    {
+    }
+
+    public ProcessExplosion(boolean withFire, boolean withSmoke)
+    {
+        smoke = withSmoke;
+        fire = withFire;
+    }
+
     @Override
     public TargetType[] getValidTargets()
     {
@@ -34,11 +47,16 @@ public class ProcessExplosion extends MagicProcess
     {
         if (target instanceof TargetPoint)
         {
+            float size = 4f;
             Vec3 point = ((TargetPoint) target).getPoint();
+            double x = point.xCoord;
+            double y = point.yCoord;
+            double z = point.zCoord;
             World world = cp.getCaster().worldObj;
+            if (!world.isRemote)
+                world.newExplosion(null, x, y, z, size, fire, smoke);
             return super.cast(cp, target);
         }
         return target;
     }
-
 }

@@ -1,10 +1,10 @@
 # Item group
-itemGroup.Mahouka=Mahouka Koukou no Rettousei
+itemGroup.Mahouka=Mahouka Koukou
 
 # Blocks
 tile.cad_assembler.name=CAD Assembler
 
 # Items
-item.cad.name=Calculation Assistance Device
+item.cad.name=CAD - Calculation Assistance Device
 
 # Gui related strings

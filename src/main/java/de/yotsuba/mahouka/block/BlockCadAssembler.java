@@ -3,7 +3,6 @@ package de.yotsuba.mahouka.block;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -19,9 +18,9 @@ import de.yotsuba.mahouka.gui.GuiCadAssembler;
 public class BlockCadAssembler extends Block
 {
 
-    public static BlockCadAssembler block;
+    public static final BlockCadAssembler block;
 
-    public static String id = "cad_assembler";
+    public static final String id = "cad_assembler";
 
     static
     {
@@ -41,8 +40,7 @@ public class BlockCadAssembler extends Block
         setBlockTextureName(MahoukaMod.MODID + ":" + id);
         setCreativeTab(MahoukaMod.creativeTab);
         setLightOpacity(0);
-        setStepSound(Block.soundTypeStone);
-        setCreativeTab(CreativeTabs.tabBlock);
+        setStepSound(Block.soundTypeMetal);
         setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
         setHarvestLevel("pickaxe", 0);
     }

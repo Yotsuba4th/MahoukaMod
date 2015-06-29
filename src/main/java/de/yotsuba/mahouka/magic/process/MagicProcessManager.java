@@ -15,6 +15,7 @@ public class MagicProcessManager
     static
     {
         registerProcess(ProcessParticle.class, (short) 1);
+        registerProcess(ProcessExplosion.class, (short) 2);
     }
 
     public static MagicProcess readFromNBT(NBTTagCompound tag)

@@ -15,6 +15,7 @@ import cpw.mods.fml.common.gameevent.TickEvent.Phase;
 import cpw.mods.fml.common.gameevent.TickEvent.ServerTickEvent;
 import de.yotsuba.mahouka.item.ItemCad;
 import de.yotsuba.mahouka.magic.CadManager;
+import de.yotsuba.mahouka.magic.cad.CadBase;
 import de.yotsuba.mahouka.network.C0PlayerData;
 import de.yotsuba.mahouka.util.Utils;
 
@@ -52,7 +53,11 @@ public class MahoukaEventHandler
                     if (stack == null)
                         continue;
                     if (stack.getItem() instanceof ItemCad)
-                        CadManager.getCad(stack).updateItemStack(stack, player);
+                    {
+                        CadBase cad = CadManager.getCad(stack);
+                        if (cad != null)
+                            cad.updateItemStack(stack, player);
+                    }
                 }
             }
         }
