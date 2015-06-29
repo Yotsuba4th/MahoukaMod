@@ -14,6 +14,7 @@ import cpw.mods.fml.common.event.FMLServerStoppedEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import cpw.mods.fml.common.registry.GameRegistry;
+import de.yotsuba.mahouka.block.BlockCadAssembler;
 import cpw.mods.fml.relauncher.Side;
 import de.yotsuba.mahouka.core.MahoukaEventHandler;
 import de.yotsuba.mahouka.gui.GuiHandler;
@@ -69,6 +70,7 @@ public class MahoukaMod
 
         loadConfig();
         registerItems();
+        registerBlocks();
         registerNetworkMessages();
         proxy.init(event);
     }
@@ -91,6 +93,11 @@ public class MahoukaMod
     private void registerItems()
     {
         GameRegistry.registerItem(cad, "cad");
+    }
+
+    private void registerBlocks()
+    {
+        GameRegistry.registerBlock(BlockCadAssembler.block, "cad_assembler");
     }
 
     private void registerNetworkMessages()
