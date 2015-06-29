@@ -3,12 +3,25 @@ package de.yotsuba.mahouka.magic.process;
 import net.minecraft.nbt.NBTTagCompound;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import de.yotsuba.mahouka.item.ItemMagicSequence;
 import de.yotsuba.mahouka.magic.cast.CastingProcess;
 import de.yotsuba.mahouka.util.target.Target;
 import de.yotsuba.mahouka.util.target.TargetType;
 
-public abstract class MagicProcess
+public abstract class MagicProcess implements Cloneable
 {
+
+    public MagicProcess copy()
+    {
+        try
+        {
+            return (MagicProcess) this.clone();
+        }
+        catch (CloneNotSupportedException e)
+        {
+            throw new RuntimeException("Unexpected error");
+        }
+    }
 
     public NBTTagCompound writeToNBT()
     {
@@ -80,6 +93,11 @@ public abstract class MagicProcess
     public short getId()
     {
         return MagicProcessManager.getId(getClass());
+    }
+
+    public String getTextureName()
+    {
+        return ItemMagicSequence.DEFAULT_ICON;
     }
     
 }

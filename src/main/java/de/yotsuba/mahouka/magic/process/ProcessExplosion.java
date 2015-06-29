@@ -3,6 +3,7 @@ package de.yotsuba.mahouka.magic.process;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.Vec3;
+import de.yotsuba.mahouka.MahoukaMod;
 import de.yotsuba.mahouka.magic.cast.CastingProcess;
 import de.yotsuba.mahouka.util.Utils;
 import de.yotsuba.mahouka.util.target.Target;
@@ -12,6 +13,7 @@ public class ProcessExplosion extends MagicProcess
 {
 
     private boolean blockDamage;
+
     private boolean fire;
 
     public ProcessExplosion()
@@ -71,6 +73,12 @@ public class ProcessExplosion extends MagicProcess
         cp.getCaster().worldObj.newExplosion(entity, point.xCoord, point.yCoord, point.zCoord, strength, fire, blockDamage);
 
         return target;
+    }
+
+    @Override
+    public String getTextureName()
+    {
+        return (fire && blockDamage) ? MahoukaMod.MODID + ":cad" : super.getTextureName();
     }
 
 }

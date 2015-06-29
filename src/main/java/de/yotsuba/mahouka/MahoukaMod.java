@@ -24,6 +24,7 @@ import de.yotsuba.mahouka.core.MahoukaEventHandler;
 import de.yotsuba.mahouka.gui.GuiHandler;
 import de.yotsuba.mahouka.item.ItemCad;
 import de.yotsuba.mahouka.item.ItemMagicProcess;
+import de.yotsuba.mahouka.item.ItemMagicSequence;
 import de.yotsuba.mahouka.magic.cad.CadManager;
 import de.yotsuba.mahouka.magic.cast.CastingManagerClient;
 import de.yotsuba.mahouka.magic.cast.CastingManagerServer;
@@ -111,6 +112,7 @@ public class MahoukaMod
     private void registerItems()
     {
         GameRegistry.registerItem(cad, "cad");
+        GameRegistry.registerItem(new ItemMagicSequence(), "magic_sequence");
 
         registerItem(new ItemMagicProcess(new ProcessParticle()), "process_particle");
         registerItem(new ItemMagicProcess(new ProcessExplosion(false, true)), "process_explosion");

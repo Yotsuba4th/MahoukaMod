@@ -1,35 +1,63 @@
 package de.yotsuba.mahouka.item;
 
-import java.util.List;
-
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.IIcon;
+import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import de.yotsuba.mahouka.MahoukaMod;
 import de.yotsuba.mahouka.magic.process.MagicProcess;
 
-public class ItemMagicProcess extends Item
+public class ItemMagicProcess extends ItemMagicSequence
 {
-    public static String id = "magic_process";
 
-    public final MagicProcess process;
+    private final MagicProcess process;
 
     public ItemMagicProcess(MagicProcess process)
     {
+        super();
         setFull3D();
-        setUnlocalizedName(id);
         setCreativeTab(MahoukaMod.creativeTab);
-        setTextureName(MahoukaMod.MODID + ":" + id);
         this.process = process;
+        ItemMagicSequence.registerIcon(process.getTextureName());
+    }
+
+    public MagicProcess getItemProcess()
+    {
+        return process;
+    }
+
+    @Override
+    public void onCreated(ItemStack stack, World world, EntityPlayer player)
+    {
+        getStackData(stack);
+    }
+
+    @Override
+    public NBTTagCompound getStackData(ItemStack stack)
+    {
+        NBTTagCompound tag = stack.getTagCompound();
+        if (tag != null)
+            return tag;
+        tag = process.writeToNBT();
+        stack.setTagCompound(tag);
+        return tag;
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack stack, EntityPlayer player, List info, boolean shiftPressed)
+    public IIcon getIconIndex(ItemStack stack)
     {
-        // if (process != null)
-        // info.add("Magic Process: " + process.getClass().getName());
+        return icons.get(process.getTextureName());
     }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void registerIcons(IIconRegister iconReg)
+    {
+    }
+
 }
