@@ -6,7 +6,6 @@ import net.minecraft.util.Vec3;
 import de.yotsuba.mahouka.magic.cast.CastingProcess;
 import de.yotsuba.mahouka.util.Utils;
 import de.yotsuba.mahouka.util.target.Target;
-import de.yotsuba.mahouka.util.target.TargetEntity;
 import de.yotsuba.mahouka.util.target.TargetType;
 
 public class ProcessExplosion extends MagicProcess
@@ -65,8 +64,8 @@ public class ProcessExplosion extends MagicProcess
         float strength = 4f;
 
         Entity entity = null;
-        if (target instanceof TargetEntity)
-            entity = ((TargetEntity) target).getEntity();
+        // if (target instanceof TargetEntity)
+        // entity = ((TargetEntity) target).getEntity();
 
         Vec3 point = target.toTargetPoint().getPoint();
         cp.getCaster().worldObj.newExplosion(entity, point.xCoord, point.yCoord, point.zCoord, strength, fire, blockDamage);
