@@ -6,11 +6,11 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
-public class ContainerCadAssembler extends Container
+public class CadProgrammerContainer extends Container
 {
-    public ContainerCadAssembler(InventoryPlayer playerInventory)
+    public CadProgrammerContainer(InventoryPlayer playerInventory)
     {
-        // TODO: add texture slots
+        // TODO: Add texture corresponding item slots
 
         addInventoryToContainer(playerInventory);
     }

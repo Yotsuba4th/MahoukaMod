@@ -2,9 +2,14 @@
 itemGroup.Mahouka=Mahouka Koukou
 
 # Blocks
-tile.cad_assembler.name=CAD Assembler
+tile.process_assembler.name=Magic Process Programmer
+tile.sequence_programmer.name=Activation Sequence Programmer
+tile.cad_programmer.name=CAD Programmer
 
 # Items
 item.cad.name=CAD - Calculation Assistance Device
+item.process_particle.name=Magic Process - Heart Particles
+item.process_explosion.name=Magic Process - Explosion
+item.process_shockwave.name=Magic Process - 
 
 # Gui related strings

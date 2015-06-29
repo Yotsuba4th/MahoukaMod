@@ -1,6 +1,8 @@
 package de.yotsuba.mahouka;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -15,13 +17,18 @@ import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
-import de.yotsuba.mahouka.block.BlockCadAssembler;
+import de.yotsuba.mahouka.block.BlockCadProgrammer;
+import de.yotsuba.mahouka.block.BlockProcessAssembler;
+import de.yotsuba.mahouka.block.BlockSequenceProgrammer;
 import de.yotsuba.mahouka.core.MahoukaEventHandler;
 import de.yotsuba.mahouka.gui.GuiHandler;
 import de.yotsuba.mahouka.item.ItemCad;
+import de.yotsuba.mahouka.item.ItemMagicProcess;
 import de.yotsuba.mahouka.magic.cad.CadManager;
 import de.yotsuba.mahouka.magic.cast.CastingManagerClient;
 import de.yotsuba.mahouka.magic.cast.CastingManagerServer;
+import de.yotsuba.mahouka.magic.process.ProcessExplosion;
+import de.yotsuba.mahouka.magic.process.ProcessParticle;
 import de.yotsuba.mahouka.network.C0PlayerData;
 import de.yotsuba.mahouka.network.C2StartChanneling;
 import de.yotsuba.mahouka.network.C3CancelCast;
@@ -69,6 +76,8 @@ public class MahoukaMod
 
     public static final ItemCad cad = new ItemCad();
 
+    public static final List<Item> magic_processes = new ArrayList<Item>();
+
     /* ------------------------------------------------------------ */
 
     @EventHandler
@@ -101,11 +110,24 @@ public class MahoukaMod
     private void registerItems()
     {
         GameRegistry.registerItem(cad, "cad");
+
+        registerItem(new ItemMagicProcess(new ProcessParticle()), "process_particle");
+        registerItem(new ItemMagicProcess(new ProcessExplosion(false, true)), "process_explosion");
+        registerItem(new ItemMagicProcess(new ProcessExplosion(true, true)), "process_firebomb");
+        registerItem(new ItemMagicProcess(new ProcessExplosion(false, false)), "process_shockwave");
+        registerItem(new ItemMagicProcess(new ProcessExplosion(true, false)), "process_fire_shockwave");
+    }
+
+    private void registerItem(ItemMagicProcess imp, String name)
+    {
+        GameRegistry.registerItem(imp.setUnlocalizedName(name), name);
     }
 
     private void registerBlocks()
     {
-        GameRegistry.registerBlock(BlockCadAssembler.block, BlockCadAssembler.id);
+        GameRegistry.registerBlock(BlockProcessAssembler.BLOCK, BlockProcessAssembler.ID);
+        GameRegistry.registerBlock(BlockSequenceProgrammer.BLOCK, BlockSequenceProgrammer.ID);
+        GameRegistry.registerBlock(BlockCadProgrammer.BLOCK, BlockCadProgrammer.ID);
     }
 
     private void registerNetworkMessages()

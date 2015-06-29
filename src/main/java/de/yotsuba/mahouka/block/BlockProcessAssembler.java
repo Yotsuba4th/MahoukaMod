@@ -13,31 +13,23 @@ import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import de.yotsuba.mahouka.MahoukaMod;
-import de.yotsuba.mahouka.gui.GuiCadAssembler;
+import de.yotsuba.mahouka.gui.ProcessAssemblerGui;
 
-public class BlockCadAssembler extends Block
+public class BlockProcessAssembler extends Block
 {
 
-    public static final BlockCadAssembler block;
+    public static final BlockProcessAssembler BLOCK = new BlockProcessAssembler(Material.iron);
 
-    public static final String id = "cad_assembler";
+    public static final String ID = "process_assembler";
 
-    static
-    {
-        block = new BlockCadAssembler(Material.iron);
-    }
-
-    private IIcon iconTop;
-    private IIcon iconFront;
-
-    protected BlockCadAssembler(Material material)
+    protected BlockProcessAssembler(Material material)
     {
         super(material);
         setHardness(2.0F);
         setResistance(10.0F);
         setLightLevel(0.0F);
-        setBlockName(id);
-        setBlockTextureName(MahoukaMod.MODID + ":" + id);
+        setBlockName(ID);
+        setBlockTextureName(MahoukaMod.MODID + ":" + ID);
         setCreativeTab(MahoukaMod.creativeTab);
         setLightOpacity(0);
         setStepSound(Block.soundTypeMetal);
@@ -49,22 +41,20 @@ public class BlockCadAssembler extends Block
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister iconRegister)
     {
-        blockIcon = iconRegister.registerIcon(getTextureName() + "_side");
-        iconTop = iconRegister.registerIcon(getTextureName() + "_top");
-        iconFront = iconRegister.registerIcon(getTextureName() + "_front");
+        blockIcon = iconRegister.registerIcon(getTextureName());
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(int side, int front)
     {
-        return side == ForgeDirection.UP.ordinal() ? this.iconTop : (side == front ? iconFront : blockIcon);
+        return blockIcon;
     }
 
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entity, int l, float m, float n, float o)
     {
-        entity.openGui(MahoukaMod.instance, GuiCadAssembler.GUIID, world, x, y, z);
+        entity.openGui(MahoukaMod.instance, ProcessAssemblerGui.GUIID, world, x, y, z);
         return true;
     }
 

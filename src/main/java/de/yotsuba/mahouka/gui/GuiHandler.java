@@ -13,7 +13,11 @@ public class GuiHandler implements IGuiHandler
         switch (ID)
         {
         case 0:
-            return new ContainerCadAssembler(player.inventory);
+            return new ProcessAssemblerContainer(player.inventory);
+        case 1:
+            return new SequenceProgrammerContainer(player.inventory);
+        case 2:
+            return new CadProgrammerContainer(player.inventory);
         default:
             return null;
         }
@@ -25,7 +29,11 @@ public class GuiHandler implements IGuiHandler
         switch (ID)
         {
         case 0:
-            return new GuiCadAssembler(player.inventory);
+            return new ProcessAssemblerGui(player.inventory);
+        case 1:
+            return new SequenceProgrammerGui(player.inventory);
+        case 2:
+            return new CadProgrammerGui(player.inventory);
         default:
             return null;
         }

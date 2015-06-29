@@ -7,19 +7,19 @@ import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
 import de.yotsuba.mahouka.MahoukaMod;
-import de.yotsuba.mahouka.block.BlockCadAssembler;
+import de.yotsuba.mahouka.block.BlockSequenceProgrammer;
 
-public class GuiCadAssembler extends GuiContainer
+public class SequenceProgrammerGui extends GuiContainer
 {
 
-    public static final int GUIID = 0;
+    public static final int GUIID = 1;
 
-    // TODO: design gui texture
-    private static final ResourceLocation texture = new ResourceLocation(MahoukaMod.MODID + ":textures/gui/" + BlockCadAssembler.id + ".png");
+    // TODO: Design gui texture
+    private static final ResourceLocation texture = new ResourceLocation(MahoukaMod.MODID + ":textures/gui/" + BlockSequenceProgrammer.ID + ".png");
 
-    public GuiCadAssembler(InventoryPlayer playerInventory)
+    public SequenceProgrammerGui(InventoryPlayer playerInventory)
     {
-        super(new ContainerCadAssembler(playerInventory));
+        super(new SequenceProgrammerContainer(playerInventory));
     }
 
     @Override
@@ -28,7 +28,7 @@ public class GuiCadAssembler extends GuiContainer
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         this.mc.renderEngine.bindTexture(texture);
 
-        String header = BlockCadAssembler.block.getLocalizedName();
+        String header = BlockSequenceProgrammer.BLOCK.getLocalizedName();
         fontRendererObj.drawString(header, (xSize - fontRendererObj.getStringWidth(header)) / 2, 6, 4210752);
     }
 
