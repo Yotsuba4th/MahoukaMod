@@ -10,15 +10,14 @@ import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import de.yotsuba.mahouka.MahoukaMod;
-import de.yotsuba.mahouka.magic.CadManager;
-import de.yotsuba.mahouka.magic.CastingManager;
-import de.yotsuba.mahouka.magic.CastingProcess;
 import de.yotsuba.mahouka.magic.cad.CadBase;
+import de.yotsuba.mahouka.magic.cad.CadManager;
+import de.yotsuba.mahouka.magic.cast.CastingProcess;
 import de.yotsuba.mahouka.util.BufUtils;
 import de.yotsuba.mahouka.util.Utils;
 import de.yotsuba.mahouka.util.target.Target;
 
-public class S2StartChanneling implements IMessage, IMessageHandler<S2StartChanneling, IMessage>
+public class S1StartChanneling implements IMessage, IMessageHandler<S1StartChanneling, IMessage>
 {
 
     private EntityPlayer caster;
@@ -29,11 +28,11 @@ public class S2StartChanneling implements IMessage, IMessageHandler<S2StartChann
 
     private ByteBuf tmpBuf;
 
-    public S2StartChanneling()
+    public S1StartChanneling()
     {
     }
 
-    public S2StartChanneling(EntityPlayer caster, UUID cadId, Target target)
+    public S1StartChanneling(EntityPlayer caster, UUID cadId, Target target)
     {
         this.caster = caster;
         this.cadId = cadId;
@@ -57,7 +56,7 @@ public class S2StartChanneling implements IMessage, IMessageHandler<S2StartChann
     }
 
     @Override
-    public IMessage onMessage(S2StartChanneling message, MessageContext ctx)
+    public IMessage onMessage(S1StartChanneling message, MessageContext ctx)
     {
         message.target = Target.fromBytes(((NetHandlerPlayServer) ctx.netHandler).playerEntity.worldObj, message.tmpBuf);
         message.tmpBuf = null;
@@ -69,13 +68,13 @@ public class S2StartChanneling implements IMessage, IMessageHandler<S2StartChann
             return null;
 
         CastingProcess cast = new CastingProcess(message.caster, cad.getSelectedSequence(), message.target, message.cadId);
-        CastingManager.startChanneling(cast);
+        MahoukaMod.getCastingManagerServer().startChanneling(cast);
         return null;
     }
 
     public static void send(EntityPlayer caster, UUID cadId, Target target)
     {
-        S2StartChanneling message = new S2StartChanneling(caster, cadId, target);
+        S1StartChanneling message = new S1StartChanneling(caster, cadId, target);
         MahoukaMod.getNetChannel().sendToServer(message);
     }
 

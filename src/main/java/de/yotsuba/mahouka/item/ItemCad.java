@@ -13,8 +13,8 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import de.yotsuba.mahouka.MahoukaMod;
 import de.yotsuba.mahouka.magic.ActivationSequence;
-import de.yotsuba.mahouka.magic.CadManager;
 import de.yotsuba.mahouka.magic.cad.CadBase;
+import de.yotsuba.mahouka.magic.cad.CadManager;
 import de.yotsuba.mahouka.magic.process.ProcessExplosion;
 
 public class ItemCad extends Item

@@ -1,4 +1,4 @@
-package de.yotsuba.mahouka.magic;
+package de.yotsuba.mahouka.magic.cad;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -8,7 +8,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import cpw.mods.fml.common.event.FMLServerStoppedEvent;
 import de.yotsuba.mahouka.item.ItemCad;
-import de.yotsuba.mahouka.magic.cad.CadBase;
 
 public class CadManager
 {

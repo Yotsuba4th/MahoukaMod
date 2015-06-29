@@ -16,22 +16,21 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import de.yotsuba.mahouka.MahoukaMod;
 import de.yotsuba.mahouka.magic.ActivationSequence;
-import de.yotsuba.mahouka.magic.CastingManager;
-import de.yotsuba.mahouka.magic.CastingProcess;
+import de.yotsuba.mahouka.magic.cast.CastingProcess;
 import de.yotsuba.mahouka.util.BufUtils;
 import de.yotsuba.mahouka.util.Utils;
 import de.yotsuba.mahouka.util.target.Target;
 
-public class C1StartChanneling implements IMessage, IMessageHandler<C1StartChanneling, IMessage>
+public class C2StartChanneling implements IMessage, IMessageHandler<C2StartChanneling, IMessage>
 {
 
     private CastingProcess cast;
 
-    public C1StartChanneling()
+    public C2StartChanneling()
     {
     }
 
-    public C1StartChanneling(CastingProcess cast)
+    public C2StartChanneling(CastingProcess cast)
     {
         this.cast = cast;
     }
@@ -58,15 +57,15 @@ public class C1StartChanneling implements IMessage, IMessageHandler<C1StartChann
     }
 
     @Override
-    public IMessage onMessage(C1StartChanneling message, MessageContext ctx)
+    public IMessage onMessage(C2StartChanneling message, MessageContext ctx)
     {
-        CastingManager.startChannelingClient(message.cast);
+        MahoukaMod.getCastingManagerClient().startChanneling(message.cast);
         return null;
     }
 
     public static void send(CastingProcess cast)
     {
-        C1StartChanneling message = new C1StartChanneling(cast);
+        C2StartChanneling message = new C2StartChanneling(cast);
         Vec3 pos = cast.getTarget().toTargetPoint().getPoint();
         TargetPoint tpoint = new TargetPoint(cast.getCaster().worldObj.provider.dimensionId, pos.xCoord, pos.yCoord, pos.zCoord, 16 * 64);
         MahoukaMod.getNetChannel().sendToAllAround(message, tpoint);

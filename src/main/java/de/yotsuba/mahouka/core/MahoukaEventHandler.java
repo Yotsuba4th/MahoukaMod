@@ -14,8 +14,8 @@ import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.Phase;
 import cpw.mods.fml.common.gameevent.TickEvent.ServerTickEvent;
 import de.yotsuba.mahouka.item.ItemCad;
-import de.yotsuba.mahouka.magic.CadManager;
 import de.yotsuba.mahouka.magic.cad.CadBase;
+import de.yotsuba.mahouka.magic.cad.CadManager;
 import de.yotsuba.mahouka.network.C0PlayerData;
 import de.yotsuba.mahouka.util.Utils;
 

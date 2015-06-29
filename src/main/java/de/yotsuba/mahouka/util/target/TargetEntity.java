@@ -19,11 +19,11 @@ import net.minecraft.world.World;
 public class TargetEntity extends TargetPoint
 {
 
-    private Entity entity;
+    protected Entity entity;
 
-    private TargetType type;
+    protected TargetType type;
 
-    private boolean isConstructed;
+    protected boolean isConstructed;
 
     public TargetEntity(Entity entity, boolean isSelf, boolean isConstructed, Vec3 point)
     {
@@ -69,6 +69,12 @@ public class TargetEntity extends TargetPoint
     public TargetType getType()
     {
         return type;
+    }
+
+    @Override
+    public TargetPoint toTargetPoint()
+    {
+        return new TargetEntity(entity, type == TargetType.SELF, isConstructed);
     }
 
     public Entity getEntity()

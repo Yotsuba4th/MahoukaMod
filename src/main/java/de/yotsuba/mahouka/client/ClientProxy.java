@@ -1,7 +1,7 @@
 package de.yotsuba.mahouka.client;
 
 import de.yotsuba.mahouka.CommonProxy;
-import de.yotsuba.mahouka.magic.CastingProcess;
+import de.yotsuba.mahouka.magic.cast.CastingProcess;
 import de.yotsuba.mahouka.magic.process.MagicProcess;
 import de.yotsuba.mahouka.util.target.Target;
 

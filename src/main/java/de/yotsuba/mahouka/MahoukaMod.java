@@ -19,11 +19,14 @@ import de.yotsuba.mahouka.block.BlockCadAssembler;
 import de.yotsuba.mahouka.core.MahoukaEventHandler;
 import de.yotsuba.mahouka.gui.GuiHandler;
 import de.yotsuba.mahouka.item.ItemCad;
-import de.yotsuba.mahouka.magic.CadManager;
-import de.yotsuba.mahouka.magic.CastingManager;
+import de.yotsuba.mahouka.magic.cad.CadManager;
+import de.yotsuba.mahouka.magic.cast.CastingManagerClient;
+import de.yotsuba.mahouka.magic.cast.CastingManagerServer;
 import de.yotsuba.mahouka.network.C0PlayerData;
-import de.yotsuba.mahouka.network.C1StartChanneling;
-import de.yotsuba.mahouka.network.S2StartChanneling;
+import de.yotsuba.mahouka.network.C2StartChanneling;
+import de.yotsuba.mahouka.network.C3CancelCast;
+import de.yotsuba.mahouka.network.S1StartChanneling;
+import de.yotsuba.mahouka.network.S4CancelCast;
 
 @Mod(modid = MahoukaMod.MODID, version = MahoukaMod.VERSION)
 public class MahoukaMod
@@ -47,6 +50,11 @@ public class MahoukaMod
 
     private static CadManager cadManager = new CadManager();
 
+    private static CastingManagerServer castingManagerServer = new CastingManagerServer();
+
+    private static CastingManagerClient castingManagerClient = new CastingManagerClient();
+
+    @SuppressWarnings("unused")
     private static MahoukaEventHandler eventHandler = new MahoukaEventHandler();
 
     /* ------------------------------------------------------------ */
@@ -79,7 +87,7 @@ public class MahoukaMod
     public void serverStoppedEvent(FMLServerStoppedEvent event)
     {
         CadManager.serverStoppedEvent(event);
-        CastingManager.serverStoppedEvent(event);
+        castingManagerServer.serverStoppedEvent(event);
     }
 
     private void loadConfig()
@@ -103,8 +111,10 @@ public class MahoukaMod
     private void registerNetworkMessages()
     {
         netChannel.registerMessage(C0PlayerData.class, C0PlayerData.class, 0, Side.CLIENT);
-        netChannel.registerMessage(C1StartChanneling.class, C1StartChanneling.class, 1, Side.CLIENT);
-        netChannel.registerMessage(S2StartChanneling.class, S2StartChanneling.class, 2, Side.SERVER);
+        netChannel.registerMessage(S1StartChanneling.class, S1StartChanneling.class, 1, Side.SERVER);
+        netChannel.registerMessage(C2StartChanneling.class, C2StartChanneling.class, 2, Side.CLIENT);
+        netChannel.registerMessage(C3CancelCast.class, C3CancelCast.class, 3, Side.CLIENT);
+        netChannel.registerMessage(S4CancelCast.class, S4CancelCast.class, 4, Side.SERVER);
     }
 
     public static CadManager getCadManager()
@@ -115,6 +125,16 @@ public class MahoukaMod
     public static SimpleNetworkWrapper getNetChannel()
     {
         return netChannel;
+    }
+
+    public static CastingManagerServer getCastingManagerServer()
+    {
+        return castingManagerServer;
+    }
+
+    public static CastingManagerClient getCastingManagerClient()
+    {
+        return castingManagerClient;
     }
 
 }

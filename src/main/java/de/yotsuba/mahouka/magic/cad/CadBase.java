@@ -11,10 +11,10 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import de.yotsuba.mahouka.MahoukaMod;
 import de.yotsuba.mahouka.core.PlayerData;
 import de.yotsuba.mahouka.magic.ActivationSequence;
-import de.yotsuba.mahouka.magic.CastingManager;
-import de.yotsuba.mahouka.network.S2StartChanneling;
+import de.yotsuba.mahouka.network.S1StartChanneling;
 import de.yotsuba.mahouka.util.WorldUtils;
 import de.yotsuba.mahouka.util.target.Target;
 import de.yotsuba.mahouka.util.target.TargetBlock;
@@ -80,9 +80,12 @@ public class CadBase
     {
         if (!player.worldObj.isRemote)
             return;
-        if (CastingManager.isCasting(id))
+        if (MahoukaMod.getCastingManagerClient().isCasting(id))
         {
-            // CastingManager.cancelCast(id);
+            // TODO: Cancel cast if shift is hold
+            // MahoukaMod.getCastingManagerClient().cancelCast(id);
+
+            player.addChatMessage(new ChatComponentText("Another magic is still active!"));
         }
         else
         {
@@ -109,7 +112,7 @@ public class CadBase
                 return;
             }
 
-            S2StartChanneling.send(player, id, target);
+            S1StartChanneling.send(player, id, target);
             // CastingProcess cast = new CastingProcess(player, getSelectedSequence(), target, id);
             // CastingManager.startChanneling(cast);
         }
@@ -153,7 +156,7 @@ public class CadBase
 
     public void setSelectedSequenceIndex(byte index)
     {
-        if (CastingManager.isCasting(id))
+        if (MahoukaMod.getCastingManagerClient().isCasting(id))
             return;
         if (index < 0)
             selectedSequence = (byte) (activationSequences.length - 1);

@@ -7,7 +7,7 @@ import de.yotsuba.mahouka.util.BufUtils;
 public class TargetPoint extends Target
 {
 
-    private Vec3 point;
+    protected Vec3 point;
 
     public TargetPoint(Vec3 point)
     {
