@@ -6,15 +6,17 @@ import java.util.List;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import de.yotsuba.mahouka.item.ItemMagicSequence;
-import de.yotsuba.mahouka.magic.process.MagicProcess;
-import de.yotsuba.mahouka.magic.process.MagicProcessManager;
 
 public class ActivationSequence
 {
 
     public static final String NBT_PROCESSES = "proc";
 
+    /* ------------------------------------------------------------ */
+
     protected List<MagicProcess> processes = new ArrayList<MagicProcess>();
+
+    /* ------------------------------------------------------------ */
 
     public ActivationSequence()
     {
@@ -24,6 +26,8 @@ public class ActivationSequence
     {
         readFromNBT(tagSequence);
     }
+
+    /* ------------------------------------------------------------ */
 
     public NBTTagCompound writeToNBT()
     {
@@ -41,22 +45,18 @@ public class ActivationSequence
         for (int i = 0; i < tagProcesses.tagCount(); i++)
         {
             NBTTagCompound tagProcess = tagProcesses.getCompoundTagAt(i);
-            processes.add(MagicProcessManager.readFromNBT(tagProcess));
+            MagicProcess process = MagicProcess.createFromNBT(tagProcess);
+            if (process == null)
+            {
+                // TODO: DEBUG! Print log error!
+                System.err.println("Could not load magic process!");
+                break;
+            }
+            processes.add(process);
         }
     }
 
-    public void getCasterChannelingEffects(/* cast target */)
-    {
-    }
-
-    public void getTargetChannelingEffects(/* cast target */)
-    {
-    }
-
-    public List<MagicProcess> getProcesses()
-    {
-        return processes;
-    }
+    /* ------------------------------------------------------------ */
 
     public String getTextureName()
     {
@@ -83,5 +83,12 @@ public class ActivationSequence
                 process.addInformation(info, true);
             }
         }
+    }
+
+    /* ------------------------------------------------------------ */
+
+    public List<MagicProcess> getProcesses()
+    {
+        return processes;
     }
 }

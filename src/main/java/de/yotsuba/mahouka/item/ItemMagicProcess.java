@@ -11,7 +11,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import de.yotsuba.mahouka.MahoukaMod;
 import de.yotsuba.mahouka.magic.ActivationSequence;
-import de.yotsuba.mahouka.magic.process.MagicProcess;
+import de.yotsuba.mahouka.magic.MagicProcess;
 
 public class ItemMagicProcess extends ItemMagicSequence
 {

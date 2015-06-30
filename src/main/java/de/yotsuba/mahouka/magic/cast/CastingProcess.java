@@ -12,7 +12,7 @@ import cpw.mods.fml.common.network.ByteBufUtils;
 import de.yotsuba.mahouka.MahoukaMod;
 import de.yotsuba.mahouka.core.PlayerData;
 import de.yotsuba.mahouka.magic.ActivationSequence;
-import de.yotsuba.mahouka.magic.process.MagicProcess;
+import de.yotsuba.mahouka.magic.MagicProcess;
 import de.yotsuba.mahouka.network.C5CastUpdate;
 import de.yotsuba.mahouka.util.BufUtils;
 import de.yotsuba.mahouka.util.Utils;
