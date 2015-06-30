@@ -13,9 +13,9 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import de.yotsuba.mahouka.MahoukaMod;
 import de.yotsuba.mahouka.magic.ActivationSequence;
+import de.yotsuba.mahouka.magic.MagicProcess;
 import de.yotsuba.mahouka.magic.cad.CadBase;
 import de.yotsuba.mahouka.magic.cad.CadManager;
-import de.yotsuba.mahouka.magic.process.ProcessExplosion;
 
 public class ItemCad extends Item
 {
@@ -58,7 +58,7 @@ public class ItemCad extends Item
             cad = createNewCad();
 
             ActivationSequence seq = new ActivationSequence();
-            seq.getProcesses().add(new ProcessExplosion(false, true));
+            seq.getProcesses().add(MagicProcess.createByName("explosion"));
             cad.getActivationSequences()[0] = seq;
 
             if (stack.getTagCompound() == null)

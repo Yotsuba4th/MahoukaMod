@@ -8,6 +8,7 @@ tile.cad_programmer.name=CAD Programmer
 
 # Items
 item.cad.name=CAD - Calculation Assistance Device
+item.magic_sequence.name=Magic Sequence
 item.process_particle.name=Magic Process - Heart Particles
 item.process_explosion.name=Magic Process - Explosion
 item.process_firebomb.name=Magic Process - Firebomb

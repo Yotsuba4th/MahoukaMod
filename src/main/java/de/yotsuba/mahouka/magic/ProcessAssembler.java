@@ -76,6 +76,7 @@ public class ProcessAssembler
         {
             ItemStack newStack = new ItemStack(MahoukaMod.item_magic_sequence);
             newStack.setTagCompound(getSequenceTag(stack));
+            stack = newStack;
         }
         return stack;
     }

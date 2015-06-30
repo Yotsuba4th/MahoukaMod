@@ -7,39 +7,57 @@ import java.util.Map;
 import net.minecraft.nbt.NBTTagCompound;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import de.yotsuba.mahouka.item.ItemMagicSequence;
 import de.yotsuba.mahouka.magic.cast.CastingProcess;
 import de.yotsuba.mahouka.magic.process.ProcessExplosion;
+import de.yotsuba.mahouka.magic.process.ProcessFireShockwave;
+import de.yotsuba.mahouka.magic.process.ProcessFirebomb;
 import de.yotsuba.mahouka.magic.process.ProcessParticle;
+import de.yotsuba.mahouka.magic.process.ProcessShockwave;
 import de.yotsuba.mahouka.util.target.Target;
 import de.yotsuba.mahouka.util.target.TargetType;
 
 public abstract class MagicProcess implements Cloneable
 {
 
-    public static Map<Short, Class<? extends MagicProcess>> processTypes = new HashMap<Short, Class<? extends MagicProcess>>();
+    public static Map<Short, Class<? extends MagicProcess>> processById = new HashMap<Short, Class<? extends MagicProcess>>();
 
-    public static Map<Class<? extends MagicProcess>, Short> processIds = new HashMap<Class<? extends MagicProcess>, Short>();
+    public static Map<String, Class<? extends MagicProcess>> processByName = new HashMap<String, Class<? extends MagicProcess>>();
+
+    public static Map<Class<? extends MagicProcess>, Short> idByProcess = new HashMap<Class<? extends MagicProcess>, Short>();
 
     static
     {
-        registerProcess(ProcessParticle.class, (short) 1);
-        registerProcess(ProcessExplosion.class, (short) 2);
+        registerProcess(ProcessParticle.class, (short) 0);
+        registerProcess(ProcessExplosion.class, (short) 1);
+        registerProcess(ProcessShockwave.class, (short) 2);
+        registerProcess(ProcessFirebomb.class, (short) 3);
+        registerProcess(ProcessFireShockwave.class, (short) 4);
     }
 
     /* ------------------------------------------------------------ */
 
     public static void registerProcess(Class<? extends MagicProcess> clazz, short id)
     {
-        if (processTypes.containsKey(id))
+        if (processById.containsKey(id))
             throw new RuntimeException(String.format("Duplicate assignment of magic process id %d", id));
-        processTypes.put(id, clazz);
-        processIds.put(clazz, id);
+        processById.put(id, clazz);
+        idByProcess.put(clazz, id);
+        processByName.put(instantiate(clazz).getName(), clazz);
+    }
+
+    public static MagicProcess createByName(String name)
+    {
+        return instantiate(processByName.get(name));
+    }
+
+    public static MagicProcess createById(short id)
+    {
+        return instantiate(processById.get(id));
     }
 
     public static MagicProcess createFromNBT(NBTTagCompound tag)
     {
-        Class<? extends MagicProcess> clazz = processTypes.get(tag.getShort("id"));
+        Class<? extends MagicProcess> clazz = processById.get(tag.getShort("id"));
         if (clazz == null)
         {
             // TODO: Print error
@@ -53,6 +71,20 @@ public abstract class MagicProcess implements Cloneable
         }
         catch (ReflectiveOperationException e)
         {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    private static MagicProcess instantiate(Class<? extends MagicProcess> clazz)
+    {
+        try
+        {
+            return clazz.newInstance();
+        }
+        catch (ReflectiveOperationException e)
+        {
+            // TODO Auto-generated catch block
             e.printStackTrace();
             return null;
         }
@@ -73,13 +105,11 @@ public abstract class MagicProcess implements Cloneable
 
     public short getId()
     {
-        Short id = processIds.get(getClass());
+        Short id = idByProcess.get(getClass());
         if (id == null)
             throw new RuntimeException(String.format("Magic process class %s has not been registered", getClass().toString()));
         return id;
     }
-
-    /* ------------------------------------------------------------ */
 
     public MagicProcess copy()
     {
@@ -94,6 +124,7 @@ public abstract class MagicProcess implements Cloneable
     }
 
     /* ------------------------------------------------------------ */
+    /* Magic process information */
 
     public abstract TargetType[] getValidTargets();
 
@@ -101,17 +132,9 @@ public abstract class MagicProcess implements Cloneable
 
     public abstract int getCastDuration(Target target);
 
-    /* ------------------------------------------------------------ */
+    public abstract String getName();
 
-    public String getTextureName()
-    {
-        return ItemMagicSequence.DEFAULT_ICON;
-    }
-
-    public boolean isContinuousCast(Target target)
-    {
-        return getCastDuration(target) > 0;
-    }
+    public abstract String getTextureName();
 
     public void addInformation(List<String> info, boolean isSequence)
     {
@@ -153,6 +176,13 @@ public abstract class MagicProcess implements Cloneable
     public void castTickClient(CastingProcess cp, Target target)
     {
         /* do nothing */
+    }
+
+    /* ------------------------------------------------------------ */
+
+    public boolean isContinuousCast(Target target)
+    {
+        return getCastDuration(target) > 0;
     }
 
 }

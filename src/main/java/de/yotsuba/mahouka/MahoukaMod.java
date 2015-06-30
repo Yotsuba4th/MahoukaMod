@@ -23,11 +23,10 @@ import de.yotsuba.mahouka.gui.GuiHandler;
 import de.yotsuba.mahouka.item.ItemCad;
 import de.yotsuba.mahouka.item.ItemMagicProcess;
 import de.yotsuba.mahouka.item.ItemMagicSequence;
+import de.yotsuba.mahouka.magic.MagicProcess;
 import de.yotsuba.mahouka.magic.cad.CadManager;
 import de.yotsuba.mahouka.magic.cast.CastingManagerClient;
 import de.yotsuba.mahouka.magic.cast.CastingManagerServer;
-import de.yotsuba.mahouka.magic.process.ProcessExplosion;
-import de.yotsuba.mahouka.magic.process.ProcessParticle;
 import de.yotsuba.mahouka.network.C0PlayerData;
 import de.yotsuba.mahouka.network.C2StartChanneling;
 import de.yotsuba.mahouka.network.C3CancelCast;
@@ -106,16 +105,12 @@ public class MahoukaMod
     {
         GameRegistry.registerItem(cad, "cad");
         GameRegistry.registerItem(item_magic_sequence, "magic_sequence");
-        registerItem(new ItemMagicProcess(new ProcessParticle()), "process_particle");
-        registerItem(new ItemMagicProcess(new ProcessExplosion(false, true)), "process_explosion");
-        registerItem(new ItemMagicProcess(new ProcessExplosion(true, true)), "process_firebomb");
-        registerItem(new ItemMagicProcess(new ProcessExplosion(false, false)), "process_shockwave");
-        registerItem(new ItemMagicProcess(new ProcessExplosion(true, false)), "process_fire_shockwave");
-    }
-
-    private void registerItem(ItemMagicProcess imp, String name)
-    {
-        GameRegistry.registerItem(imp.setUnlocalizedName(name), name);
+        for (Short id : MagicProcess.processById.keySet())
+        {
+            MagicProcess process = MagicProcess.createById(id);
+            ItemMagicProcess item = new ItemMagicProcess(process);
+            GameRegistry.registerItem(item, "process_" + process.getName());
+        }
     }
 
     private void registerBlocks()

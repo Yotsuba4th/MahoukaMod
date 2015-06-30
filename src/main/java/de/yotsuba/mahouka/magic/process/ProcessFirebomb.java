@@ -2,10 +2,10 @@ package de.yotsuba.mahouka.magic.process;
 
 import de.yotsuba.mahouka.item.ItemMagicSequence;
 
-public class ProcessExplosion extends ProcessExplosionBase
+public class ProcessFirebomb extends ProcessExplosionBase
 {
 
-    public ProcessExplosion()
+    public ProcessFirebomb()
     {
         super(false, true);
     }
@@ -13,13 +13,12 @@ public class ProcessExplosion extends ProcessExplosionBase
     @Override
     public String getName()
     {
-        return "explosion";
+        return "firebomb";
     }
 
     @Override
     public String getTextureName()
     {
-        // return MahoukaMod.MODID + ":cad";
         return ItemMagicSequence.DEFAULT_ICON;
     }
 
