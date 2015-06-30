@@ -9,6 +9,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import de.yotsuba.mahouka.item.ItemMagicSequence;
 import de.yotsuba.mahouka.magic.ProcessAssembler;
+import de.yotsuba.mahouka.util.Utils;
 
 public class SequenceProgrammerContainer extends Container implements IInventory
 {
@@ -33,16 +34,8 @@ public class SequenceProgrammerContainer extends Container implements IInventory
         addSlotToContainer(new Slot(this, 0, 49, 18));
         addSlotToContainer(new Slot(this, 1, 49, 54));
         addSlotToContainer(new Slot(this, 2, 107, 36));
-        addPlayerInventoryToContainer(playerInventory);
-    }
-
-    private void addPlayerInventoryToContainer(InventoryPlayer playerInventory)
-    {
-        for (int i = 0; i < 3; ++i)
-            for (int j = 0; j < 9; ++j)
-                addSlotToContainer(new Slot(playerInventory, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
-        for (int i = 0; i < 9; ++i)
-            addSlotToContainer(new Slot(playerInventory, i, 8 + i * 18, 142));
+        for (Slot slot : Utils.getPlayerContainerSlots(playerInventory))
+            addSlotToContainer(slot);
     }
 
     /* ------------------------------------------------------------ */
@@ -124,6 +117,7 @@ public class SequenceProgrammerContainer extends Container implements IInventory
         super.onContainerClosed(player);
         if (worldObj.isRemote)
             return;
+        updateOutputCount();
         for (int i = 0; i < 2; ++i)
         {
             ItemStack stack = getStackInSlotOnClosing(i);

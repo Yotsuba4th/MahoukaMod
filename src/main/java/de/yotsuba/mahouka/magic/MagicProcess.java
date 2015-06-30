@@ -6,6 +6,7 @@ import java.util.Map;
 
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import de.yotsuba.mahouka.item.ItemMagicProcess;
@@ -143,6 +144,11 @@ public abstract class MagicProcess implements Cloneable
 
     public abstract String getName();
 
+    public String getItemName()
+    {
+        return "process_" + getName();
+    }
+
     public Item getItem()
     {
         return itemByProcess.get(getClass());
@@ -152,7 +158,8 @@ public abstract class MagicProcess implements Cloneable
 
     public void addInformation(List<String> info, boolean isSequence)
     {
-        info.add(getClass().getSimpleName());
+        if (isSequence)
+            info.add(StatCollector.translateToLocal("item." + getItemName() + ".name"));
     }
 
     /* ------------------------------------------------------------ */

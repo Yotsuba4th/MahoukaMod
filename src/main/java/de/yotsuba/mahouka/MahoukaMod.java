@@ -109,7 +109,7 @@ public class MahoukaMod
         {
             MagicProcess process = MagicProcess.createById(id);
             ItemMagicProcess item = new ItemMagicProcess(process);
-            GameRegistry.registerItem(item, "process_" + process.getName());
+            GameRegistry.registerItem(item, process.getItemName());
             MagicProcess.registerProcessItem(process.getClass(), item);
         }
     }

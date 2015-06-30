@@ -14,7 +14,6 @@ public class CadProgrammerGui extends GuiContainer
 
     public static final int GUIID = 2;
 
-    // TODO: Design gui texture
     private static final ResourceLocation texture = new ResourceLocation(MahoukaMod.MODID + ":textures/gui/" + BlockCadProgrammer.ID + ".png");
 
     public CadProgrammerGui(InventoryPlayer playerInventory)

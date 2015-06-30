@@ -3,8 +3,10 @@ package de.yotsuba.mahouka.magic;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import de.yotsuba.mahouka.MahoukaMod;
 import de.yotsuba.mahouka.item.ItemMagicSequence;
 
 public class ActivationSequence
@@ -90,5 +92,16 @@ public class ActivationSequence
     public List<MagicProcess> getProcesses()
     {
         return processes;
+    }
+
+    public ItemStack getItemStack()
+    {
+        if (processes.isEmpty())
+            return null;
+
+        NBTTagCompound tag = writeToNBT();
+        ItemStack stack = new ItemStack(processes.size() == 1 ? processes.get(0).getItem() : MahoukaMod.item_magic_sequence);
+        stack.setTagCompound(tag);
+        return stack;
     }
 }

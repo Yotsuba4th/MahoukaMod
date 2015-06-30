@@ -1,11 +1,14 @@
 package de.yotsuba.mahouka.util;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.Slot;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import cpw.mods.fml.relauncher.Side;
@@ -61,6 +64,17 @@ public class Utils
             if (player.getPersistentID().equals(uuid))
                 return player;
         return null;
+    }
+
+    public static List<Slot> getPlayerContainerSlots(InventoryPlayer playerInventory)
+    {
+        List<Slot> slots = new ArrayList<Slot>();
+        for (int i = 0; i < 3; ++i)
+            for (int j = 0; j < 9; ++j)
+                slots.add(new Slot(playerInventory, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
+        for (int i = 0; i < 9; ++i)
+            slots.add(new Slot(playerInventory, i, 8 + i * 18, 142));
+        return slots;
     }
 
 }
