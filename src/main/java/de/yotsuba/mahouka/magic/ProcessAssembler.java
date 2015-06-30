@@ -10,32 +10,64 @@ import de.yotsuba.mahouka.item.ItemMagicSequence;
 public class ProcessAssembler
 {
 
+    private static String lastError;
+
     public static class AssemblyException extends Exception
     {
     }
 
-    public static ItemStack combine(ItemStack input1, ItemStack input2) throws AssemblyException
+    public static ItemStack combine(ItemStack input1, ItemStack input2)
     {
-        input1 = convertToSequence(input1);
-        NBTTagList list1 = getProcessList(input1);
-        NBTTagList list2 = getProcessList(input2);
-        for (int i = 0; i < list2.tagCount(); i++)
-            list1.appendTag(list2.getCompoundTagAt(i));
-        return input1;
+        setLastError(null);
+        if (input1 == null || input2 == null)
+            return null;
+        try
+        {
+            input1 = convertToSequence(input1);
+            NBTTagList list1 = getProcessList(input1);
+            NBTTagList list2 = getProcessList(input2);
+            for (int i = 0; i < list2.tagCount(); i++)
+                list1.appendTag(list2.getCompoundTagAt(i));
+            return input1;
+        }
+        catch (AssemblyException e)
+        {
+            setLastError(e.getMessage());
+
+            // TODO: DEBUG!
+            e.printStackTrace();
+            System.out.println("Could not combine magic sequences!");
+            return null;
+        }
     }
 
-    public static ItemStack split(ItemStack input) throws AssemblyException
+    public static ItemStack split(ItemStack input)
     {
-        NBTTagList list1 = getProcessList(input);
+        setLastError(null);
+        if (input == null)
+            return null;
+        try
+        {
+            NBTTagList list1 = getProcessList(input);
 
-        NBTTagCompound tag2 = new NBTTagCompound();
-        NBTTagList list2 = new NBTTagList();
-        tag2.setTag(ActivationSequence.NBT_PROCESSES, list2);
-        list2.appendTag(list1.removeTag(list1.tagCount() - 1));
+            NBTTagCompound tag2 = new NBTTagCompound();
+            NBTTagList list2 = new NBTTagList();
+            tag2.setTag(ActivationSequence.NBT_PROCESSES, list2);
+            list2.appendTag(list1.removeTag(list1.tagCount() - 1));
 
-        ItemStack output = new ItemStack(MahoukaMod.item_magic_sequence);
-        output.setTagCompound(tag2);
-        return output;
+            ItemStack output = new ItemStack(MahoukaMod.item_magic_sequence);
+            output.setTagCompound(tag2);
+            return output;
+        }
+        catch (AssemblyException e)
+        {
+            setLastError(e.getMessage());
+
+            // TODO: DEBUG!
+            e.printStackTrace();
+            System.out.println("Could not combine magic sequences!");
+            return null;
+        }
     }
 
     private static ItemStack convertToSequence(ItemStack stack) throws AssemblyException
@@ -65,6 +97,16 @@ public class ProcessAssembler
         if (list == null)
             throw new RuntimeException("Found magic sequence with empty data!");
         return list;
+    }
+
+    public static String getLastError()
+    {
+        return lastError;
+    }
+
+    private static void setLastError(String lastError)
+    {
+        ProcessAssembler.lastError = lastError;
     }
 
 }

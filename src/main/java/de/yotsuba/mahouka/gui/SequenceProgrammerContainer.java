@@ -1,42 +1,78 @@
 package de.yotsuba.mahouka.gui;
 
-import java.util.Random;
-
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.InventoryCraftResult;
+import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.inventory.Slot;
+import net.minecraft.inventory.SlotCrafting;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import de.yotsuba.mahouka.item.ItemMagicProcess;
+import net.minecraft.world.World;
+import de.yotsuba.mahouka.magic.ProcessAssembler;
 
-public class SequenceProgrammerContainer extends Container implements IInventory
+public class SequenceProgrammerContainer extends Container
 {
-    private final EntityPlayer player;
+    private final World worldObj;
+
+    private final InventoryCrafting craftMatrix = new InventoryCrafting(this, 1, 2);
+
+    private final IInventory craftResult = new InventoryCraftResult();
 
     public SequenceProgrammerContainer(InventoryPlayer playerInventory)
     {
-        player = playerInventory.player;
-
-        addSlotToContainer(new Slot(this, 0, 49, 18));
-        addSlotToContainer(new Slot(this, 1, 49, 54));
-        addSlotToContainer(new Slot(this, 2, 107, 36));
-
-        addInventoryToContainer(playerInventory);
+        worldObj = playerInventory.player.worldObj;
+        addSlotToContainer(new Slot(craftMatrix, 0, 49, 18));
+        addSlotToContainer(new Slot(craftMatrix, 1, 49, 54));
+        addSlotToContainer(new SlotCrafting(playerInventory.player, craftMatrix, craftResult, 0, 107, 36));
+        addPlayerInventoryToContainer(playerInventory);
     }
 
-    private void addInventoryToContainer(InventoryPlayer playerInventory)
+    private void addPlayerInventoryToContainer(InventoryPlayer playerInventory)
     {
         for (int i = 0; i < 3; ++i)
             for (int j = 0; j < 9; ++j)
                 addSlotToContainer(new Slot(playerInventory, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
-
         for (int i = 0; i < 9; ++i)
             addSlotToContainer(new Slot(playerInventory, i, 8 + i * 18, 142));
     }
 
+    @Override
+    public void onCraftMatrixChanged(IInventory playerInventory)
+    {
+        // craftResult.setInventorySlotContents(0, CraftingManager.getInstance().findMatchingRecipe(craftMatrix, worldObj));
+        craftResult.setInventorySlotContents(0, ProcessAssembler.combine(craftMatrix.getStackInSlot(0), craftMatrix.getStackInSlot(1)));
+    }
+
+    @Override
+    public void onContainerClosed(EntityPlayer player)
+    {
+        super.onContainerClosed(player);
+        if (!this.worldObj.isRemote)
+        {
+            for (int i = 0; i < 2; ++i)
+            {
+                ItemStack stack = craftMatrix.getStackInSlotOnClosing(i);
+                if (stack != null)
+                {
+                    player.dropPlayerItemWithRandomChoice(stack, false);
+                }
+            }
+        }
+    }
+
+    @Override
+    public boolean canInteractWith(EntityPlayer p_75145_1_)
+    {
+        return true;
+        // return worldObj.getBlock(posX, posY, posZ) != Blocks.crafting_table ? false : p_75145_1_.getDistanceSq((double) posX + 0.5D, (double) posY + 0.5D,
+        // (double) posZ + 0.5D) <= 64.0D;
+    }
+
+    /**
+     * Called when a player shift-clicks on a slot. You must override this or you will crash when someone does that.
+     */
     @Override
     public ItemStack transferStackInSlot(EntityPlayer player, int slot)
     {
@@ -46,191 +82,74 @@ public class SequenceProgrammerContainer extends Container implements IInventory
         if (slotObject == null || !slotObject.getHasStack())
             return null;
 
-        // merges the item into player inventory since its in the tileEntity
-        ItemStack stackInSlot = slotObject.getStack();
-        if (slot < inventoryItemStacks.size())
-        {
-            if (!this.mergeItemStack(stackInSlot, inventoryItemStacks.size(), player.inventory.mainInventory.length + inventoryItemStacks.size(), true))
-                return null;
-        }
-        // places it into the tileEntity is possible since its in the player inventory
-        else
-        {
-            if (!this.mergeItemStack(stackInSlot, 0, inventoryItemStacks.size(), false))
-                return null;
-        }
-
-        if (stackInSlot.stackSize == 0)
-            slotObject.putStack(null);
-        else
-            slotObject.onSlotChanged();
-
-        ItemStack stack = stackInSlot.copy();
-        if (stackInSlot.stackSize == stack.stackSize)
-            return null;
-        slotObject.onPickupFromSlot(player, stackInSlot);
-
-        return stack;
-    }
-
-    /* ------------------------------------------------------------ */
-
-    @Override
-    public boolean canInteractWith(EntityPlayer player)
-    {
-        return true;
-    }
-
-    @Override
-    public int getSizeInventory()
-    {
-        return 3;
-    }
-
-    @Override
-    public ItemStack getStackInSlot(int slot)
-    {
-        Object o = inventoryItemStacks.get(slot);
-        if (o instanceof ItemStack)
-            return (ItemStack) o;
-        else
-            return null;
-    }
-
-    @Override
-    @SuppressWarnings("unchecked")
-    public ItemStack decrStackSize(int slot, int amount)
-    {
-        if (inventoryItemStacks.get(slot) == null)
-            return null;
-
-        ItemStack slotItem = null;
-        if (inventoryItemStacks.get(slot) instanceof ItemStack)
-            slotItem = (ItemStack) inventoryItemStacks.get(slot);
-
-        ItemStack stack;
-        if (slotItem.stackSize <= amount)
-        {
-            stack = slotItem;
-            inventoryItemStacks.set(slot, null);
-        }
-        else
-        {
-            stack = slotItem.splitStack(amount);
-            if (slotItem.stackSize == 0)
-                inventoryItemStacks.set(slot, null);
-        }
-        return stack;
-    }
-
-    @Override
-    @SuppressWarnings("unchecked")
-    public ItemStack getStackInSlotOnClosing(int slot)
-    {
-        if (inventoryItemStacks.get(slot) == null)
-            return null;
+        // // merges the item into player inventory since its in the tileEntity
+        // ItemStack stackInSlot = slotObject.getStack();
+        // if (slot < inventoryItemStacks.size())
+        // {
+        // if (!this.mergeItemStack(stackInSlot, inventoryItemStacks.size(), player.inventory.mainInventory.length + inventoryItemStacks.size(), true))
+        // return null;
+        // }
+        // // places it into the tileEntity is possible since its in the player inventory
+        // else
+        // {
+        // if (!this.mergeItemStack(stackInSlot, 0, inventoryItemStacks.size(), false))
+        // return null;
+        // }
+        //
+        // if (stackInSlot.stackSize == 0)
+        // slotObject.putStack(null);
+        // else
+        // slotObject.onSlotChanged();
+        //
+        // ItemStack stack = stackInSlot.copy();
+        // if (stackInSlot.stackSize == stack.stackSize)
+        // return null;
+        // slotObject.onPickupFromSlot(player, stackInSlot);
+        // return stack;
 
         ItemStack stack = null;
-        if (inventoryItemStacks.get(slot) instanceof ItemStack)
-            stack = (ItemStack) inventoryItemStacks.get(slot);
-        inventoryItemStacks.set(slot, null);
+        if (slotObject != null && slotObject.getHasStack())
+        {
+            ItemStack itemstack1 = slotObject.getStack();
+            stack = itemstack1.copy();
+
+            if (slot == 0)
+            {
+                if (!this.mergeItemStack(itemstack1, 10, 46, true))
+                    return null;
+                slotObject.onSlotChange(itemstack1, stack);
+            }
+            else if (slot >= 10 && slot < 37)
+            {
+                if (!this.mergeItemStack(itemstack1, 37, 46, false))
+                    return null;
+            }
+            else if (slot >= 37 && slot < 46)
+            {
+                if (!this.mergeItemStack(itemstack1, 10, 37, false))
+                    return null;
+            }
+            else if (!this.mergeItemStack(itemstack1, 10, 46, false))
+            {
+                return null;
+            }
+
+            if (itemstack1.stackSize == 0)
+                slotObject.putStack((ItemStack) null);
+            else
+                slotObject.onSlotChanged();
+
+            if (itemstack1.stackSize == stack.stackSize)
+                return null;
+            slotObject.onPickupFromSlot(player, itemstack1);
+        }
         return stack;
     }
 
     @Override
-    @SuppressWarnings("unchecked")
-    public void setInventorySlotContents(int slot, ItemStack stack)
+    public boolean func_94530_a(ItemStack stack, Slot slot)
     {
-        inventoryItemStacks.set(slot, stack);
-
-        if (stack != null && stack.stackSize > getInventoryStackLimit())
-            stack.stackSize = getInventoryStackLimit();
-    }
-
-    @Override
-    public String getInventoryName()
-    {
-        return null;
-    }
-
-    @Override
-    public boolean hasCustomInventoryName()
-    {
-        return false;
-    }
-
-    @Override
-    public int getInventoryStackLimit()
-    {
-        return 64;
-    }
-
-    @Override
-    public boolean isUseableByPlayer(EntityPlayer player)
-    {
-        return true;
-    }
-
-    @Override
-    public void openInventory()
-    {
-    }
-
-    @Override
-    public void closeInventory()
-    {
-        if (!player.worldObj.isRemote)
-        {
-            Random rand = new Random();
-            for (int slotIndex = 0; slotIndex < getSizeInventory(); ++slotIndex)
-            {
-                ItemStack itemstack = getStackInSlot(slotIndex);
-                if (itemstack != null)
-                {
-                    float randX = rand.nextFloat() * 0.8F + 0.1F;
-                    float randY = rand.nextFloat() * 0.8F + 0.1F;
-                    float randZ = rand.nextFloat() * 0.8F + 0.1F;
-
-                    while (itemstack.stackSize > 0)
-                    {
-                        int amount = rand.nextInt(21) + 10;
-                        if (amount > itemstack.stackSize)
-                            amount = itemstack.stackSize;
-                        itemstack.stackSize -= amount;
-                        EntityItem entityitem = new EntityItem(player.worldObj, player.posX + randX, player.posY + randY, player.posZ + randZ, new ItemStack(
-                                itemstack.getItem(), amount, itemstack.getItemDamage()));
-
-                        if (itemstack.hasTagCompound())
-                            entityitem.getEntityItem().setTagCompound((NBTTagCompound) itemstack.getTagCompound().copy());
-
-                        float velocity = 0.05F;
-                        entityitem.motionX = (float) rand.nextGaussian() * velocity;
-                        entityitem.motionY = (float) rand.nextGaussian() * velocity + 0.2F;
-                        entityitem.motionZ = (float) rand.nextGaussian() * velocity;
-                        player.worldObj.spawnEntityInWorld(entityitem);
-                    }
-                }
-            }
-        }
-    }
-
-    @Override
-    public boolean isItemValidForSlot(int slot, ItemStack stack)
-    {
-        // TODO: Better isItemValidForSlot check
-        return stack.getItem() instanceof ItemMagicProcess;
-    }
-
-    @Override
-    public void markDirty()
-    {
-    }
-
-    @Override
-    public void onContainerClosed(EntityPlayer player)
-    {
-        super.onContainerClosed(player);
-        closeInventory();
+        return slot.inventory != craftResult && super.func_94530_a(stack, slot);
     }
 
 }

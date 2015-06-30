@@ -14,8 +14,7 @@ import net.minecraft.util.IIcon;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import de.yotsuba.mahouka.MahoukaMod;
-import de.yotsuba.mahouka.magic.process.MagicProcess;
-import de.yotsuba.mahouka.magic.process.MagicProcessManager;
+import de.yotsuba.mahouka.magic.ActivationSequence;
 
 public class ItemMagicSequence extends Item
 {
@@ -29,23 +28,32 @@ public class ItemMagicSequence extends Item
         icons.put(textureName, null);
     }
 
+    /* ------------------------------------------------------------ */
+
     public ItemMagicSequence()
     {
         setFull3D();
+        setUnlocalizedName("magic_sequence");
     }
+
+    /* ------------------------------------------------------------ */
 
     public NBTTagCompound getStackData(ItemStack stack)
     {
         return stack.getTagCompound();
     }
 
-    public MagicProcess getProcess(ItemStack stack)
+    public ActivationSequence getSequence(ItemStack stack)
     {
         NBTTagCompound tag = getStackData(stack);
         if (tag == null)
             return null;
-        return MagicProcessManager.readFromNBT(getStackData(stack));
+        ActivationSequence sequence = new ActivationSequence();
+        sequence.readFromNBT(getStackData(stack));
+        return sequence;
     }
+
+    /* ------------------------------------------------------------ */
 
     @Override
     public void registerIcons(IIconRegister iconReg)
@@ -58,19 +66,31 @@ public class ItemMagicSequence extends Item
     @SideOnly(Side.CLIENT)
     public IIcon getIconIndex(ItemStack stack)
     {
-        MagicProcess process = getProcess(stack);
-        if (process == null)
-            return icons.get(DEFAULT_ICON);
-        return icons.get(process.getTextureName());
+        IIcon icon = icons.get(getTextureName(stack));
+        if (icon == null)
+            icon = icons.get(DEFAULT_ICON);
+        return icon;
     }
+
+    public String getTextureName(ItemStack stack)
+    {
+        ActivationSequence sequence = getSequence(stack);
+        if (sequence == null)
+            return DEFAULT_ICON;
+        return sequence.getTextureName();
+    }
+
+    /* ------------------------------------------------------------ */
 
     @Override
     @SideOnly(Side.CLIENT)
-    @SuppressWarnings("rawtypes")
-    public void addInformation(ItemStack stack, EntityPlayer player, List info, boolean shiftPressed)
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+    public void addInformation(ItemStack stack, EntityPlayer player, List info, boolean bool1)
     {
-        // if (process != null)
-        // info.add("Magic Process: " + process.getClass().getName());
+        ActivationSequence sequence = getSequence(stack);
+        if (sequence == null)
+            return;
+        sequence.addInformation(info);
     }
 
 }

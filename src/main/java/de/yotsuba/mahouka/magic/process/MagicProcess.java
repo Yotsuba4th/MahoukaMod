@@ -1,5 +1,7 @@
 package de.yotsuba.mahouka.magic.process;
 
+import java.util.List;
+
 import net.minecraft.nbt.NBTTagCompound;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -99,5 +101,10 @@ public abstract class MagicProcess implements Cloneable
     {
         return ItemMagicSequence.DEFAULT_ICON;
     }
-    
+
+    public void addInformation(List<String> info, boolean isSequence)
+    {
+        info.add(getClass().getSimpleName());
+    }
+
 }

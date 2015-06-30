@@ -94,13 +94,6 @@ public class MahoukaMod
         proxy.init(event);
     }
 
-    @EventHandler
-    public void serverStoppedEvent(FMLServerStoppedEvent event)
-    {
-        CadManager.serverStoppedEvent(event);
-        castingManagerServer.serverStoppedEvent(event);
-    }
-
     private void loadConfig()
     {
         Configuration config = new Configuration(new File("config/" + MODID + ".cfg"), true);
@@ -141,6 +134,17 @@ public class MahoukaMod
         netChannel.registerMessage(S4CancelCast.class, S4CancelCast.class, 4, Side.SERVER);
         netChannel.registerMessage(C5CastUpdate.class, C5CastUpdate.class, 5, Side.CLIENT);
     }
+
+    /* ------------------------------------------------------------ */
+
+    @EventHandler
+    public void serverStoppedEvent(FMLServerStoppedEvent event)
+    {
+        CadManager.serverStoppedEvent(event);
+        castingManagerServer.serverStoppedEvent(event);
+    }
+
+    /* ------------------------------------------------------------ */
 
     public static CadManager getCadManager()
     {

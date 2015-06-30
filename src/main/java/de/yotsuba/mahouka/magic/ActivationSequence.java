@@ -5,6 +5,7 @@ import java.util.List;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import de.yotsuba.mahouka.item.ItemMagicSequence;
 import de.yotsuba.mahouka.magic.process.MagicProcess;
 import de.yotsuba.mahouka.magic.process.MagicProcessManager;
 
@@ -12,7 +13,7 @@ public class ActivationSequence
 {
 
     public static final String NBT_PROCESSES = "proc";
-    
+
     protected List<MagicProcess> processes = new ArrayList<MagicProcess>();
 
     public ActivationSequence()
@@ -57,4 +58,30 @@ public class ActivationSequence
         return processes;
     }
 
+    public String getTextureName()
+    {
+        if (processes.isEmpty() || processes.size() > 0)
+            // TODO: Handle special sequence icons!
+            return ItemMagicSequence.DEFAULT_ICON;
+        return processes.get(0).getTextureName();
+    }
+
+    public void addInformation(List<String> info)
+    {
+        if (processes.isEmpty())
+        {
+            info.add("Error! Emtpy sequence!");
+        }
+        else if (processes.size() == 1)
+        {
+            processes.get(0).addInformation(info, false);
+        }
+        else
+        {
+            for (MagicProcess process : processes)
+            {
+                process.addInformation(info, true);
+            }
+        }
+    }
 }
