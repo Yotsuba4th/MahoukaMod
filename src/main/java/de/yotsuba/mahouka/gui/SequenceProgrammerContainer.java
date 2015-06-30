@@ -26,6 +26,8 @@ public class SequenceProgrammerContainer extends Container
         addSlotToContainer(new Slot(craftMatrix, 0, 49, 18));
         addSlotToContainer(new Slot(craftMatrix, 1, 49, 54));
         addSlotToContainer(new SlotCrafting(playerInventory.player, craftMatrix, craftResult, 0, 107, 36));
+        // addSlotToContainer(new Slot(craftResult, 0, 107, 36));
+        
         addPlayerInventoryToContainer(playerInventory);
     }
 
@@ -41,7 +43,24 @@ public class SequenceProgrammerContainer extends Container
     @Override
     public void onCraftMatrixChanged(IInventory playerInventory)
     {
-        // craftResult.setInventorySlotContents(0, CraftingManager.getInstance().findMatchingRecipe(craftMatrix, worldObj));
+        // ItemStack input1 = craftMatrix.getStackInSlot(0);
+        // ItemStack input2 = craftMatrix.getStackInSlot(1);
+        // ItemStack output = craftResult.getStackInSlot(0);
+        // if (input1 != null && input2 != null && output == null)
+        // {
+        // craftResult.setInventorySlotContents(0, ProcessAssembler.combine(input1, input2));
+        // }
+        // if ((input1 != null || input2 != null) && output != null)
+        // {
+        // craftResult.setInventorySlotContents(0, null);
+        // }
+        // else if (input1 == null && input2 == null && output != null)
+        // {
+        // ItemStack output1 = output.copy();
+        // ItemStack output2 = ProcessAssembler.split(output1);
+        // craftMatrix.setInventorySlotContents(0, output1);
+        // craftMatrix.setInventorySlotContents(1, output2);
+        // }
         craftResult.setInventorySlotContents(0, ProcessAssembler.combine(craftMatrix.getStackInSlot(0), craftMatrix.getStackInSlot(1)));
     }
 
@@ -49,7 +68,7 @@ public class SequenceProgrammerContainer extends Container
     public void onContainerClosed(EntityPlayer player)
     {
         super.onContainerClosed(player);
-        if (!this.worldObj.isRemote)
+        if (!worldObj.isRemote)
         {
             for (int i = 0; i < 2; ++i)
             {
@@ -74,74 +93,45 @@ public class SequenceProgrammerContainer extends Container
      * Called when a player shift-clicks on a slot. You must override this or you will crash when someone does that.
      */
     @Override
-    public ItemStack transferStackInSlot(EntityPlayer player, int slot)
+    public ItemStack transferStackInSlot(EntityPlayer player, int slotIndex)
     {
-        Slot slotObject = (Slot) inventorySlots.get(slot);
+        Slot slot = (Slot) inventorySlots.get(slotIndex);
 
         // null checks and checks if the item can be stacked (maxStackSize > 1)
-        if (slotObject == null || !slotObject.getHasStack())
+        if (slot == null || !slot.getHasStack())
             return null;
 
-        // // merges the item into player inventory since its in the tileEntity
-        // ItemStack stackInSlot = slotObject.getStack();
-        // if (slot < inventoryItemStacks.size())
-        // {
-        // if (!this.mergeItemStack(stackInSlot, inventoryItemStacks.size(), player.inventory.mainInventory.length + inventoryItemStacks.size(), true))
-        // return null;
-        // }
-        // // places it into the tileEntity is possible since its in the player inventory
-        // else
-        // {
-        // if (!this.mergeItemStack(stackInSlot, 0, inventoryItemStacks.size(), false))
-        // return null;
-        // }
-        //
-        // if (stackInSlot.stackSize == 0)
-        // slotObject.putStack(null);
-        // else
-        // slotObject.onSlotChanged();
-        //
-        // ItemStack stack = stackInSlot.copy();
-        // if (stackInSlot.stackSize == stack.stackSize)
-        // return null;
-        // slotObject.onPickupFromSlot(player, stackInSlot);
-        // return stack;
-
         ItemStack stack = null;
-        if (slotObject != null && slotObject.getHasStack())
+        if (slot != null && slot.getHasStack())
         {
-            ItemStack itemstack1 = slotObject.getStack();
+            ItemStack itemstack1 = slot.getStack();
             stack = itemstack1.copy();
 
-            if (slot == 0)
+            if (slotIndex < 2)
             {
-                if (!this.mergeItemStack(itemstack1, 10, 46, true))
-                    return null;
-                slotObject.onSlotChange(itemstack1, stack);
-            }
-            else if (slot >= 10 && slot < 37)
-            {
-                if (!this.mergeItemStack(itemstack1, 37, 46, false))
+                if (!mergeItemStack(itemstack1, 3, 39, false))
                     return null;
             }
-            else if (slot >= 37 && slot < 46)
+            else if (slotIndex == 2)
             {
-                if (!this.mergeItemStack(itemstack1, 10, 37, false))
+                if (!mergeItemStack(itemstack1, 3, 39, true))
                     return null;
+                slot.onSlotChange(itemstack1, stack);
             }
-            else if (!this.mergeItemStack(itemstack1, 10, 46, false))
+            else if (slotIndex >= 3 && slotIndex < 39)
             {
-                return null;
+                if (!mergeItemStack(itemstack1, 0, 2, false))
+                    return null;
             }
 
             if (itemstack1.stackSize == 0)
-                slotObject.putStack((ItemStack) null);
+                slot.putStack((ItemStack) null);
             else
-                slotObject.onSlotChanged();
+                slot.onSlotChanged();
 
             if (itemstack1.stackSize == stack.stackSize)
                 return null;
-            slotObject.onPickupFromSlot(player, itemstack1);
+            slot.onPickupFromSlot(player, itemstack1);
         }
         return stack;
     }

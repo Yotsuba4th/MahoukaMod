@@ -1,10 +1,8 @@
 package de.yotsuba.mahouka.magic;
 
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import cpw.mods.fml.common.registry.GameData;
 import de.yotsuba.mahouka.MahoukaMod;
 import de.yotsuba.mahouka.item.ItemMagicProcess;
 import de.yotsuba.mahouka.item.ItemMagicSequence;
@@ -60,8 +58,7 @@ public class ProcessAssembler
             // TODO: Convert input stack to process if tagCount == 1 as well
 
             MagicProcess process = MagicProcess.createFromNBT(list2.getCompoundTagAt(0));
-            Item item = GameData.getItemRegistry().getObject(MahoukaMod.MODID + ":" + process.getItemName());
-            ItemStack output = new ItemStack(item);
+            ItemStack output = new ItemStack(process.getItem());
             output.setTagCompound(tag2);
             return output;
         }
@@ -96,8 +93,7 @@ public class ProcessAssembler
             if (list.tagCount() == 1)
             {
                 MagicProcess process = MagicProcess.createFromNBT(list.getCompoundTagAt(0));
-                Item item = GameData.getItemRegistry().getObject(MahoukaMod.MODID + ":" + process.getItemName());
-                ItemStack newStack = new ItemStack(item);
+                ItemStack newStack = new ItemStack(process.getItem());
                 newStack.setTagCompound(tag);
                 stack = newStack;
             }

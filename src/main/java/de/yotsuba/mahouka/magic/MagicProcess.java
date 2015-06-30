@@ -4,9 +4,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import de.yotsuba.mahouka.item.ItemMagicProcess;
 import de.yotsuba.mahouka.magic.cast.CastingProcess;
 import de.yotsuba.mahouka.magic.process.ProcessExplosion;
 import de.yotsuba.mahouka.magic.process.ProcessFireShockwave;
@@ -24,6 +26,8 @@ public abstract class MagicProcess implements Cloneable
     public static Map<String, Class<? extends MagicProcess>> processByName = new HashMap<String, Class<? extends MagicProcess>>();
 
     public static Map<Class<? extends MagicProcess>, Short> idByProcess = new HashMap<Class<? extends MagicProcess>, Short>();
+
+    public static Map<Class<? extends MagicProcess>, ItemMagicProcess> itemByProcess = new HashMap<Class<? extends MagicProcess>, ItemMagicProcess>();
 
     static
     {
@@ -43,6 +47,11 @@ public abstract class MagicProcess implements Cloneable
         processById.put(id, clazz);
         idByProcess.put(clazz, id);
         processByName.put(instantiate(clazz).getName(), clazz);
+    }
+
+    public static void registerProcessItem(Class<? extends MagicProcess> clazz, ItemMagicProcess item)
+    {
+        itemByProcess.put(clazz, item);
     }
 
     public static MagicProcess createByName(String name)
@@ -133,6 +142,11 @@ public abstract class MagicProcess implements Cloneable
     public abstract int getCastDuration(Target target);
 
     public abstract String getName();
+
+    public Item getItem()
+    {
+        return itemByProcess.get(getClass());
+    }
 
     public abstract String getTextureName();
 
