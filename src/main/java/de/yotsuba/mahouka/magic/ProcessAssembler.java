@@ -1,8 +1,10 @@
 package de.yotsuba.mahouka.magic;
 
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import cpw.mods.fml.common.registry.GameData;
 import de.yotsuba.mahouka.MahoukaMod;
 import de.yotsuba.mahouka.item.ItemMagicProcess;
 import de.yotsuba.mahouka.item.ItemMagicSequence;
@@ -54,8 +56,12 @@ public class ProcessAssembler
             NBTTagList list2 = new NBTTagList();
             tag2.setTag(ActivationSequence.NBT_PROCESSES, list2);
             list2.appendTag(list1.removeTag(list1.tagCount() - 1));
+            
+            // TODO: Convert input stack to process if tagCount == 1 as well
 
-            ItemStack output = new ItemStack(MahoukaMod.item_magic_sequence);
+            MagicProcess process = MagicProcess.createFromNBT(list2.getCompoundTagAt(0));
+            Item item = GameData.getItemRegistry().getObject(MahoukaMod.MODID + ":" + process.getItemName());
+            ItemStack output = new ItemStack(item);
             output.setTagCompound(tag2);
             return output;
         }
@@ -70,7 +76,7 @@ public class ProcessAssembler
         }
     }
 
-    private static ItemStack convertToSequence(ItemStack stack) throws AssemblyException
+    public static ItemStack convertToSequence(ItemStack stack) throws AssemblyException
     {
         if (stack.getItem() instanceof ItemMagicProcess)
         {
@@ -81,20 +87,38 @@ public class ProcessAssembler
         return stack;
     }
 
-    public static NBTTagCompound getSequenceTag(ItemStack input1) throws AssemblyException
+    public static ItemStack convertToProcess(ItemStack stack) throws AssemblyException
     {
-        if (!(input1.getItem() instanceof ItemMagicSequence))
+        if (stack.getItem() instanceof ItemMagicSequence)
+        {
+            NBTTagCompound tag = getSequenceTag(stack);
+            NBTTagList list = tag.getTagList(ActivationSequence.NBT_PROCESSES, 10);
+            if (list.tagCount() == 1)
+            {
+                MagicProcess process = MagicProcess.createFromNBT(list.getCompoundTagAt(0));
+                Item item = GameData.getItemRegistry().getObject(MahoukaMod.MODID + ":" + process.getItemName());
+                ItemStack newStack = new ItemStack(item);
+                newStack.setTagCompound(tag);
+                stack = newStack;
+            }
+        }
+        return stack;
+    }
+
+    public static NBTTagCompound getSequenceTag(ItemStack stack) throws AssemblyException
+    {
+        if (!(stack.getItem() instanceof ItemMagicSequence))
             throw new AssemblyException();
-        ItemMagicSequence item = (ItemMagicSequence) input1.getItem();
-        NBTTagCompound tag = item.getStackData(input1);
+        ItemMagicSequence item = (ItemMagicSequence) stack.getItem();
+        NBTTagCompound tag = item.getStackData(stack);
         if (tag == null)
             throw new RuntimeException("Found magic sequence with empty data!");
         return tag;
     }
 
-    public static NBTTagList getProcessList(ItemStack input1) throws AssemblyException
+    public static NBTTagList getProcessList(ItemStack stack) throws AssemblyException
     {
-        NBTTagList list = getSequenceTag(input1).getTagList(ActivationSequence.NBT_PROCESSES, 10);
+        NBTTagList list = getSequenceTag(stack).getTagList(ActivationSequence.NBT_PROCESSES, 10);
         if (list == null)
             throw new RuntimeException("Found magic sequence with empty data!");
         return list;
