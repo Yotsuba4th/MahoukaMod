@@ -7,19 +7,19 @@ import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
 import de.yotsuba.mahouka.MahoukaMod;
-import de.yotsuba.mahouka.block.BlockProcessAssembler;
+import de.yotsuba.mahouka.block.BlockProcessProgrammer;
 
-public class ProcessAssemblerGui extends GuiContainer
+public class ProcessProgrammerGui extends GuiContainer
 {
 
     public static final int GUIID = 0;
 
     // TODO: Design gui texture
-    private static final ResourceLocation texture = new ResourceLocation(MahoukaMod.MODID + ":textures/gui/" + BlockProcessAssembler.ID + ".png");
+    private static final ResourceLocation texture = new ResourceLocation(MahoukaMod.MODID + ":textures/gui/" + BlockProcessProgrammer.ID + ".png");
 
-    public ProcessAssemblerGui(InventoryPlayer playerInventory)
+    public ProcessProgrammerGui(InventoryPlayer playerInventory)
     {
-        super(new ProcessAssemblerContainer(playerInventory));
+        super(new ProcessProgrammerContainer(playerInventory));
     }
 
     @Override
@@ -28,8 +28,8 @@ public class ProcessAssemblerGui extends GuiContainer
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         this.mc.renderEngine.bindTexture(texture);
 
-        String header = BlockProcessAssembler.BLOCK.getLocalizedName();
-        fontRendererObj.drawString(header, (xSize - fontRendererObj.getStringWidth(header)) / 2, 6, 4210752);
+        String header = BlockProcessProgrammer.BLOCK.getLocalizedName();
+        fontRendererObj.drawString(header, (xSize - fontRendererObj.getStringWidth(header)) / 2 + 10, 6, 4210752);
     }
 
     @Override

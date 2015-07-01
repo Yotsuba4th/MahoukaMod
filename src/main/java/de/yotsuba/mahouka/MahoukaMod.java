@@ -20,7 +20,7 @@ import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import de.yotsuba.mahouka.block.BlockCadProgrammer;
-import de.yotsuba.mahouka.block.BlockProcessAssembler;
+import de.yotsuba.mahouka.block.BlockProcessProgrammer;
 import de.yotsuba.mahouka.block.BlockSequenceProgrammer;
 import de.yotsuba.mahouka.core.MahoukaEventHandler;
 import de.yotsuba.mahouka.entity.projectile.EntityMagicFireball;
@@ -142,7 +142,7 @@ public class MahoukaMod
 
     private void registerBlocks()
     {
-        GameRegistry.registerBlock(BlockProcessAssembler.BLOCK, BlockProcessAssembler.ID);
+        GameRegistry.registerBlock(BlockProcessProgrammer.BLOCK, BlockProcessProgrammer.ID);
         GameRegistry.registerBlock(BlockSequenceProgrammer.BLOCK, BlockSequenceProgrammer.ID);
         GameRegistry.registerBlock(BlockCadProgrammer.BLOCK, BlockCadProgrammer.ID);
     }

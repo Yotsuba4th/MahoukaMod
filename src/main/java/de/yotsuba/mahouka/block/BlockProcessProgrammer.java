@@ -13,16 +13,16 @@ import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import de.yotsuba.mahouka.MahoukaMod;
-import de.yotsuba.mahouka.gui.ProcessAssemblerGui;
+import de.yotsuba.mahouka.gui.ProcessProgrammerGui;
 
-public class BlockProcessAssembler extends Block
+public class BlockProcessProgrammer extends Block
 {
 
-    public static final BlockProcessAssembler BLOCK = new BlockProcessAssembler(Material.iron);
+    public static final BlockProcessProgrammer BLOCK = new BlockProcessProgrammer(Material.iron);
 
-    public static final String ID = "process_assembler";
+    public static final String ID = "process_programmer";
 
-    protected BlockProcessAssembler(Material material)
+    protected BlockProcessProgrammer(Material material)
     {
         super(material);
         setHardness(2.0F);
@@ -54,7 +54,7 @@ public class BlockProcessAssembler extends Block
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entity, int l, float m, float n, float o)
     {
-        entity.openGui(MahoukaMod.instance, ProcessAssemblerGui.GUIID, world, x, y, z);
+        entity.openGui(MahoukaMod.instance, ProcessProgrammerGui.GUIID, world, x, y, z);
         return true;
     }
 

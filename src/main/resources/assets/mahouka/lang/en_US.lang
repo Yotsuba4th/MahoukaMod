@@ -2,7 +2,7 @@
 itemGroup.Mahouka=Mahouka Koukou
 
 # Blocks
-tile.process_assembler.name=Magic Process Programmer
+tile.process_programmer.name=Magic Process Programmer
 tile.sequence_programmer.name=Activation Sequence Programmer
 tile.cad_programmer.name=CAD Programmer
 

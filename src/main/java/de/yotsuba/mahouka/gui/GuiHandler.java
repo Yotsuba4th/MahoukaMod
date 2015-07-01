@@ -13,7 +13,7 @@ public class GuiHandler implements IGuiHandler
         switch (ID)
         {
         case 0:
-            return new ProcessAssemblerContainer(player.inventory);
+            return new ProcessProgrammerContainer(player.inventory);
         case 1:
             return new SequenceProgrammerContainer(player.inventory);
         case 2:
@@ -29,7 +29,7 @@ public class GuiHandler implements IGuiHandler
         switch (ID)
         {
         case 0:
-            return new ProcessAssemblerGui(player.inventory);
+            return new ProcessProgrammerGui(player.inventory);
         case 1:
             return new SequenceProgrammerGui(player.inventory);
         case 2:
