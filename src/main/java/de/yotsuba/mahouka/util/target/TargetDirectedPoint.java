@@ -28,6 +28,19 @@ public class TargetDirectedPoint extends TargetPoint
         return TargetType.POINT_DIR;
     }
 
+    @Override
+    public boolean matchesType(TargetType matchingType)
+    {
+        switch (matchingType)
+        {
+        case POINT:
+        case POINT_DIR:
+            return true;
+        default:
+            return false;
+        }
+    }
+
     public Vec3 getSourcePoint()
     {
         return sourcePoint;

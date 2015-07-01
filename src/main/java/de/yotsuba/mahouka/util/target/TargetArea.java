@@ -37,6 +37,12 @@ public class TargetArea extends Target
     }
 
     @Override
+    public boolean matchesType(TargetType matchingType)
+    {
+        return matchingType == TargetType.AREA || matchingType == TargetType.POINT;
+    }
+
+    @Override
     public TargetPoint toTargetPoint()
     {
         // TODO: Get random point!

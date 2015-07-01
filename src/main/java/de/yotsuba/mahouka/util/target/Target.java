@@ -10,6 +10,8 @@ public abstract class Target
 
     public abstract TargetPoint toTargetPoint();
 
+    public abstract boolean matchesType(TargetType matchingType);
+
     public void toBytes(ByteBuf buf)
     {
         buf.writeByte(getType().ordinal());
