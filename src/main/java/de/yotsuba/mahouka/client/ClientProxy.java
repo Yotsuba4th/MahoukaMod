@@ -79,7 +79,6 @@ public class ClientProxy extends CommonProxy
         if (target == null)
             return;
 
-        Vec3 point = target.getCurrentPoint();
 
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         GL11.glEnable(GL12.GL_RESCALE_NORMAL);
@@ -97,7 +96,8 @@ public class ClientProxy extends CommonProxy
             TargetEntity targetEntity = (TargetEntity) target;
             Entity entity = targetEntity.getEntity();
             AxisAlignedBB aabb = entity.boundingBox;
-
+            Vec3 point = target.getCurrentPoint();
+            
             GL11.glTranslated(point.xCoord, point.yCoord, point.zCoord);
             if (aabb != null)
                 GL11.glScaled((aabb.maxX - aabb.minX) * 1.25 + 0.25, (aabb.maxY - aabb.minY) * 1.25, (aabb.maxZ - aabb.minZ) * 1.25 + 0.25);
@@ -109,7 +109,11 @@ public class ClientProxy extends CommonProxy
         }
         else if (target instanceof TargetArea)
         {
-            // TODO
+            TargetArea targetArea = (TargetArea) target;
+            Vec3 center = targetArea.getCenter();
+            Vec3 size = targetArea.getSize();
+            GL11.glTranslated(center.xCoord, center.yCoord, center.zCoord);
+            GL11.glScaled(size.xCoord, size.yCoord, size.zCoord);
         }
         else if (target instanceof TargetBlock)
         {

@@ -77,8 +77,14 @@ public class ActivationSequence
         if (processes.isEmpty())
         {
             info.add("Error! Emtpy sequence!");
+            return;
         }
-        else if (processes.size() == 1)
+
+        info.add("Psion cost  : " + getPsionCost());
+        info.add("Channel time: " + getChannelingDuration());
+
+        int oldLength1 = info.size();
+        if (processes.size() == 1)
         {
             processes.get(0).addInformation(info, false);
         }
@@ -87,19 +93,27 @@ public class ActivationSequence
             for (MagicProcess process : processes)
                 process.addInformation(info, true);
         }
-    }
-
-    public void addParallelInformation(List<String> info)
-    {
-        info.add("Seq:");
-        int oldLength = info.size();
-        for (MagicProcess process : processes)
-            process.addInformation(info, true);
-        for (int i = oldLength; i < info.size(); i++)
+        for (int i = oldLength1; i < info.size(); i++)
             info.set(i, "  " + info.get(i));
     }
 
     /* ------------------------------------------------------------ */
+
+    public int getPsionCost()
+    {
+        int psionCost = 0;
+        for (MagicProcess process : processes)
+            psionCost += process.getPsionCost();
+        return psionCost;
+    }
+
+    public int getChannelingDuration()
+    {
+        int t = 0;
+        for (MagicProcess process : processes)
+            t += process.getChannelingDuration();
+        return t;
+    }
 
     public List<MagicProcess> getProcesses()
     {

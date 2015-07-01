@@ -7,12 +7,10 @@ import java.util.UUID;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.StatCollector;
 import de.yotsuba.mahouka.MahoukaMod;
 import de.yotsuba.mahouka.magic.ActivationSequence;
 import de.yotsuba.mahouka.magic.MagicProcess;
 import de.yotsuba.mahouka.magic.cad.CadBase;
-import de.yotsuba.mahouka.magic.cast.CastingManager;
 import de.yotsuba.mahouka.magic.cast.CastingProcess;
 import de.yotsuba.mahouka.util.target.Target;
 import de.yotsuba.mahouka.util.target.TargetType;
@@ -72,10 +70,17 @@ public class ProcessParallel extends MagicProcess
     @Override
     public void addInformation(List<String> info, boolean isSequence)
     {
-        if (isSequence)
-            info.add(StatCollector.translateToLocal("item." + getItemName() + ".name"));
+        super.addInformation(info, isSequence);
         for (ActivationSequence seq : sequences)
-            seq.addParallelInformation(info);
+        {
+            int oldLength2 = info.size() + 1;
+            
+            for (MagicProcess process : seq.getProcesses())
+                process.addInformation(info, true);
+            
+            for (int i = oldLength2; i < info.size(); i++)
+                info.set(i, "   " + info.get(i));
+        }
     }
 
     @Override
@@ -83,7 +88,7 @@ public class ProcessParallel extends MagicProcess
     {
         int psionCost = 0;
         for (ActivationSequence sequence : sequences)
-            psionCost += CastingManager.getPsionCost(sequence);
+            psionCost += sequence.getPsionCost();
         return psionCost;
     }
 
@@ -92,7 +97,7 @@ public class ProcessParallel extends MagicProcess
     {
         int t = 0;
         for (ActivationSequence sequence : sequences)
-            t += CastingManager.getChannelingDuration(sequence);
+            t += sequence.getChannelingDuration();
         return t * 4 / (3 + sequences.size());
     }
 

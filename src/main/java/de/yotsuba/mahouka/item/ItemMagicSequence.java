@@ -67,7 +67,7 @@ public class ItemMagicSequence extends Item
         }
         return super.getIconIndex(stack);
     }
-    
+
     @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(ItemStack stack, int pass)
@@ -95,5 +95,19 @@ public class ItemMagicSequence extends Item
             return;
         sequence.addInformation(info);
     }
+
+    /* ------------------------------------------------------------ */
+
+    // @Override
+    // public String getItemStackDisplayName(ItemStack stack)
+    // {
+    // String text = super.getItemStackDisplayName(stack);
+    // ActivationSequence sequence = getSequence(stack);
+    // if (sequence != null)
+    // {
+    // text += " (Psi " + sequence.getPsionCost() + ")";
+    // }
+    // return text;
+    // }
 
 }

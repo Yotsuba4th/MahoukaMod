@@ -13,8 +13,10 @@ import de.yotsuba.mahouka.MahoukaMod;
 import de.yotsuba.mahouka.item.ItemMagicProcess;
 import de.yotsuba.mahouka.item.ItemMagicSequence;
 import de.yotsuba.mahouka.magic.cast.CastingProcess;
+import de.yotsuba.mahouka.magic.process.ProcessAccelerate;
 import de.yotsuba.mahouka.magic.process.ProcessExplosion;
 import de.yotsuba.mahouka.magic.process.ProcessFireShockwave;
+import de.yotsuba.mahouka.magic.process.ProcessFireball;
 import de.yotsuba.mahouka.magic.process.ProcessFirebomb;
 import de.yotsuba.mahouka.magic.process.ProcessMovingOffset;
 import de.yotsuba.mahouka.magic.process.ProcessOffset;
@@ -49,6 +51,8 @@ public abstract class MagicProcess implements Cloneable
         registerProcess(ProcessOffset.class, (short) 5);
         registerProcess(ProcessMovingOffset.class, (short) 6);
         registerProcess(ProcessParallel.class, (short) 7);
+        registerProcess(ProcessFireball.class, (short) 8);
+        registerProcess(ProcessAccelerate.class, (short) 9);
     }
 
     /* ------------------------------------------------------------ */
@@ -158,6 +162,16 @@ public abstract class MagicProcess implements Cloneable
 
     public abstract String getName();
 
+    public String getUnlocalizedName()
+    {
+        return "mahouka.process." + getName();
+    }
+
+    public String getLocalizedName()
+    {
+        return StatCollector.translateToLocal(getUnlocalizedName());
+    }
+
     /* ------------------------------------------------------------ */
     /* Item functions */
 
@@ -181,7 +195,7 @@ public abstract class MagicProcess implements Cloneable
     public void addInformation(List<String> info, boolean isSequence)
     {
         if (isSequence)
-            info.add(StatCollector.translateToLocal("item." + getItemName() + ".name"));
+            info.add(getLocalizedName());
     }
 
     /* ------------------------------------------------------------ */

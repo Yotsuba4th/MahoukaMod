@@ -26,10 +26,7 @@ public class ItemMagicProcess extends ItemMagicSequence
         setUnlocalizedName(process.getItemName());
     }
 
-    public MagicProcess getItemProcess()
-    {
-        return process;
-    }
+    /* ------------------------------------------------------------ */
 
     @Override
     public void onCreated(ItemStack stack, World world, EntityPlayer player)
@@ -54,6 +51,13 @@ public class ItemMagicProcess extends ItemMagicSequence
         return tag;
     }
 
+    public MagicProcess getItemProcess()
+    {
+        return process;
+    }
+
+    /* ------------------------------------------------------------ */
+
     @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIconIndex(ItemStack stack)
@@ -68,6 +72,27 @@ public class ItemMagicProcess extends ItemMagicSequence
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister iconRegistry)
     {
+    }
+
+    /* ------------------------------------------------------------ */
+
+    @Override
+    public String getUnlocalizedName()
+    {
+        return "mahouka.process." + process.getName();
+    }
+
+    @Override
+    public String getUnlocalizedName(ItemStack stack)
+    {
+        return getUnlocalizedName();
+    }
+
+    @Override
+    public String getItemStackDisplayName(ItemStack stack)
+    {
+        return getUnlocalizedNameInefficiently(stack);
+        // return getUnlocalizedNameInefficiently(stack) + " (Psi " + process.getPsionCost() + ")";
     }
 
 }

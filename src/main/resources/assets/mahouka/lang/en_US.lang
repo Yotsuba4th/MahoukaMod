@@ -9,10 +9,17 @@ tile.cad_programmer.name=CAD Programmer
 # Items
 item.cad.name=CAD
 item.magic_sequence.name=Magic Sequence
-item.process_particle.name=MP Heart Particles
-item.process_explosion.name=MP Explosion
-item.process_firebomb.name=MP Firebomb
-item.process_shockwave.name=MP Shockwave
-item.process_fire_shockwave.name=MP Fire Shockwave
+
+# Magic processes
+mahouka.process.parallel=Parallel Sequence
+mahouka.process.particle=Heart Particles
+mahouka.process.explosion=Explosion
+mahouka.process.firebomb=Firebomb
+mahouka.process.shockwave=Shockwave
+mahouka.process.fire_shockwave=Fire Shockwave
+mahouka.process.offset=Offset
+mahouka.process.offset_moving=Offset (following)
+mahouka.process.fireball=Fireball
+mahouka.process.accelerate=Accelerate
 
 # Gui related strings
