@@ -1,5 +1,7 @@
 package de.yotsuba.mahouka.magic.process;
 
+import de.yotsuba.mahouka.MahoukaMod;
+
 
 public class ProcessFirebomb extends ProcessExplosionBase
 {
@@ -18,7 +20,7 @@ public class ProcessFirebomb extends ProcessExplosionBase
     @Override
     public String getTextureName()
     {
-        return DEFAULT_ICON;
+        return MahoukaMod.MODID + ":process_firebomb";
     }
 
 }

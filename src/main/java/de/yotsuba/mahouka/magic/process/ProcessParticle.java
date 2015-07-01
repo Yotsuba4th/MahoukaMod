@@ -6,6 +6,7 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import de.yotsuba.mahouka.MahoukaMod;
 import de.yotsuba.mahouka.magic.MagicProcess;
 import de.yotsuba.mahouka.magic.cast.CastingProcess;
 import de.yotsuba.mahouka.util.Utils;
@@ -14,6 +15,7 @@ import de.yotsuba.mahouka.util.target.TargetType;
 
 public class ProcessParticle extends MagicProcess
 {
+
     @Override
     public String getName()
     {
@@ -23,7 +25,7 @@ public class ProcessParticle extends MagicProcess
     @Override
     public String getTextureName()
     {
-        return DEFAULT_ICON;
+        return MahoukaMod.MODID + ":process_particles";
     }
 
     @Override

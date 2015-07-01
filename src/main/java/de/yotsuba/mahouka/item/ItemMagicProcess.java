@@ -61,7 +61,10 @@ public class ItemMagicProcess extends ItemMagicSequence
     @SideOnly(Side.CLIENT)
     public IIcon getIconIndex(ItemStack stack)
     {
-        return icons.get(process.getTextureName());
+        IIcon icon = icons.get(process.getTextureName());
+        if (icon == null)
+            icon = icons.get(getIconString());
+        return icon;
     }
 
     @Override

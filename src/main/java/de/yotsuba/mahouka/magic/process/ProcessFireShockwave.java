@@ -1,5 +1,6 @@
 package de.yotsuba.mahouka.magic.process;
 
+import de.yotsuba.mahouka.MahoukaMod;
 
 public class ProcessFireShockwave extends ProcessExplosionBase
 {
@@ -18,7 +19,7 @@ public class ProcessFireShockwave extends ProcessExplosionBase
     @Override
     public String getTextureName()
     {
-        return DEFAULT_ICON;
+        return MahoukaMod.MODID + ":process_fire_shockwave";
     }
-    
+
 }
