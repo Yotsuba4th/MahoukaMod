@@ -20,7 +20,8 @@ public class SlotCad extends Slot
     public void onSlotChanged()
     {
         super.onSlotChanged();
-        container.cadToSequences();
+        if (getStack() != null)
+            container.cadToSequences();
     }
 
     @Override

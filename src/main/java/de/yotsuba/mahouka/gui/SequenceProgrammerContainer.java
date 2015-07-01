@@ -140,8 +140,6 @@ public class SequenceProgrammerContainer extends Container implements IInventory
     public ItemStack transferStackInSlot(EntityPlayer player, int slotIndex)
     {
         Slot slot = (Slot) inventorySlots.get(slotIndex);
-
-        // null checks and checks if the item can be stacked (maxStackSize > 1)
         if (slot == null || !slot.getHasStack())
             return null;
 

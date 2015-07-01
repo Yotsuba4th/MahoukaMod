@@ -6,6 +6,7 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import de.yotsuba.mahouka.item.ItemCad;
 import de.yotsuba.mahouka.magic.ActivationSequence;
 import de.yotsuba.mahouka.magic.cad.CadBase;
 import de.yotsuba.mahouka.magic.cad.CadManager;
@@ -62,7 +63,7 @@ public class CadProgrammerContainer extends Container
 
     protected void sequencesToCad(ItemStack cadStack)
     {
-        if (cadStack == null)
+        if (cadStack == null || sequences == null)
             return;
         CadBase cad = CadManager.getCad(cadStack);
 
@@ -95,40 +96,45 @@ public class CadProgrammerContainer extends Container
     }
 
     @Override
-    public ItemStack transferStackInSlot(EntityPlayer player, int slot)
+    public ItemStack transferStackInSlot(EntityPlayer player, int index)
     {
-        return null;
-        // Slot slotObject = (Slot) inventorySlots.get(slot);
-        //
-        // // null checks and checks if the item can be stacked (maxStackSize > 1)
-        // if (slotObject == null || !slotObject.getHasStack())
-        // return null;
-        //
-        // // merges the item into player inventory since its in the tileEntity
-        // ItemStack stackInSlot = slotObject.getStack();
-        // if (slot < inventoryItemStacks.size())
-        // {
-        // if (!this.mergeItemStack(stackInSlot, inventoryItemStacks.size(), player.inventory.mainInventory.length + inventoryItemStacks.size(), true))
-        // return null;
-        // }
-        // // places it into the tileEntity is possible since its in the player inventory
-        // else
-        // {
-        // if (!this.mergeItemStack(stackInSlot, 0, inventoryItemStacks.size(), false))
-        // return null;
-        // }
-        //
-        // if (stackInSlot.stackSize == 0)
-        // slotObject.putStack(null);
-        // else
-        // slotObject.onSlotChanged();
-        //
-        // ItemStack stack = stackInSlot.copy();
-        // if (stackInSlot.stackSize == stack.stackSize)
-        // return null;
-        // slotObject.onPickupFromSlot(player, stackInSlot);
-        //
-        // return stack;
+        Slot slot = (Slot) inventorySlots.get(index);
+        if (slot == null || !slot.getHasStack())
+            return null;
+
+        ItemStack slotStack = slot.getStack();
+        ItemStack resultStack = slotStack.copy();
+        if (index < 1 + invSequences.getSizeInventory())
+        {
+            int start = 1 + invSequences.getSizeInventory();
+            int end = start + player.inventory.mainInventory.length;
+            if (!mergeItemStack(slotStack, start, end, true))
+                return null;
+        }
+        else
+        {
+            if (slotStack.getItem() instanceof ItemCad)
+            {
+                if (!mergeItemStack(slotStack, 0, 1, false))
+                    return null;
+            }
+            else if (true)
+            {
+                if (!mergeItemStack(slotStack, 1, 1 + invSequences.getSizeInventory(), false))
+                    return null;
+            }
+        }
+
+        if (slotStack.stackSize == 0)
+            slot.putStack((ItemStack) null);
+        else
+            slot.onSlotChanged();
+
+        if (slotStack.stackSize == resultStack.stackSize)
+            return null;
+        slot.onPickupFromSlot(player, slotStack);
+
+        return resultStack;
     }
 
     @Override
