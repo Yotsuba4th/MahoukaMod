@@ -58,16 +58,16 @@ public class ItemMagicProcess extends ItemMagicSequence
     @SideOnly(Side.CLIENT)
     public IIcon getIconIndex(ItemStack stack)
     {
-        // TODO: Need to deserialize the process if NBT can change the icon!
-        return process.getIcon();
+        IIcon icon = icons.get(process.getTextureName());
+        if (icon != null)
+            return icon;
+        return super.getIconIndex(stack);
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister iconRegistry)
     {
-        super.registerIcons(iconRegistry);
-        process.registerIcons(iconRegistry);
     }
 
 }

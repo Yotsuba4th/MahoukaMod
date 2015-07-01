@@ -1,6 +1,9 @@
 package de.yotsuba.mahouka.item;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,11 +19,21 @@ import de.yotsuba.mahouka.magic.ActivationSequence;
 public class ItemMagicSequence extends Item
 {
 
+    public static Map<String, IIcon> icons = new HashMap<String, IIcon>();
+
+    public static void registerIcon(String textureName)
+    {
+        icons.put(textureName, null);
+    }
+
+    /* ------------------------------------------------------------ */
+
     public ItemMagicSequence()
     {
         setFull3D();
         setUnlocalizedName("magic_sequence");
         setTextureName(MahoukaMod.MODID + ":magic_sequence");
+        ActivationSequence.registerIcons();
     }
 
     /* ------------------------------------------------------------ */
@@ -49,7 +62,7 @@ public class ItemMagicSequence extends Item
         ActivationSequence sequence = getSequence(stack);
         if (sequence != null)
         {
-            IIcon icon = sequence.getIcon();
+            IIcon icon = icons.get(sequence.getIcon());
             if (icon != null)
                 return icon;
         }
@@ -60,7 +73,8 @@ public class ItemMagicSequence extends Item
     public void registerIcons(IIconRegister iconRegistry)
     {
         super.registerIcons(iconRegistry);
-        ActivationSequence.registerIcons(iconRegistry);
+        for (Entry<String, IIcon> icon : icons.entrySet())
+            icon.setValue(iconRegistry.registerIcon(icon.getKey()));
     }
 
     /* ------------------------------------------------------------ */

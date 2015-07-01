@@ -4,21 +4,21 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import de.yotsuba.mahouka.MahoukaMod;
 import de.yotsuba.mahouka.item.ItemMagicProcess;
+import de.yotsuba.mahouka.item.ItemMagicSequence;
 import de.yotsuba.mahouka.magic.cast.CastingProcess;
 import de.yotsuba.mahouka.magic.process.ProcessExplosion;
 import de.yotsuba.mahouka.magic.process.ProcessFireShockwave;
 import de.yotsuba.mahouka.magic.process.ProcessFirebomb;
 import de.yotsuba.mahouka.magic.process.ProcessMovingOffset;
 import de.yotsuba.mahouka.magic.process.ProcessOffset;
+import de.yotsuba.mahouka.magic.process.ProcessParallel;
 import de.yotsuba.mahouka.magic.process.ProcessParticle;
 import de.yotsuba.mahouka.magic.process.ProcessShockwave;
 import de.yotsuba.mahouka.util.target.Target;
@@ -48,6 +48,7 @@ public abstract class MagicProcess implements Cloneable
         registerProcess(ProcessFireShockwave.class, (short) 4);
         registerProcess(ProcessOffset.class, (short) 5);
         registerProcess(ProcessMovingOffset.class, (short) 6);
+        registerProcess(ProcessParallel.class, (short) 7);
     }
 
     /* ------------------------------------------------------------ */
@@ -157,7 +158,7 @@ public abstract class MagicProcess implements Cloneable
 
     /* ------------------------------------------------------------ */
     /* Item functions */
-    
+
     public String getItemName()
     {
         return "process_" + getName();
@@ -168,12 +169,13 @@ public abstract class MagicProcess implements Cloneable
         return itemByProcess.get(getClass());
     }
 
-    @SideOnly(Side.CLIENT)
-    public abstract IIcon getIcon();
+    public abstract String getTextureName();
 
-    @SideOnly(Side.CLIENT)
-    public abstract void registerIcons(IIconRegister iconRegistry);
-    
+    public void registerIcons()
+    {
+        ItemMagicSequence.registerIcon(getTextureName());
+    }
+
     public void addInformation(List<String> info, boolean isSequence)
     {
         if (isSequence)

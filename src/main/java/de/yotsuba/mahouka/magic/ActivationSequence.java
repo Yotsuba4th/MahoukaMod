@@ -3,11 +3,9 @@ package de.yotsuba.mahouka.magic;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.IIcon;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import de.yotsuba.mahouka.MahoukaMod;
@@ -64,16 +62,16 @@ public class ActivationSequence
     /* ------------------------------------------------------------ */
 
     @SideOnly(Side.CLIENT)
-    public static void registerIcons(IIconRegister iconRegistry)
+    public static void registerIcons()
     {
         // TODO: Register additional icons for special sequences
+        // ItemMagicSequence.registerIcon("name");
     }
 
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon()
+    public String getIcon()
     {
         if (processes.size() == 1)
-            return processes.get(0).getIcon();
+            return processes.get(0).getTextureName();
         return null;
     }
 
@@ -90,10 +88,18 @@ public class ActivationSequence
         else
         {
             for (MagicProcess process : processes)
-            {
                 process.addInformation(info, true);
-            }
         }
+    }
+
+    public void addParallelInformation(List<String> info)
+    {
+        info.add("Seq:");
+        int oldLength = info.size();
+        for (MagicProcess process : processes)
+            process.addInformation(info, true);
+        for (int i = oldLength; i < info.size(); i++)
+            info.set(i, "  " + info.get(i));
     }
 
     /* ------------------------------------------------------------ */
@@ -113,4 +119,5 @@ public class ActivationSequence
         stack.setTagCompound(tag);
         return stack;
     }
+
 }

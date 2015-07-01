@@ -2,13 +2,13 @@ package de.yotsuba.mahouka.magic.process;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.util.Vec3;
-import de.yotsuba.mahouka.magic.MagicProcessBase;
+import de.yotsuba.mahouka.magic.MagicProcess;
 import de.yotsuba.mahouka.magic.cast.CastingProcess;
 import de.yotsuba.mahouka.util.Utils;
 import de.yotsuba.mahouka.util.target.Target;
 import de.yotsuba.mahouka.util.target.TargetType;
 
-public abstract class ProcessExplosionBase extends MagicProcessBase
+public abstract class ProcessExplosionBase extends MagicProcess
 {
 
     private final boolean blockDamage;

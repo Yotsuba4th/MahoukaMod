@@ -2,13 +2,13 @@ package de.yotsuba.mahouka.magic.process;
 
 import net.minecraft.util.Vec3;
 import de.yotsuba.mahouka.MahoukaMod;
-import de.yotsuba.mahouka.magic.MagicProcessBase;
+import de.yotsuba.mahouka.magic.MagicProcess;
 import de.yotsuba.mahouka.magic.cast.CastingProcess;
 import de.yotsuba.mahouka.util.target.Target;
 import de.yotsuba.mahouka.util.target.TargetOffset;
 import de.yotsuba.mahouka.util.target.TargetType;
 
-public class ProcessOffset extends MagicProcessBase
+public class ProcessOffset extends MagicProcess
 {
 
     private Vec3 offset;

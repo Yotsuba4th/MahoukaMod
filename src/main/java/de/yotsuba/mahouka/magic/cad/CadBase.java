@@ -25,6 +25,8 @@ import de.yotsuba.mahouka.util.target.TargetPoint;
 public class CadBase
 {
 
+    public static final String NBT_SEQUENCES = "seq";
+
     private UUID id;
 
     private ActivationSequence[] activationSequences = new ActivationSequence[1];
@@ -48,7 +50,7 @@ public class CadBase
 
         // Write sequences
         NBTTagList tagSequences = new NBTTagList();
-        tag.setTag("seq", tagSequences);
+        tag.setTag(NBT_SEQUENCES, tagSequences);
         for (int i = 0; i < activationSequences.length; i++)
         {
             if (activationSequences[i] == null)
@@ -65,7 +67,7 @@ public class CadBase
         selectedSequence = tag.getByte("sel");
 
         // Read sequences
-        NBTTagList tagSequences = tag.getTagList("seq", 10);
+        NBTTagList tagSequences = tag.getTagList(NBT_SEQUENCES, 10);
         for (int i = 0; i < activationSequences.length; i++)
             activationSequences[i] = null;
         for (int i = 0; i < tagSequences.tagCount(); i++)
