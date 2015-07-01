@@ -3,17 +3,19 @@ package de.yotsuba.mahouka.magic;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.IIcon;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import de.yotsuba.mahouka.MahoukaMod;
 
 public class ActivationSequence
 {
 
     public static final String NBT_PROCESSES = "proc";
-
-    public static final String DEFAULT_ICON = MahoukaMod.MODID + ":magic_sequence";
 
     /* ------------------------------------------------------------ */
 
@@ -61,16 +63,18 @@ public class ActivationSequence
 
     /* ------------------------------------------------------------ */
 
-    public String getTextureName()
+    @SideOnly(Side.CLIENT)
+    public void registerIcons(IIconRegister iconReg)
     {
-        if (processes.isEmpty())
-            return MagicProcess.DEFAULT_ICON;
-        if (processes.size() > 1)
-        {
-            // TODO: Handle special sequence icons!
-            return DEFAULT_ICON;
-        }
-        return processes.get(0).getTextureName();
+        // TODO: Register additional icons for special sequences
+    }
+
+    @SideOnly(Side.CLIENT)
+    public IIcon getIcon()
+    {
+        if (processes.size() == 1)
+            return processes.get(0).getIcon();
+        return null;
     }
 
     public void addInformation(List<String> info)

@@ -4,8 +4,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -151,6 +153,9 @@ public abstract class MagicProcess implements Cloneable
 
     public abstract String getName();
 
+    /* ------------------------------------------------------------ */
+    /* Item functions */
+    
     public String getItemName()
     {
         return "process_" + getName();
@@ -161,8 +166,12 @@ public abstract class MagicProcess implements Cloneable
         return itemByProcess.get(getClass());
     }
 
-    public abstract String getTextureName();
+    @SideOnly(Side.CLIENT)
+    public abstract IIcon getIcon();
 
+    @SideOnly(Side.CLIENT)
+    public abstract void registerIcons(IIconRegister iconRegistry);
+    
     public void addInformation(List<String> info, boolean isSequence)
     {
         if (isSequence)

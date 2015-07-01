@@ -1,11 +1,7 @@
 package de.yotsuba.mahouka.item;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -13,26 +9,17 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import de.yotsuba.mahouka.MahoukaMod;
 import de.yotsuba.mahouka.magic.ActivationSequence;
 
 public class ItemMagicSequence extends Item
 {
 
-    public static Map<String, IIcon> icons = new HashMap<String, IIcon>();
-
-    public static void registerIcon(String textureName)
-    {
-        icons.put(textureName, null);
-    }
-
-    /* ------------------------------------------------------------ */
-
     public ItemMagicSequence()
     {
         setFull3D();
         setUnlocalizedName("magic_sequence");
-        setTextureName(ActivationSequence.DEFAULT_ICON);
-        registerIcon(ActivationSequence.DEFAULT_ICON);
+        setTextureName(MahoukaMod.MODID + ":magic_sequence");
     }
 
     /* ------------------------------------------------------------ */
@@ -55,28 +42,17 @@ public class ItemMagicSequence extends Item
     /* ------------------------------------------------------------ */
 
     @Override
-    public void registerIcons(IIconRegister iconReg)
-    {
-        for (Entry<String, IIcon> icon : icons.entrySet())
-            icon.setValue(iconReg.registerIcon(icon.getKey()));
-    }
-
-    @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIconIndex(ItemStack stack)
     {
-        IIcon icon = icons.get(getTextureName(stack));
-        if (icon == null)
-            icon = icons.get(getIconString());
-        return icon;
-    }
-
-    public String getTextureName(ItemStack stack)
-    {
         ActivationSequence sequence = getSequence(stack);
-        if (sequence == null)
-            return getIconString();
-        return sequence.getTextureName();
+        if (sequence != null)
+        {
+            IIcon icon = sequence.getIcon();
+            if (icon != null)
+                return icon;
+        }
+        return super.getIconIndex(stack);
     }
 
     /* ------------------------------------------------------------ */

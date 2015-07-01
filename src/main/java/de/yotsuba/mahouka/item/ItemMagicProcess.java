@@ -21,12 +21,9 @@ public class ItemMagicProcess extends ItemMagicSequence
     public ItemMagicProcess(MagicProcess process)
     {
         super();
+        this.process = process;
         setCreativeTab(MahoukaMod.creativeTab);
         setUnlocalizedName(process.getItemName());
-        setTextureName(MagicProcess.DEFAULT_ICON);
-        registerIcon(MagicProcess.DEFAULT_ICON);
-        this.process = process;
-        ItemMagicSequence.registerIcon(process.getTextureName());
     }
 
     public MagicProcess getItemProcess()
@@ -61,16 +58,16 @@ public class ItemMagicProcess extends ItemMagicSequence
     @SideOnly(Side.CLIENT)
     public IIcon getIconIndex(ItemStack stack)
     {
-        IIcon icon = icons.get(process.getTextureName());
-        if (icon == null)
-            icon = icons.get(getIconString());
-        return icon;
+        // TODO: Need to deserialize the process if NBT can change the icon!
+        return process.getIcon();
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister iconReg)
+    public void registerIcons(IIconRegister iconRegistry)
     {
+        super.registerIcons(iconRegistry);
+        process.registerIcons(iconRegistry);
     }
 
 }
