@@ -9,11 +9,13 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import de.yotsuba.mahouka.MahoukaMod;
 import de.yotsuba.mahouka.item.ItemMagicProcess;
 import de.yotsuba.mahouka.magic.cast.CastingProcess;
 import de.yotsuba.mahouka.magic.process.ProcessExplosion;
 import de.yotsuba.mahouka.magic.process.ProcessFireShockwave;
 import de.yotsuba.mahouka.magic.process.ProcessFirebomb;
+import de.yotsuba.mahouka.magic.process.ProcessOffset;
 import de.yotsuba.mahouka.magic.process.ProcessParticle;
 import de.yotsuba.mahouka.magic.process.ProcessShockwave;
 import de.yotsuba.mahouka.util.target.Target;
@@ -21,6 +23,10 @@ import de.yotsuba.mahouka.util.target.TargetType;
 
 public abstract class MagicProcess implements Cloneable
 {
+
+    public static final String DEFAULT_ICON = MahoukaMod.MODID + ":process_default_blue";
+
+    /* ------------------------------------------------------------ */
 
     public static Map<Short, Class<? extends MagicProcess>> processById = new HashMap<Short, Class<? extends MagicProcess>>();
 
@@ -37,6 +43,7 @@ public abstract class MagicProcess implements Cloneable
         registerProcess(ProcessShockwave.class, (short) 2);
         registerProcess(ProcessFirebomb.class, (short) 3);
         registerProcess(ProcessFireShockwave.class, (short) 4);
+        registerProcess(ProcessOffset.class, (short) 5);
     }
 
     /* ------------------------------------------------------------ */

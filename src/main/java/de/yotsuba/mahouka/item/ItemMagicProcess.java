@@ -23,6 +23,8 @@ public class ItemMagicProcess extends ItemMagicSequence
         super();
         setCreativeTab(MahoukaMod.creativeTab);
         setUnlocalizedName(process.getItemName());
+        setTextureName(MagicProcess.DEFAULT_ICON);
+        registerIcon(MagicProcess.DEFAULT_ICON);
         this.process = process;
         ItemMagicSequence.registerIcon(process.getTextureName());
     }

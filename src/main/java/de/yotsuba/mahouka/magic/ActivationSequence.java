@@ -7,12 +7,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import de.yotsuba.mahouka.MahoukaMod;
-import de.yotsuba.mahouka.item.ItemMagicSequence;
 
 public class ActivationSequence
 {
 
     public static final String NBT_PROCESSES = "proc";
+
+    public static final String DEFAULT_ICON = MahoukaMod.MODID + ":magic_sequence";
 
     /* ------------------------------------------------------------ */
 
@@ -62,9 +63,13 @@ public class ActivationSequence
 
     public String getTextureName()
     {
-        if (processes.isEmpty() || processes.size() > 0)
+        if (processes.isEmpty())
+            return MagicProcess.DEFAULT_ICON;
+        if (processes.size() > 1)
+        {
             // TODO: Handle special sequence icons!
-            return ItemMagicSequence.DEFAULT_ICON;
+            return DEFAULT_ICON;
+        }
         return processes.get(0).getTextureName();
     }
 

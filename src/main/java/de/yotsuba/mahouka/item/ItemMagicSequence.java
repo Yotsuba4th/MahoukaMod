@@ -13,13 +13,10 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import de.yotsuba.mahouka.MahoukaMod;
 import de.yotsuba.mahouka.magic.ActivationSequence;
 
 public class ItemMagicSequence extends Item
 {
-
-    public static final String DEFAULT_ICON = MahoukaMod.MODID + ":magic_process";
 
     public static Map<String, IIcon> icons = new HashMap<String, IIcon>();
 
@@ -34,6 +31,8 @@ public class ItemMagicSequence extends Item
     {
         setFull3D();
         setUnlocalizedName("magic_sequence");
+        setTextureName(ActivationSequence.DEFAULT_ICON);
+        registerIcon(ActivationSequence.DEFAULT_ICON);
     }
 
     /* ------------------------------------------------------------ */
@@ -68,7 +67,7 @@ public class ItemMagicSequence extends Item
     {
         IIcon icon = icons.get(getTextureName(stack));
         if (icon == null)
-            icon = icons.get(DEFAULT_ICON);
+            icon = icons.get(getIconString());
         return icon;
     }
 
@@ -76,7 +75,7 @@ public class ItemMagicSequence extends Item
     {
         ActivationSequence sequence = getSequence(stack);
         if (sequence == null)
-            return DEFAULT_ICON;
+            return getIconString();
         return sequence.getTextureName();
     }
 

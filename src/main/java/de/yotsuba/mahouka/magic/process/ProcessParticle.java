@@ -6,7 +6,6 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import de.yotsuba.mahouka.item.ItemMagicSequence;
 import de.yotsuba.mahouka.magic.MagicProcess;
 import de.yotsuba.mahouka.magic.cast.CastingProcess;
 import de.yotsuba.mahouka.util.Utils;
@@ -24,7 +23,7 @@ public class ProcessParticle extends MagicProcess
     @Override
     public String getTextureName()
     {
-        return ItemMagicSequence.DEFAULT_ICON;
+        return DEFAULT_ICON;
     }
 
     @Override

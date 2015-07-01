@@ -1,6 +1,5 @@
 package de.yotsuba.mahouka.magic.process;
 
-import de.yotsuba.mahouka.item.ItemMagicSequence;
 
 public class ProcessShockwave extends ProcessExplosionBase
 {
@@ -19,7 +18,7 @@ public class ProcessShockwave extends ProcessExplosionBase
     @Override
     public String getTextureName()
     {
-        return ItemMagicSequence.DEFAULT_ICON;
+        return DEFAULT_ICON;
     }
 
 }
