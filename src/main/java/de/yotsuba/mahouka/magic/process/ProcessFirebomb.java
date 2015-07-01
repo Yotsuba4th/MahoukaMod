@@ -7,7 +7,7 @@ public class ProcessFirebomb extends ProcessExplosionBase
 
     public ProcessFirebomb()
     {
-        super(false, true);
+        super(true, true);
     }
 
     @Override

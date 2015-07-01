@@ -7,7 +7,7 @@ public class ProcessShockwave extends ProcessExplosionBase
 
     public ProcessShockwave()
     {
-        super(false, true);
+        super(false, false);
     }
 
     @Override
