@@ -30,7 +30,6 @@ public class ItemMagicSequence extends Item
 
     public ItemMagicSequence()
     {
-        setFull3D();
         setUnlocalizedName("magic_sequence");
         setTextureName(MahoukaMod.MODID + ":magic_sequence");
         ActivationSequence.registerIcons();
@@ -67,6 +66,13 @@ public class ItemMagicSequence extends Item
                 return icon;
         }
         return super.getIconIndex(stack);
+    }
+    
+    @Override
+    @SideOnly(Side.CLIENT)
+    public IIcon getIcon(ItemStack stack, int pass)
+    {
+        return getIconIndex(stack);
     }
 
     @Override

@@ -26,20 +26,14 @@ public class ProcessAssembler
         {
             input1 = newSequence(input1);
             NBTTagList list1 = getProcessList(input1);
-            // if (list1.tagCount() == 1 && list1.getCompoundTagAt(0).getShort("id") == MagicProcess.idByProcess.get(ProcessParallel.class))
-            // {
-            // // Handle appending to ProcessSequence
-            // list1 = list1.getCompoundTagAt(0).getTagList(ActivationSequence.NBT_PROCESSES, 10);
-            // }
-
             NBTTagList list2 = getProcessList(input2);
             if (list1.tagCount() == 1 && list1.getCompoundTagAt(0).getShort("id") == MagicProcess.idByProcess.get(ProcessParallel.class))
             {
                 // Handle appending to ProcessParallel
                 list1 = list1.getCompoundTagAt(0).getTagList(CadBase.NBT_SEQUENCES, 10);
-                NBTTagCompound tagList2 = new NBTTagCompound();
-                tagList2.setTag(ActivationSequence.NBT_PROCESSES, list2);
-                list1.appendTag(tagList2);
+                NBTTagCompound tag2 = new NBTTagCompound();
+                tag2.setTag(ActivationSequence.NBT_PROCESSES, list2);
+                list1.appendTag(tag2);
             }
             else
             {

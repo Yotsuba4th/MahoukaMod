@@ -84,8 +84,7 @@ public class ProcessParallel extends MagicProcess
         int psionCost = 0;
         for (ActivationSequence sequence : sequences)
             psionCost += CastingManager.getPsionCost(sequence);
-        // TODO: Decide to use sqrt or not for parallel psion cost
-        return (int) Math.sqrt(psionCost);
+        return psionCost;
     }
 
     @Override
@@ -94,7 +93,7 @@ public class ProcessParallel extends MagicProcess
         int t = 0;
         for (ActivationSequence sequence : sequences)
             t += CastingManager.getChannelingDuration(sequence);
-        return (int) Math.sqrt(t);
+        return t * 4 / (3 + sequences.size());
     }
 
     @Override
@@ -121,8 +120,7 @@ public class ProcessParallel extends MagicProcess
         for (ActivationSequence sequence : sequences)
         {
             UUID id = UUID.randomUUID();
-            int channelTime = 0; // CastingManager.getChannelingDuration(sequence);
-            CastingProcess cast = new CastingProcess(cp.getCaster(), sequence, target, id, 0, channelTime / 2);
+            CastingProcess cast = new CastingProcess(cp.getCaster(), sequence, target, id, 0, 0);
             MahoukaMod.getCastingManagerServer().startChanneling(cast);
             casts.add(cast);
         }
