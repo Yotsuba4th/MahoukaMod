@@ -89,7 +89,7 @@ public class TargetEntity extends TargetPoint
         {
         case ENTITY:
         case POINT:
-        case POINT_DIR:
+        case OFFSET:
             return true;
         case LIVING:
             switch (type)

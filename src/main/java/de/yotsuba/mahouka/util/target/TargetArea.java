@@ -49,6 +49,15 @@ public class TargetArea extends Target
         return new TargetPoint(center);
     }
 
+    @Override
+    public Target offset(Vec3 offset)
+    {
+        center.xCoord += offset.xCoord;
+        center.yCoord += offset.yCoord;
+        center.zCoord += offset.zCoord;
+        return this;
+    }
+
     public Vec3 getCenter()
     {
         return center;

@@ -1,6 +1,7 @@
 package de.yotsuba.mahouka.util.target;
 
 import io.netty.buffer.ByteBuf;
+import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
 public abstract class Target
@@ -11,6 +12,8 @@ public abstract class Target
     public abstract TargetPoint toTargetPoint();
 
     public abstract boolean matchesType(TargetType matchingType);
+
+    public abstract Target offset(Vec3 offset);
 
     public void toBytes(ByteBuf buf)
     {
@@ -36,6 +39,9 @@ public abstract class Target
             break;
         case POINT:
             target = new TargetPoint(buf);
+            break;
+        case OFFSET:
+            target = new TargetOffset(world, buf);
             break;
         case AREA:
             target = new TargetArea(buf);

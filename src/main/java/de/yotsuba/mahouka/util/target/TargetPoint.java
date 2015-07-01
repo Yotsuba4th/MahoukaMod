@@ -44,6 +44,12 @@ public class TargetPoint extends Target
         return this;
     }
 
+    @Override
+    public Target offset(Vec3 offset)
+    {
+        return new TargetOffset(point.addVector(offset.xCoord, offset.yCoord, offset.zCoord), this);
+    }
+
     public Vec3 getPoint()
     {
         return point;
