@@ -35,6 +35,12 @@ public class ProcessParticle extends MagicProcess
     }
 
     @Override
+    public int getPsionCost()
+    {
+        return 5;
+    }
+    
+    @Override
     public int getChannelingDuration()
     {
         return Utils.secondsToTicks(1);

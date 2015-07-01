@@ -2,7 +2,6 @@ package de.yotsuba.mahouka.magic.process;
 
 import de.yotsuba.mahouka.MahoukaMod;
 
-
 public class ProcessFirebomb extends ProcessExplosionBase
 {
 
@@ -21,6 +20,12 @@ public class ProcessFirebomb extends ProcessExplosionBase
     public String getTextureName()
     {
         return MahoukaMod.MODID + ":process_firebomb";
+    }
+
+    @Override
+    public int getPsionCost()
+    {
+        return 100;
     }
 
 }

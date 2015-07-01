@@ -1,7 +1,9 @@
 package de.yotsuba.mahouka.magic.process;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.UUID;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -10,6 +12,7 @@ import de.yotsuba.mahouka.MahoukaMod;
 import de.yotsuba.mahouka.magic.ActivationSequence;
 import de.yotsuba.mahouka.magic.MagicProcess;
 import de.yotsuba.mahouka.magic.cad.CadBase;
+import de.yotsuba.mahouka.magic.cast.CastingManager;
 import de.yotsuba.mahouka.magic.cast.CastingProcess;
 import de.yotsuba.mahouka.util.target.Target;
 import de.yotsuba.mahouka.util.target.TargetType;
@@ -20,6 +23,8 @@ public class ProcessParallel extends MagicProcess
     public static final String NBT_SEQUENCES = "seq";
 
     protected List<ActivationSequence> sequences = new ArrayList<ActivationSequence>();
+
+    private List<CastingProcess> casts = new ArrayList<CastingProcess>();
 
     /* ------------------------------------------------------------ */
 
@@ -65,19 +70,6 @@ public class ProcessParallel extends MagicProcess
     }
 
     @Override
-    public int getChannelingDuration()
-    {
-        return 0;
-    }
-
-    @Override
-    public int getCastDuration(Target target)
-    {
-        // TODO: Return Integer.MAX_VALUE until all sub-casts finished
-        return 0;
-    }
-
-    @Override
     public void addInformation(List<String> info, boolean isSequence)
     {
         if (isSequence)
@@ -87,10 +79,53 @@ public class ProcessParallel extends MagicProcess
     }
 
     @Override
+    public int getPsionCost()
+    {
+        int psionCost = 0;
+        for (ActivationSequence sequence : sequences)
+            psionCost += CastingManager.getPsionCost(sequence);
+        // TODO: Decide to use sqrt or not for parallel psion cost
+        return (int) Math.sqrt(psionCost);
+    }
+
+    @Override
+    public int getChannelingDuration()
+    {
+        int t = 0;
+        for (ActivationSequence sequence : sequences)
+            t += CastingManager.getChannelingDuration(sequence);
+        return (int) Math.sqrt(t);
+    }
+
+    @Override
+    public int getCastDuration(Target target)
+    {
+        cleanCasts();
+        return casts.isEmpty() ? 0 : Integer.MAX_VALUE;
+    }
+
+    private void cleanCasts()
+    {
+        for (Iterator<CastingProcess> it = casts.iterator(); it.hasNext();)
+        {
+            CastingProcess cast = it.next();
+            if (!cast.isActive())
+                it.remove();
+        }
+    }
+
+    @Override
     public Target cast(CastingProcess cp, Target target)
     {
-        // TODO: Spawn sub-casts with new UUIDs and remember them in a list
-
+        casts.clear();
+        for (ActivationSequence sequence : sequences)
+        {
+            UUID id = UUID.randomUUID();
+            int channelTime = 0; // CastingManager.getChannelingDuration(sequence);
+            CastingProcess cast = new CastingProcess(cp.getCaster(), sequence, target, id, 0, channelTime / 2);
+            MahoukaMod.getCastingManagerServer().startChanneling(cast);
+            casts.add(cast);
+        }
         return target;
     }
 

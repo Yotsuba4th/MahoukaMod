@@ -24,7 +24,7 @@ public class SequenceProgrammerContainer extends Container implements IInventory
 
     private final World worldObj;
 
-    private ItemStack[] inventory = new ItemStack[3];
+    protected ItemStack[] inventory = new ItemStack[3];
 
     /* ------------------------------------------------------------ */
 
@@ -33,7 +33,7 @@ public class SequenceProgrammerContainer extends Container implements IInventory
         worldObj = playerInventory.player.worldObj;
         addSlotToContainer(new Slot(this, 0, 49, 18));
         addSlotToContainer(new Slot(this, 1, 49, 54));
-        addSlotToContainer(new Slot(this, 2, 107, 36));
+        addSlotToContainer(new SlotSeqProgrammerResult(this, OUT, 107, 36));
         for (Slot slot : Utils.getPlayerContainerSlots(playerInventory))
             addSlotToContainer(slot);
     }

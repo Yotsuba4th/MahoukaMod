@@ -7,6 +7,7 @@ import java.util.UUID;
 import net.minecraft.entity.player.EntityPlayer;
 import cpw.mods.fml.common.FMLCommonHandler;
 import de.yotsuba.mahouka.magic.ActivationSequence;
+import de.yotsuba.mahouka.magic.MagicProcess;
 import de.yotsuba.mahouka.util.target.Target;
 
 public abstract class CastingManager
@@ -29,11 +30,29 @@ public abstract class CastingManager
         return cast != null && cast.isActive();
     }
 
+    public static int getChannelingDuration(ActivationSequence sequence)
+    {
+        int t = 0;
+        for (MagicProcess process : sequence.getProcesses())
+            t += process.getChannelingDuration();
+        return t;
+    }
+
+    public static int getPsionCost(ActivationSequence sequence)
+    {
+        int psionCost = 0;
+        for (MagicProcess process : sequence.getProcesses())
+            psionCost += process.getPsionCost();
+        return psionCost;
+    }
+
     public CastingProcess constructCastingProcess(EntityPlayer caster, ActivationSequence sequence, Target target, UUID id)
     {
-        // TODO: Check and construct magic sequence?
+        // TODO: Check if magic sequence is valid for target!!
 
-        CastingProcess cast = new CastingProcess(caster, sequence, target, id, 10, 50);
+        int channelingDuration = getChannelingDuration(sequence);
+        int psionCost = getPsionCost(sequence);
+        CastingProcess cast = new CastingProcess(caster, sequence, target, id, psionCost, channelingDuration);
         return cast;
     }
 

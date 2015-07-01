@@ -37,6 +37,12 @@ public class ProcessOffset extends MagicProcess
     }
 
     @Override
+    public int getPsionCost()
+    {
+        return 0;
+    }
+    
+    @Override
     public int getChannelingDuration()
     {
         return 0;

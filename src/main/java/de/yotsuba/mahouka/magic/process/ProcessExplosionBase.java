@@ -40,7 +40,7 @@ public abstract class ProcessExplosionBase extends MagicProcess
     @Override
     public int getCastDuration(Target target)
     {
-        return 0;
+        return 5;
     }
 
     @Override

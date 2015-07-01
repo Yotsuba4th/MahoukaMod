@@ -150,6 +150,8 @@ public abstract class MagicProcess implements Cloneable
 
     public abstract TargetType[] getValidTargets();
 
+    public abstract int getPsionCost();
+
     public abstract int getChannelingDuration();
 
     public abstract int getCastDuration(Target target);

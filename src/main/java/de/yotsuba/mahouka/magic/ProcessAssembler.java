@@ -31,7 +31,7 @@ public class ProcessAssembler
             // // Handle appending to ProcessSequence
             // list1 = list1.getCompoundTagAt(0).getTagList(ActivationSequence.NBT_PROCESSES, 10);
             // }
-            
+
             NBTTagList list2 = getProcessList(input2);
             if (list1.tagCount() == 1 && list1.getCompoundTagAt(0).getShort("id") == MagicProcess.idByProcess.get(ProcessParallel.class))
             {
@@ -68,7 +68,20 @@ public class ProcessAssembler
         {
             NBTTagList list1 = getProcessList(input);
             if (list1.tagCount() == 1)
+            {
+                if (list1.getCompoundTagAt(0).getShort("id") == MagicProcess.idByProcess.get(ProcessParallel.class))
+                {
+                    // Handle splitting ProcessParallel
+                    list1 = list1.getCompoundTagAt(0).getTagList(CadBase.NBT_SEQUENCES, 10);
+                    if (list1.tagCount() > 0)
+                    {
+                        ItemStack result = new ItemStack(MahoukaMod.item_magic_sequence);
+                        result.setTagCompound((NBTTagCompound) list1.removeTag(list1.tagCount() - 1));
+                        return result;
+                    }
+                }
                 return null;
+            }
 
             NBTTagCompound tag2 = new NBTTagCompound();
             NBTTagList list2 = new NBTTagList();

@@ -31,4 +31,10 @@ public class SlotCad extends Slot
         super.onPickupFromSlot(player, stack);
     }
 
+    @Override
+    public int getSlotStackLimit()
+    {
+        return 1;
+    }
+
 }

@@ -22,4 +22,10 @@ public class ProcessShockwave extends ProcessExplosionBase
         return MahoukaMod.MODID + ":process_shockwave";
     }
 
+    @Override
+    public int getPsionCost()
+    {
+        return 40;
+    }
+    
 }

@@ -22,4 +22,10 @@ public class ProcessExplosion extends ProcessExplosionBase
         return MahoukaMod.MODID + ":process_explosion";
     }
 
+    @Override
+    public int getPsionCost()
+    {
+        return 75;
+    }
+    
 }
