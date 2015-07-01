@@ -112,18 +112,24 @@ public class MahoukaMod
         registerEntity(EntityMagicFireball.class, "magic_fireball");
     }
 
-    @SuppressWarnings("unchecked")
-    public static void registerEntity(Class<? extends Entity> entityClass, String name)
+    public static int registerEntity(Class<? extends Entity> entityClass, String name)
     {
         int entityID = EntityRegistry.findGlobalUniqueEntityId();
+        EntityRegistry.registerGlobalEntityID(entityClass, name, entityID);
+        EntityRegistry.registerModEntity(entityClass, name, entityID, instance, 64, 1, true);
+        return entityID;
+    }
+
+    @SuppressWarnings("unchecked")
+    public static int registerMob(Class<? extends Entity> entityClass, String name)
+    {
+        int entityID = registerEntity(entityClass, name);
         long seed = name.hashCode();
         Random rand = new Random(seed);
         int primaryColor = rand.nextInt() * 16777215;
         int secondaryColor = rand.nextInt() * 16777215;
-
-        EntityRegistry.registerGlobalEntityID(entityClass, name, entityID);
-        EntityRegistry.registerModEntity(entityClass, name, entityID, instance, 64, 1, true);
-        EntityList.entityEggs.put(Integer.valueOf(entityID), new EntityList.EntityEggInfo(entityID, primaryColor, secondaryColor));
+        EntityList.entityEggs.put(entityID, new EntityList.EntityEggInfo(entityID, primaryColor, secondaryColor));
+        return entityID;
     }
 
     private void registerItems()
