@@ -6,14 +6,11 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import de.yotsuba.mahouka.MahoukaMod;
-import de.yotsuba.mahouka.magic.ActivationSequence;
-import de.yotsuba.mahouka.magic.MagicProcess;
 import de.yotsuba.mahouka.magic.cad.CadBase;
 import de.yotsuba.mahouka.magic.cad.CadManager;
 
@@ -51,27 +48,12 @@ public class ItemCad extends Item
     public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player)
     {
         CadBase cad = CadManager.getCad(stack);
-
-        // TODO: TEST KOT
-        if (cad == null && !world.isRemote)
-        {
-            cad = createNewCad();
-
-            ActivationSequence seq = new ActivationSequence();
-            seq.getProcesses().add(MagicProcess.createByName("explosion"));
-            cad.getActivationSequences()[0] = seq;
-
-            if (stack.getTagCompound() == null)
-                stack.setTagCompound(new NBTTagCompound());
-            cad.writeToNBT(stack.getTagCompound());
-        }
-
         if (cad == null)
         {
             if (world.isRemote)
             {
                 // TODO: Play error sound
-                player.addChatMessage(new ChatComponentText("CAD not initialized"));
+                player.addChatMessage(new ChatComponentText("No sequence selected"));
             }
         }
         else

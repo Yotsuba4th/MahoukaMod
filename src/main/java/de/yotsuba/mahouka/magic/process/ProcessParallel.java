@@ -114,7 +114,7 @@ public class ProcessParallel extends MagicProcess
     }
 
     @Override
-    public Target cast(CastingProcess cp, Target target)
+    public Target castStart(CastingProcess cp, Target target)
     {
         casts.clear();
         for (ActivationSequence sequence : sequences)

@@ -48,7 +48,7 @@ public class ProcessMovingOffset extends ProcessOffset
     }
 
     @Override
-    public Target cast(CastingProcess cp, Target target)
+    public Target castStart(CastingProcess cp, Target target)
     {
         return new TargetMovingOffset(target, offset);
     }

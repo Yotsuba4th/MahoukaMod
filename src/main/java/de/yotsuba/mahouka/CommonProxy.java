@@ -8,15 +8,21 @@ import de.yotsuba.mahouka.util.target.Target;
 public class CommonProxy
 {
 
+    public void castStartClient(MagicProcess process, CastingProcess cp, Target target)
+    {
+    }
+
+    public void castTickClient(MagicProcess process, CastingProcess cp, Target target)
+    {
+    }
+
+    public void castEndClient(MagicProcess process, CastingProcess cp, Target target)
+    {
+    }
+
+    /* ------------------------------------------------------------ */
+
     public void init(FMLInitializationEvent event)
-    {
-    }
-
-    public void clientCast(MagicProcess process, CastingProcess cp, Target target)
-    {
-    }
-
-    public void clientCastTick(MagicProcess process, CastingProcess cp, Target target)
     {
     }
 

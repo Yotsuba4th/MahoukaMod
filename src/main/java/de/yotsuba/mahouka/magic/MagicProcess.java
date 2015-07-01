@@ -186,13 +186,13 @@ public abstract class MagicProcess implements Cloneable
 
     /* ------------------------------------------------------------ */
 
-    public Target cast(CastingProcess cp, Target target)
+    public Target castStart(CastingProcess cp, Target target)
     {
         return target;
     }
 
     @SideOnly(Side.CLIENT)
-    public void castClient(CastingProcess cp, Target target)
+    public void castStartClient(CastingProcess cp, Target target)
     {
         /* do nothing */
     }
@@ -217,6 +217,19 @@ public abstract class MagicProcess implements Cloneable
      */
     @SideOnly(Side.CLIENT)
     public void castTickClient(CastingProcess cp, Target target)
+    {
+        /* do nothing */
+    }
+
+    /* ------------------------------------------------------------ */
+
+    public Target castEnd(CastingProcess cp, Target target)
+    {
+        return target;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public void castEndClient(CastingProcess cp, Target target)
     {
         /* do nothing */
     }

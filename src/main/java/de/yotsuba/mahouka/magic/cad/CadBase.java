@@ -132,7 +132,7 @@ public class CadBase
     @SideOnly(Side.CLIENT)
     public Target selectTarget(EntityPlayer player)
     {
-        MovingObjectPosition result = WorldUtils.rayTraceClient(16 * 8);
+        MovingObjectPosition result = WorldUtils.rayTraceClient(16 * 8, false);
         if (result.typeOfHit == MovingObjectType.ENTITY)
             return new TargetEntity(result.entityHit, false, false);
         if (result.typeOfHit == MovingObjectType.BLOCK)

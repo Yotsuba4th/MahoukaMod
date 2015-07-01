@@ -6,8 +6,6 @@ import java.util.List;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import de.yotsuba.mahouka.MahoukaMod;
 
 public class ActivationSequence
@@ -61,7 +59,6 @@ public class ActivationSequence
 
     /* ------------------------------------------------------------ */
 
-    @SideOnly(Side.CLIENT)
     public static void registerIcons()
     {
         // TODO: Register additional icons for special sequences

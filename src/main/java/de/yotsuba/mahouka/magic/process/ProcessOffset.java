@@ -55,7 +55,7 @@ public class ProcessOffset extends MagicProcess
     }
 
     @Override
-    public Target cast(CastingProcess cp, Target target)
+    public Target castStart(CastingProcess cp, Target target)
     {
         return new TargetOffset(target, offset);
     }

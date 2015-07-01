@@ -100,12 +100,18 @@ public class CastingProcess
             channelEndClient();
             castStartClient();
         }
+        else
+        {
+            MagicProcess process = sequence.getProcesses().get(processIndex);
+            MahoukaMod.proxy.castEndClient(process, this, currentTarget);
+        }
+        
         processIndex = newProcess;
         currentTarget = target;
         if (processIndex < sequence.getProcesses().size())
         {
             MagicProcess process = sequence.getProcesses().get(processIndex);
-            MahoukaMod.proxy.clientCast(process, this, currentTarget);
+            MahoukaMod.proxy.castStartClient(process, this, currentTarget);
         }
         else
         {
@@ -228,14 +234,21 @@ public class CastingProcess
             ct = 0;
             processIndex++;
 
+            // End last process
+            if (process != null)
+            {
+                currentTarget = process.castEnd(this, currentTarget);
+            }
+
             // Send update to clients
             C5CastUpdate message = new C5CastUpdate(id, processIndex, currentTarget);
             MahoukaMod.getNetChannel().sendToDimension(message, caster.worldObj.provider.dimensionId);
 
+            // Start next process
             if (processIndex < sequence.getProcesses().size())
             {
                 process = sequence.getProcesses().get(processIndex);
-                currentTarget = process.cast(this, currentTarget);
+                currentTarget = process.castStart(this, currentTarget);
             }
             else
             {
@@ -247,7 +260,7 @@ public class CastingProcess
     private void castTickClient()
     {
         MagicProcess process = sequence.getProcesses().get(processIndex);
-        MahoukaMod.proxy.clientCastTick(process, this, currentTarget);
+        MahoukaMod.proxy.castTickClient(process, this, currentTarget);
     }
 
     /* ------------------------------------------------------------ */

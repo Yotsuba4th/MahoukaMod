@@ -44,7 +44,7 @@ public abstract class ProcessExplosionBase extends MagicProcess
     }
 
     @Override
-    public Target cast(CastingProcess cp, Target target)
+    public Target castStart(CastingProcess cp, Target target)
     {
         float strength = 4f;
 

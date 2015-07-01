@@ -15,30 +15,30 @@ public class WorldUtils
 {
 
     @SideOnly(Side.CLIENT)
-    public static MovingObjectPosition rayTraceClient(double maxDistance)
+    public static MovingObjectPosition rayTraceClient(double maxDistance, boolean ignoreNonClollidables)
     {
         Minecraft mc = Minecraft.getMinecraft();
-        return rayTraceServer(mc.renderViewEntity, maxDistance);
+        return rayTraceClient(mc.renderViewEntity, maxDistance, ignoreNonClollidables);
     }
 
     @SideOnly(Side.CLIENT)
-    public static MovingObjectPosition rayTraceClient(EntityLivingBase viewEntity, double maxDistance)
+    public static MovingObjectPosition rayTraceClient(EntityLivingBase viewEntity, double maxDistance, boolean ignoreNonClollidables)
     {
         float timeOffset = 1;
         Vec3 start = viewEntity.getPosition(timeOffset);
         Vec3 dir = viewEntity.getLook(timeOffset);
-        return rayTrace(viewEntity, maxDistance, start, dir);
+        return rayTrace(viewEntity, maxDistance, start, dir, ignoreNonClollidables);
     }
 
-    public static MovingObjectPosition rayTraceServer(EntityLivingBase viewEntity, double maxDistance)
+    public static MovingObjectPosition rayTraceServer(EntityLivingBase viewEntity, double maxDistance, boolean ignoreNonClollidables)
     {
         float timeOffset = 1;
         Vec3 start = Vec3.createVectorHelper(viewEntity.posX, viewEntity.posY + viewEntity.getEyeHeight() - 0.12, viewEntity.posZ);
         Vec3 dir = viewEntity.getLook(timeOffset);
-        return rayTrace(viewEntity, maxDistance, start, dir);
+        return rayTrace(viewEntity, maxDistance, start, dir, ignoreNonClollidables);
     }
 
-    public static MovingObjectPosition rayTrace(EntityLivingBase viewEntity, double maxDistance, Vec3 start, Vec3 dir)
+    public static MovingObjectPosition rayTrace(EntityLivingBase viewEntity, double maxDistance, Vec3 start, Vec3 dir, boolean ignoreNonClollidables)
     {
         Vec3 rayEnd = start.addVector(dir.xCoord * maxDistance, dir.yCoord * maxDistance, dir.zCoord * maxDistance);
 
@@ -61,10 +61,10 @@ public class WorldUtils
         Vec3 hitVec = null;
         for (Entity entity : entities)
         {
-            if (!entity.canBeCollidedWith())
+            if (ignoreNonClollidables && !entity.canBeCollidedWith())
                 continue;
 
-            float size = entity.getCollisionBorderSize();
+            float size = entity.getCollisionBorderSize() + 0.5f;
             AxisAlignedBB entityAABB = entity.boundingBox.expand(size, size, size);
             MovingObjectPosition entityHit = entityAABB.calculateIntercept(start, rayEnd);
 
