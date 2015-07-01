@@ -162,7 +162,7 @@ public class CastingProcess
     private void channelStartClient()
     {
         // TODO: DEBUG
-        Vec3 point = currentTarget.toTargetPoint().getPoint();
+        Vec3 point = currentTarget.getCurrentPoint();
         caster.worldObj.spawnParticle("heart", point.xCoord, point.yCoord + 1, point.zCoord, 0, 0, 0);
     }
 
@@ -175,7 +175,7 @@ public class CastingProcess
     private void channelTickClient()
     {
         // TODO: DEBUG
-        Vec3 point = currentTarget.toTargetPoint().getPoint();
+        Vec3 point = currentTarget.getCurrentPoint();
         double x = point.xCoord + new Random().nextGaussian() * 0.5;
         double z = point.zCoord + new Random().nextGaussian() * 0.5;
         caster.worldObj.spawnParticle("instantSpell", x, point.yCoord + 1, z, 0, 0, 0);
@@ -197,7 +197,7 @@ public class CastingProcess
     private void channelEndClient()
     {
         // TODO: DEBUG
-        Vec3 point = currentTarget.toTargetPoint().getPoint();
+        Vec3 point = currentTarget.getCurrentPoint();
         caster.worldObj.spawnParticle("heart", point.xCoord, point.yCoord + 1, point.zCoord, 0, 0, 0);
     }
 

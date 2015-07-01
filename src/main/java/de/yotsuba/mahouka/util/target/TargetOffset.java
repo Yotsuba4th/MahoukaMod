@@ -3,22 +3,25 @@ package de.yotsuba.mahouka.util.target;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
+import de.yotsuba.mahouka.util.BufUtils;
 
-public class TargetOffset extends TargetPoint
+public class TargetOffset extends Target
 {
 
-    private Target source;
+    protected Target source;
 
-    public TargetOffset(Vec3 point, Target source)
+    protected Vec3 offset;
+
+    public TargetOffset(Target source, Vec3 offset)
     {
-        super(point);
         this.source = source;
+        this.offset = offset;
     }
 
     public TargetOffset(World world, ByteBuf buf)
     {
-        super(buf);
         source = Target.fromBytes(world, buf);
+        offset = Vec3.createVectorHelper(buf.readDouble(), buf.readDouble(), buf.readDouble());
     }
 
     @Override
@@ -26,6 +29,7 @@ public class TargetOffset extends TargetPoint
     {
         super.toBytes(buf);
         source.toBytes(buf);
+        BufUtils.writeVec3(buf, offset);
     }
 
     @Override
@@ -41,6 +45,7 @@ public class TargetOffset extends TargetPoint
         {
         case POINT:
         case OFFSET:
+        case MOVING_OFFSET:
             return true;
         default:
             return false;
@@ -48,14 +53,19 @@ public class TargetOffset extends TargetPoint
     }
 
     @Override
-    public Target offset(Vec3 offset)
+    public Vec3 getPoint()
     {
-        return new TargetOffset(point.addVector(offset.xCoord, offset.yCoord, offset.zCoord), source);
+        return source.getPoint().addVector(offset.xCoord, offset.yCoord, offset.zCoord);
     }
 
     public Target getSource()
     {
         return source;
+    }
+
+    public Vec3 getOffset()
+    {
+        return offset;
     }
 
 }

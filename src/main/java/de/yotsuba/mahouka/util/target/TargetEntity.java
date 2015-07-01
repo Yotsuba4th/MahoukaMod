@@ -123,12 +123,11 @@ public class TargetEntity extends TargetPoint
         }
     }
 
-    @Override
-    public TargetPoint toTargetPoint()
+    public Vec3 getCurrentPoint()
     {
         if (entity == null)
-            return new TargetEntity(entity, type, isConstructed, point);
-        return new TargetEntity(entity, type, isConstructed, Vec3.createVectorHelper(entity.posX, entity.posY, entity.posZ));
+            return getPoint();
+        return Vec3.createVectorHelper(entity.posX, entity.posY, entity.posZ);
     }
 
     public Entity getEntity()

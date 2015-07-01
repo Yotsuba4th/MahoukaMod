@@ -23,9 +23,9 @@ public abstract class CastingManager
 
     /* ------------------------------------------------------------ */
 
-    public boolean isCasting(UUID cadId)
+    public boolean isCasting(UUID id)
     {
-        CastingProcess cast = casts.get(cadId);
+        CastingProcess cast = casts.get(id);
         return cast != null && cast.isActive();
     }
 

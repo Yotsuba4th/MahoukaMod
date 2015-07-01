@@ -41,8 +41,6 @@ public class CadProgrammerContainer extends Container
         if (cadStack == null)
             return;
         CadBase cad = CadManager.getCad(cadStack);
-        if (cad == null)
-            return;
 
         sequences = new ItemStack[cad.getActivationSequences().length];
         for (int i = 0; i < sequences.length; i++)

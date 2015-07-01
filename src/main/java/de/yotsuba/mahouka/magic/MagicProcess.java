@@ -17,6 +17,7 @@ import de.yotsuba.mahouka.magic.cast.CastingProcess;
 import de.yotsuba.mahouka.magic.process.ProcessExplosion;
 import de.yotsuba.mahouka.magic.process.ProcessFireShockwave;
 import de.yotsuba.mahouka.magic.process.ProcessFirebomb;
+import de.yotsuba.mahouka.magic.process.ProcessMovingOffset;
 import de.yotsuba.mahouka.magic.process.ProcessOffset;
 import de.yotsuba.mahouka.magic.process.ProcessParticle;
 import de.yotsuba.mahouka.magic.process.ProcessShockwave;
@@ -46,6 +47,7 @@ public abstract class MagicProcess implements Cloneable
         registerProcess(ProcessFirebomb.class, (short) 3);
         registerProcess(ProcessFireShockwave.class, (short) 4);
         registerProcess(ProcessOffset.class, (short) 5);
+        registerProcess(ProcessMovingOffset.class, (short) 6);
     }
 
     /* ------------------------------------------------------------ */

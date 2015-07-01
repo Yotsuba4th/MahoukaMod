@@ -64,7 +64,7 @@ public class ActivationSequence
     /* ------------------------------------------------------------ */
 
     @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister iconReg)
+    public static void registerIcons(IIconRegister iconRegistry)
     {
         // TODO: Register additional icons for special sequences
     }

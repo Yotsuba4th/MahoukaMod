@@ -49,7 +49,7 @@ public class C2StartChanneling implements IMessage, IMessageHandler<C2StartChann
     public static void send(CastingProcess cast)
     {
         C2StartChanneling message = new C2StartChanneling(cast);
-        Vec3 pos = cast.getTarget().toTargetPoint().getPoint();
+        Vec3 pos = cast.getTarget().getCurrentPoint();
         TargetPoint tpoint = new TargetPoint(cast.getCaster().worldObj.provider.dimensionId, pos.xCoord, pos.yCoord, pos.zCoord, 16 * 64);
         MahoukaMod.getNetChannel().sendToAllAround(message, tpoint);
     }

@@ -7,13 +7,16 @@ import net.minecraft.world.World;
 public abstract class Target
 {
 
+    public abstract Vec3 getPoint();
+
+    public Vec3 getCurrentPoint()
+    {
+        return getPoint();
+    }
+
     public abstract TargetType getType();
 
-    public abstract TargetPoint toTargetPoint();
-
     public abstract boolean matchesType(TargetType matchingType);
-
-    public abstract Target offset(Vec3 offset);
 
     public void toBytes(ByteBuf buf)
     {
@@ -25,7 +28,7 @@ public abstract class Target
     public static Target fromBytes(World world, ByteBuf buf)
     {
         TargetType type = TargetType.values()[buf.readByte()];
-        Target target;
+        Target target = null;
         switch (type)
         {
         case ANIMAL:
@@ -43,14 +46,15 @@ public abstract class Target
         case OFFSET:
             target = new TargetOffset(world, buf);
             break;
+        case MOVING_OFFSET:
+            target = new TargetMovingOffset(world, buf);
+            break;
         case AREA:
             target = new TargetArea(buf);
             break;
         case BLOCK:
             target = new TargetBlock(world, buf);
             break;
-        default:
-            return null;
         }
         return target;
     }

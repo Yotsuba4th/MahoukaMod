@@ -53,7 +53,7 @@ public class ProcessParticle extends MagicProcessBase
         // if (new Random().nextInt(3) == 0)
         {
             World world = cp.getCaster().worldObj;
-            Vec3 point = target.toTargetPoint().getPoint();
+            Vec3 point = target.getCurrentPoint();
             double x = point.xCoord + new Random().nextGaussian() * 0.5;
             double z = point.zCoord + new Random().nextGaussian() * 0.5;
             world.spawnParticle("witchMagic", x, point.yCoord + 1, z, 0, 0, 0);

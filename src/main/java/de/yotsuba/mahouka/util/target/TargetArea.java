@@ -31,6 +31,13 @@ public class TargetArea extends Target
     }
 
     @Override
+    public Vec3 getPoint()
+    {
+        // TODO: Get random point!
+        return center;
+    }
+
+    @Override
     public TargetType getType()
     {
         return TargetType.AREA;
@@ -40,22 +47,6 @@ public class TargetArea extends Target
     public boolean matchesType(TargetType matchingType)
     {
         return matchingType == TargetType.AREA || matchingType == TargetType.POINT;
-    }
-
-    @Override
-    public TargetPoint toTargetPoint()
-    {
-        // TODO: Get random point!
-        return new TargetPoint(center);
-    }
-
-    @Override
-    public Target offset(Vec3 offset)
-    {
-        center.xCoord += offset.xCoord;
-        center.yCoord += offset.yCoord;
-        center.zCoord += offset.zCoord;
-        return this;
     }
 
     public Vec3 getCenter()
@@ -72,5 +63,6 @@ public class TargetArea extends Target
     {
         return shape;
     }
+
 
 }
