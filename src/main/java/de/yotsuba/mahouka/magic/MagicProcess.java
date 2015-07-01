@@ -10,6 +10,7 @@ import net.minecraft.util.StatCollector;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import de.yotsuba.mahouka.MahoukaMod;
+import de.yotsuba.mahouka.client.gui.GuiContainerExt;
 import de.yotsuba.mahouka.item.ItemMagicProcess;
 import de.yotsuba.mahouka.item.ItemMagicSequence;
 import de.yotsuba.mahouka.magic.cast.CastingProcess;
@@ -196,6 +197,18 @@ public abstract class MagicProcess implements Cloneable
     {
         if (isSequence)
             info.add(getLocalizedName());
+    }
+
+    /* ------------------------------------------------------------ */
+
+    @SideOnly(Side.CLIENT)
+    public void updateGui(GuiContainerExt gui)
+    {
+    }
+
+    @SideOnly(Side.CLIENT)
+    public void drawGui(GuiContainerExt gui)
+    {
     }
 
     /* ------------------------------------------------------------ */

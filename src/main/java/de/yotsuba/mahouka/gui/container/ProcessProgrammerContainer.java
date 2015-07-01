@@ -1,4 +1,4 @@
-package de.yotsuba.mahouka.gui;
+package de.yotsuba.mahouka.gui.container;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -6,6 +6,7 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import de.yotsuba.mahouka.gui.slot.SlotProcess;
 import de.yotsuba.mahouka.util.Utils;
 
 public class ProcessProgrammerContainer extends Container
@@ -13,20 +14,13 @@ public class ProcessProgrammerContainer extends Container
 
     private InventoryBasic invProcess;
 
+    public boolean needGuiUpdate;
+
     private static final int PROCESS_SLOT = 0;
 
     public ProcessProgrammerContainer(InventoryPlayer playerInventory)
     {
         invProcess = new InventoryBasic("Process", false, 1);
-        // {
-        //
-        // @Override
-        // public boolean isItemValidForSlot(int slot, ItemStack stack)
-        // {
-        // return slot == 0 ? stack.getItem() instanceof ItemMagicProcess : false;
-        // }
-        //
-        // };
 
         addSlotToContainer(new SlotProcess(this, invProcess, PROCESS_SLOT, 8, 8));
 

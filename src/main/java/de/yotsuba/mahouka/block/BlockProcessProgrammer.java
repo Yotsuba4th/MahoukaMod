@@ -13,7 +13,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import de.yotsuba.mahouka.MahoukaMod;
-import de.yotsuba.mahouka.gui.ProcessProgrammerGui;
+import de.yotsuba.mahouka.client.gui.ProcessProgrammerGui;
 
 public class BlockProcessProgrammer extends Block
 {

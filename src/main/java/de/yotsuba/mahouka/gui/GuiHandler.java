@@ -3,6 +3,12 @@ package de.yotsuba.mahouka.gui;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import cpw.mods.fml.common.network.IGuiHandler;
+import de.yotsuba.mahouka.client.gui.CadProgrammerGui;
+import de.yotsuba.mahouka.client.gui.ProcessProgrammerGui;
+import de.yotsuba.mahouka.client.gui.SequenceProgrammerGui;
+import de.yotsuba.mahouka.gui.container.CadProgrammerContainer;
+import de.yotsuba.mahouka.gui.container.ProcessProgrammerContainer;
+import de.yotsuba.mahouka.gui.container.SequenceProgrammerContainer;
 
 public class GuiHandler implements IGuiHandler
 {

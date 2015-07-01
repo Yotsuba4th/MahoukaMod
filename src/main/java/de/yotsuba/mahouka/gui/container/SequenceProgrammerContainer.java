@@ -1,4 +1,4 @@
-package de.yotsuba.mahouka.gui;
+package de.yotsuba.mahouka.gui.container;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -7,6 +7,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import de.yotsuba.mahouka.gui.slot.SlotSeqProgrammerResult;
 import de.yotsuba.mahouka.item.ItemMagicSequence;
 import de.yotsuba.mahouka.magic.ProcessAssembler;
 import de.yotsuba.mahouka.util.Utils;
@@ -24,7 +25,7 @@ public class SequenceProgrammerContainer extends Container implements IInventory
 
     private final World worldObj;
 
-    protected ItemStack[] inventory = new ItemStack[3];
+    public ItemStack[] inventory = new ItemStack[3];
 
     /* ------------------------------------------------------------ */
 
@@ -132,7 +133,8 @@ public class SequenceProgrammerContainer extends Container implements IInventory
     public boolean canInteractWith(EntityPlayer p_75145_1_)
     {
         return true;
-        // return worldObj.getBlock(posX, posY, posZ) != Blocks.crafting_table ? false : p_75145_1_.getDistanceSq((double) posX + 0.5D, (double) posY + 0.5D,
+        // return worldObj.getBlock(posX, posY, posZ) != Blocks.crafting_table ? false :
+        // p_75145_1_.getDistanceSq((double) posX + 0.5D, (double) posY + 0.5D,
         // (double) posZ + 0.5D) <= 64.0D;
     }
 

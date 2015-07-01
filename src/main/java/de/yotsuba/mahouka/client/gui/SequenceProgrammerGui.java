@@ -1,4 +1,4 @@
-package de.yotsuba.mahouka.gui;
+package de.yotsuba.mahouka.client.gui;
 
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -8,6 +8,7 @@ import org.lwjgl.opengl.GL11;
 
 import de.yotsuba.mahouka.MahoukaMod;
 import de.yotsuba.mahouka.block.BlockSequenceProgrammer;
+import de.yotsuba.mahouka.gui.container.SequenceProgrammerContainer;
 
 public class SequenceProgrammerGui extends GuiContainer
 {

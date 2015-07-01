@@ -1,5 +1,6 @@
-package de.yotsuba.mahouka.gui;
+package de.yotsuba.mahouka.gui.slot;
 
+import de.yotsuba.mahouka.gui.container.SequenceProgrammerContainer;
 import net.minecraft.inventory.Slot;
 
 public class SlotSeqProgrammerResult extends Slot

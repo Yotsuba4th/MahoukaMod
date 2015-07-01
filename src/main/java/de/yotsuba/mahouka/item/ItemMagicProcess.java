@@ -95,4 +95,11 @@ public class ItemMagicProcess extends ItemMagicSequence
         // return getUnlocalizedNameInefficiently(stack) + " (Psi " + process.getPsionCost() + ")";
     }
 
+    /* ------------------------------------------------------------ */
+
+    public void drawGuiParts()
+    {
+
+    }
+
 }

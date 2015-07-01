@@ -13,7 +13,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import de.yotsuba.mahouka.MahoukaMod;
-import de.yotsuba.mahouka.gui.CadProgrammerGui;
+import de.yotsuba.mahouka.client.gui.CadProgrammerGui;
 
 public class BlockCadProgrammer extends Block
 {

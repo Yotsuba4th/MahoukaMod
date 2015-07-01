@@ -1,4 +1,4 @@
-package de.yotsuba.mahouka.gui;
+package de.yotsuba.mahouka.gui.container;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -6,6 +6,7 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import de.yotsuba.mahouka.gui.slot.SlotCad;
 import de.yotsuba.mahouka.item.ItemCad;
 import de.yotsuba.mahouka.magic.ActivationSequence;
 import de.yotsuba.mahouka.magic.cad.CadBase;
@@ -34,7 +35,7 @@ public class CadProgrammerContainer extends Container
             addSlotToContainer(slot);
     }
 
-    protected void cadToSequences()
+    public void cadToSequences()
     {
         sequences = null;
         ItemStack cadStack = invCad.getStackInSlot(0);
@@ -61,7 +62,7 @@ public class CadProgrammerContainer extends Container
             invSequences.setInventorySlotContents(i, i < sequences.length ? sequences[i] : null);
     }
 
-    protected void sequencesToCad(ItemStack cadStack)
+    public void sequencesToCad(ItemStack cadStack)
     {
         if (cadStack == null || sequences == null)
             return;

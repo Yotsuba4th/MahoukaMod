@@ -13,7 +13,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import de.yotsuba.mahouka.MahoukaMod;
-import de.yotsuba.mahouka.gui.SequenceProgrammerGui;
+import de.yotsuba.mahouka.client.gui.SequenceProgrammerGui;
 
 public class BlockSequenceProgrammer extends Block
 {

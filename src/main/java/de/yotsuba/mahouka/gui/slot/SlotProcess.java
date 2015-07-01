@@ -1,16 +1,18 @@
-package de.yotsuba.mahouka.gui;
+package de.yotsuba.mahouka.gui.slot;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import de.yotsuba.mahouka.gui.container.ProcessProgrammerContainer;
+import de.yotsuba.mahouka.item.ItemMagicProcess;
 
-public class SlotCad extends Slot
+public class SlotProcess extends Slot
 {
 
-    private final CadProgrammerContainer container;
+    private final ProcessProgrammerContainer container;
 
-    public SlotCad(CadProgrammerContainer container, IInventory inventory, int index, int x, int y)
+    public SlotProcess(ProcessProgrammerContainer container, IInventory inventory, int index, int x, int y)
     {
         super(inventory, index, x, y);
         this.container = container;
@@ -20,14 +22,16 @@ public class SlotCad extends Slot
     public void onSlotChanged()
     {
         super.onSlotChanged();
+        container.needGuiUpdate = true;
         if (getStack() != null)
-            container.cadToSequences();
+        {
+            // TODO: Read/Write NBT settings for process
+        }
     }
 
     @Override
     public void onPickupFromSlot(EntityPlayer player, ItemStack stack)
     {
-        container.sequencesToCad(stack);
         super.onPickupFromSlot(player, stack);
     }
 
@@ -35,6 +39,12 @@ public class SlotCad extends Slot
     public int getSlotStackLimit()
     {
         return 1;
+    }
+
+    @Override
+    public boolean isItemValid(ItemStack stack)
+    {
+        return stack.getItem() instanceof ItemMagicProcess;
     }
 
 }
