@@ -28,12 +28,6 @@ public class TargetDirectedPoint extends TargetPoint
         return TargetType.POINT_DIR;
     }
 
-    @Override
-    public TargetPoint toTargetPoint()
-    {
-        return this;
-    }
-
     public Vec3 getSourcePoint()
     {
         return sourcePoint;

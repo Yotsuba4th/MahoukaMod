@@ -31,8 +31,6 @@ public abstract class Target
         case MOB:
         case SELF:
             target = new TargetEntity(world, buf, type);
-            if (((TargetEntity) target).getEntity() == null)
-                return null;
             break;
         case POINT:
             target = new TargetPoint(buf);

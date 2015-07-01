@@ -57,6 +57,14 @@ public class TargetEntity extends TargetPoint
         this.isConstructed = buf.readBoolean();
     }
 
+    private TargetEntity(Entity entity, TargetType type, boolean isConstructed, Vec3 point)
+    {
+        super(point);
+        this.type = type;
+        this.entity = entity;
+        this.isConstructed = isConstructed;
+    }
+
     @Override
     public void toBytes(ByteBuf buf)
     {
@@ -74,7 +82,9 @@ public class TargetEntity extends TargetPoint
     @Override
     public TargetPoint toTargetPoint()
     {
-        return new TargetEntity(entity, type == TargetType.SELF, isConstructed);
+        if (entity == null)
+            return new TargetEntity(entity, type, isConstructed, point);
+        return new TargetEntity(entity, type, isConstructed, Vec3.createVectorHelper(entity.posX, entity.posY, entity.posZ));
     }
 
     public Entity getEntity()
