@@ -26,7 +26,14 @@ public class CadManager
     {
         NBTTagCompound tag = stack.getTagCompound();
         if (tag == null)
-            return null;
+        {
+            tag = new NBTTagCompound();
+            stack.setTagCompound(tag);
+            CadBase cad = ((ItemCad) stack.getItem()).createNewCad();
+            cad.writeToNBT(tag);
+            cads.put(cad.getId(), cad);
+            return cad;
+        }
         CadBase cad = cads.get(UUID.fromString(tag.getString("id")));
         if (cad == null)
         {
