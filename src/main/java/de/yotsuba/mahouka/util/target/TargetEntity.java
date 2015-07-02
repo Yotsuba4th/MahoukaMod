@@ -69,7 +69,7 @@ public class TargetEntity extends TargetPoint
     public void toBytes(ByteBuf buf)
     {
         super.toBytes(buf);
-        buf.writeInt(entity.getEntityId());
+        buf.writeInt(entity == null ? 0 : entity.getEntityId());
         buf.writeBoolean(isConstructed);
     }
 
@@ -123,6 +123,7 @@ public class TargetEntity extends TargetPoint
         }
     }
 
+    @Override
     public Vec3 getCurrentPoint()
     {
         if (entity == null)

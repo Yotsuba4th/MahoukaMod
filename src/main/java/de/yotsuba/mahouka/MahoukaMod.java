@@ -7,6 +7,9 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.item.Item;
+import net.minecraft.util.IIcon;
+import net.minecraftforge.client.event.TextureStitchEvent;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -14,6 +17,7 @@ import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStoppedEvent;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import cpw.mods.fml.common.registry.EntityRegistry;
@@ -81,6 +85,10 @@ public class MahoukaMod
 
     /* ------------------------------------------------------------ */
 
+    public static IIcon icon_rune_default;
+
+    /* ------------------------------------------------------------ */
+
     public static final ItemCad cad = new ItemCad();
 
     public static final Item item_magic_sequence = new ItemMagicSequence();
@@ -90,6 +98,7 @@ public class MahoukaMod
     @EventHandler
     public void init(FMLInitializationEvent event)
     {
+        MinecraftForge.EVENT_BUS.register(this);
         NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
 
         loadConfig();
@@ -163,6 +172,14 @@ public class MahoukaMod
         netChannel.registerMessage(S4CancelCast.class, S4CancelCast.class, 4, Side.SERVER);
         netChannel.registerMessage(C5CastUpdate.class, C5CastUpdate.class, 5, Side.CLIENT);
         netChannel.registerMessage(S6ButtonClick.class, S6ButtonClick.class, 6, Side.SERVER);
+    }
+
+    /* ------------------------------------------------------------ */
+
+    @SubscribeEvent
+    public void textureStitchEvent(TextureStitchEvent event)
+    {
+        icon_rune_default = event.map.registerIcon(MahoukaMod.MODID + ":rune_default");
     }
 
     /* ------------------------------------------------------------ */

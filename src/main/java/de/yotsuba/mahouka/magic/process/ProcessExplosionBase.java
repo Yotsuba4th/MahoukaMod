@@ -40,11 +40,13 @@ public abstract class ProcessExplosionBase extends MagicProcess
     @Override
     public int getCastDuration(Target target)
     {
-        return 5;
+        return 20;
     }
 
+    /* ------------------------------------------------------------ */
+
     @Override
-    public Target castStart(CastingProcess cp, Target target)
+    public Target castEnd(CastingProcess cp, Target target)
     {
         float strength = 4f;
 

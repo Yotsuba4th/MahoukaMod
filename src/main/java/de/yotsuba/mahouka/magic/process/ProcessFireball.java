@@ -25,7 +25,7 @@ public class ProcessFireball extends ProcessProjectile
     @Override
     public int getPsionCost()
     {
-        return 10;
+        return 20;
     }
 
     @Override
@@ -37,7 +37,7 @@ public class ProcessFireball extends ProcessProjectile
     @Override
     public int getCastDuration(Target target)
     {
-        return Utils.millisecondsToTicks(1500);
+        return Utils.millisecondsToTicks(3000);
     }
 
     @Override

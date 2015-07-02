@@ -2,7 +2,6 @@ package de.yotsuba.mahouka.magic.cast;
 
 import io.netty.buffer.ByteBuf;
 
-import java.util.Random;
 import java.util.UUID;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -105,7 +104,7 @@ public class CastingProcess
             MagicProcess process = sequence.getProcesses().get(processIndex);
             MahoukaMod.proxy.castEndClient(process, this, currentTarget);
         }
-        
+
         processIndex = newProcess;
         currentTarget = target;
         if (processIndex < sequence.getProcesses().size())
@@ -168,8 +167,11 @@ public class CastingProcess
     private void channelStartClient()
     {
         // TODO: DEBUG
-        Vec3 point = currentTarget.getCurrentPoint();
-        caster.worldObj.spawnParticle("heart", point.xCoord, point.yCoord + 1, point.zCoord, 0, 0, 0);
+        // Vec3 point = currentTarget.getCurrentPoint();
+        // EntityFxRune entityFx = new EntityFxRune(caster.worldObj, point.xCoord, point.yCoord + 0.01, point.zCoord, 0, 0, 0);
+        // entityFx.setFlat(true);
+        // entityFx.setRadius(2);
+        // Minecraft.getMinecraft().effectRenderer.addEffect(entityFx);
     }
 
     /* ------------------------------------------------------------ */
@@ -180,11 +182,10 @@ public class CastingProcess
 
     private void channelTickClient()
     {
-        // TODO: DEBUG
-        Vec3 point = currentTarget.getCurrentPoint();
-        double x = point.xCoord + new Random().nextGaussian() * 0.5;
-        double z = point.zCoord + new Random().nextGaussian() * 0.5;
-        caster.worldObj.spawnParticle("instantSpell", x, point.yCoord + 1, z, 0, 0, 0);
+        // Vec3 point = currentTarget.getCurrentPoint();
+        // double x = point.xCoord + new Random().nextGaussian() * 0.5;
+        // double z = point.zCoord + new Random().nextGaussian() * 0.5;
+        // caster.worldObj.spawnParticle("instantSpell", x, point.yCoord + 1, z, 0, 0, 0);
     }
 
     /* ------------------------------------------------------------ */

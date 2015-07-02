@@ -42,7 +42,7 @@ public class ProcessAccelerate extends MagicProcess
     @Override
     public int getPsionCost()
     {
-        return 1;
+        return 5;
     }
 
     @Override
