@@ -84,6 +84,7 @@ public abstract class ProcessProjectile extends MagicProcess
         targetFx = new Effect(point.xCoord, point.yCoord, point.zCoord);
         targetFx.setIcon(MahoukaMod.icon_rune_default);
         targetFx.setScale(1);
+        targetFx.setColor(0, 0, 0, 0.25f);
         targetFx.vRoll = -2;
         targetFx.fadeIn = 10;
         targetFx.fadeOut = 10;

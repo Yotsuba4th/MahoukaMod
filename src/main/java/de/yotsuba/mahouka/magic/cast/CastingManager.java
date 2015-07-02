@@ -1,8 +1,8 @@
 package de.yotsuba.mahouka.magic.cast;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 import net.minecraft.entity.player.EntityPlayer;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -12,7 +12,7 @@ import de.yotsuba.mahouka.util.target.Target;
 public abstract class CastingManager
 {
 
-    protected Map<UUID, CastingProcess> casts = new HashMap<UUID, CastingProcess>();
+    protected Map<UUID, CastingProcess> casts = new ConcurrentHashMap<UUID, CastingProcess>();
 
     /* ------------------------------------------------------------ */
 

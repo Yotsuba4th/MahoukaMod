@@ -1,6 +1,7 @@
 package de.yotsuba.mahouka.magic.cast;
 
 import java.util.Iterator;
+import java.util.Map.Entry;
 import java.util.UUID;
 
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -28,9 +29,9 @@ public class CastingManagerServer extends CastingManager
         if (event.phase != Phase.START)
             return;
 
-        for (Iterator<CastingProcess> it = casts.values().iterator(); it.hasNext();)
+        for (Iterator<Entry<UUID, CastingProcess>> it = casts.entrySet().iterator(); it.hasNext();)
         {
-            CastingProcess cast = it.next();
+            CastingProcess cast = it.next().getValue();
             cast.serverTick();
             if (!cast.isActive())
                 it.remove();
