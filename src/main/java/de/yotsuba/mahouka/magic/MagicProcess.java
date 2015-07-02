@@ -210,6 +210,10 @@ public abstract class MagicProcess implements Cloneable
     @SideOnly(Side.CLIENT)
     public void guiDraw(GuiContainerExt gui)
     {
+        String text = StatCollector.translateToLocal("gui.process.no_settings");
+        int x = (gui.getWidth() - gui.getFontRenderer().getStringWidth(text)) / 2;
+        int y = (gui.getHeight() - 6) / 4;
+        gui.getFontRenderer().drawString(text, x, y, 4210752);
     }
 
     @SideOnly(Side.CLIENT)

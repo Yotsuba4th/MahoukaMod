@@ -23,3 +23,4 @@ mahouka.process.fireball=Fireball
 mahouka.process.accelerate=Accelerate
 
 # Gui related strings
+gui.process.no_settings=No settings available
