@@ -21,7 +21,7 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.ClientTickEvent;
 import de.yotsuba.mahouka.CommonProxy;
-import de.yotsuba.mahouka.client.render.EffectRenderer;
+import de.yotsuba.mahouka.client.effect.EffectRenderer;
 import de.yotsuba.mahouka.client.render.RenderCrystal;
 import de.yotsuba.mahouka.entity.projectile.EntityMagicProjectileFire;
 import de.yotsuba.mahouka.entity.projectile.EntityMagicProjectileIce;

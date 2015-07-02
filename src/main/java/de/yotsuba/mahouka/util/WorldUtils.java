@@ -128,7 +128,7 @@ public class WorldUtils
         }
     }
 
-    public static float dropOnGround(World world, float posX, float posY, float posZ)
+    public static double dropOnGround(World world, double posX, double posY, double posZ)
     {
         int x = (int) Math.floor(posX);
         int y = (int) Math.floor(posY);

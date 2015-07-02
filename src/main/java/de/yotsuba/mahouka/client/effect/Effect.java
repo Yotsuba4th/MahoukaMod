@@ -1,60 +1,71 @@
-package de.yotsuba.mahouka.entity.fx;
+package de.yotsuba.mahouka.client.effect;
 
 import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import de.yotsuba.mahouka.util.WorldUtils;
 
 // TODO: Probably need to write our own particle renderer to handle these with special cases
 // Current problem is that it is very complicated to calculate rotations for the texture which would be way easier if we  can directly use OpenGL and its matrices
 // This will also allow us to use large textures for effects as well
-public class EntityFxExt
+public class Effect
 {
 
     private boolean isDead;
+
     public int maxAge;
+
     protected IIcon icon;
+
+    protected double x;
+    protected double y;
+    protected double z;
+
+    protected double xt;
+    protected double yt;
+    protected double zt;
+
+    protected double lastX;
+    protected double lastY;
+    protected double lastZ;
+
+    protected float yaw;
+    protected float pitch;
+    protected float roll;
+
     protected float vx;
     protected float vy;
     protected float vz;
+
     protected float r;
     protected float g;
     protected float b;
     protected float a;
-    protected float scale;
-    protected float x;
-    protected float y;
-    protected float z;
-    protected float xt;
-    protected float yt;
-    protected float zt;
-    protected float lastX;
-    protected float lastY;
-    protected float lastZ;
 
-    public EntityFxExt(float x, float y, float z)
+    protected float scale;
+
+    public Effect(double x, double y, double z)
     {
         this(x, y, z, 0, 0, 0);
     }
 
-    public EntityFxExt(float x, float y, float z, float vx, float vy, float vz)
+    public Effect(double x, double y, double z, float vx, float vy, float vz)
     {
-
+        this(x, y, z, vx, vy, vz, 1, 1, 1, 1);
     }
 
-    public EntityFxExt(float x, float y, float z, float vx, float vy, float vz, float r, float g, float b, float a)
+    public Effect(double x, double y, double z, float vx, float vy, float vz, float r, float g, float b, float a)
     {
         setPosition(x, y, z);
-
         setVelocity(vx, vy, vz);
-
         setColor(r, g, b, a);
-
-        maxAge = 20;
+        setMaxAge(20);
+        setScale(1);
     }
 
-    private void setColor(float r, float g, float b, float a)
+    public void setColor(float r, float g, float b, float a)
     {
         this.r = r;
         this.g = g;
@@ -62,18 +73,33 @@ public class EntityFxExt
         this.a = a;
     }
 
-    private void setVelocity(float vx, float vy, float vz)
+    public void setVelocity(float vx, float vy, float vz)
     {
         this.vx = vx;
         this.vy = vy;
         this.vz = vz;
     }
 
-    public void setPosition(float x, float y, float z)
+    public void setPosition(double x, double y, double z)
     {
         this.x = x;
         this.y = y;
         this.z = z;
+    }
+
+    public void setPositionOnGround(World world, double x, double y, double z)
+    {
+        setPosition(x, WorldUtils.dropOnGround(world, x, y, z) + 0.51f, z);
+    }
+
+    public void lookAt(Vec3 lookAt)
+    {
+        double xd = lookAt.xCoord - x;
+        double yd = lookAt.yCoord - y;
+        double zd = lookAt.zCoord - z;
+        yaw = (float) (Math.atan2(zd, xd) * 180 / Math.PI) - 90;
+        pitch = (float) (Math.atan2(Math.sqrt(xd * xd + zd * zd), yd) * 180 / Math.PI) - 90;
+        roll = 0;
     }
 
     public void setMaxAge(int maxAge)
@@ -86,9 +112,9 @@ public class EntityFxExt
         this.scale = scale;
     }
 
-    public void setPositionOnGround(World world, float x, float y, float z)
+    public void setIcon(IIcon icon)
     {
-        setPosition(x, WorldUtils.dropOnGround(world, x, y, z) + 0.51f, z);
+        this.icon = icon;
     }
 
     public void renderParticle(float partialTickTime)

@@ -1,4 +1,4 @@
-package de.yotsuba.mahouka.client.render;
+package de.yotsuba.mahouka.client.effect;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,33 +20,32 @@ import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import de.yotsuba.mahouka.entity.fx.EntityFxExt;
 
 @SideOnly(Side.CLIENT)
 public abstract class EffectRenderer
 {
     private static World world;
 
-    private static Map<UUID, List<EntityFxExt>> fxMap = new HashMap<UUID, List<EntityFxExt>>();
+    private static Map<UUID, List<Effect>> fxMap = new HashMap<UUID, List<Effect>>();
 
-    public static void addEffect(UUID uuid, EntityFxExt entityFx)
+    public static void addEffect(Effect entityFx, UUID uuid)
     {
-        List<EntityFxExt> list = fxMap.get(uuid);
+        List<Effect> list = fxMap.get(uuid);
         if (list == null)
         {
-            list = new ArrayList<EntityFxExt>();
+            list = new ArrayList<Effect>();
         }
         list.add(entityFx);
     }
 
     public static void removeEffects()
     {
-        for (Iterator<Entry<UUID, List<EntityFxExt>>> itList = fxMap.entrySet().iterator(); itList.hasNext();)
+        for (Iterator<Entry<UUID, List<Effect>>> itList = fxMap.entrySet().iterator(); itList.hasNext();)
         {
-            Entry<UUID, List<EntityFxExt>> effectList = itList.next();
-            for (Iterator<EntityFxExt> itEffect = effectList.getValue().iterator(); itEffect.hasNext();)
+            Entry<UUID, List<Effect>> effectList = itList.next();
+            for (Iterator<Effect> itEffect = effectList.getValue().iterator(); itEffect.hasNext();)
             {
-                EntityFxExt effect = itEffect.next();
+                Effect effect = itEffect.next();
                 if (effect.isDead())
                 {
                     itEffect.remove();
@@ -60,12 +59,12 @@ public abstract class EffectRenderer
 
     public static void updateEffects()
     {
-        for (Iterator<Entry<UUID, List<EntityFxExt>>> itList = fxMap.entrySet().iterator(); itList.hasNext();)
+        for (Iterator<Entry<UUID, List<Effect>>> itList = fxMap.entrySet().iterator(); itList.hasNext();)
         {
-            Entry<UUID, List<EntityFxExt>> effectList = itList.next();
-            for (Iterator<EntityFxExt> itEffect = effectList.getValue().iterator(); itEffect.hasNext();)
+            Entry<UUID, List<Effect>> effectList = itList.next();
+            for (Iterator<Effect> itEffect = effectList.getValue().iterator(); itEffect.hasNext();)
             {
-                EntityFxExt effect = itEffect.next();
+                Effect effect = itEffect.next();
                 try
                 {
                     effect.update();
@@ -79,7 +78,7 @@ public abstract class EffectRenderer
         removeEffects();
     }
 
-    private static void crashReport(String action, final EntityFxExt entityfx, Throwable throwable)
+    private static void crashReport(String action, final Effect entityfx, Throwable throwable)
     {
         CrashReport crashreport = CrashReport.makeCrashReport(throwable, action + "ing Particle");
         CrashReportCategory crashreportcategory = crashreport.makeCategory("Particle being " + action.toLowerCase() + "ed");
@@ -119,12 +118,12 @@ public abstract class EffectRenderer
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glAlphaFunc(GL11.GL_GREATER, 1 / 255f);
 
-        for (Iterator<Entry<UUID, List<EntityFxExt>>> itList = fxMap.entrySet().iterator(); itList.hasNext();)
+        for (Iterator<Entry<UUID, List<Effect>>> itList = fxMap.entrySet().iterator(); itList.hasNext();)
         {
-            Entry<UUID, List<EntityFxExt>> effectList = itList.next();
-            for (Iterator<EntityFxExt> itEffect = effectList.getValue().iterator(); itEffect.hasNext();)
+            Entry<UUID, List<Effect>> effectList = itList.next();
+            for (Iterator<Effect> itEffect = effectList.getValue().iterator(); itEffect.hasNext();)
             {
-                EntityFxExt effect = itEffect.next();
+                Effect effect = itEffect.next();
                 try
                 {
                     effect.renderParticle(partialTickTime);
@@ -152,9 +151,9 @@ public abstract class EffectRenderer
     public static int getEffectsCount()
     {
         int effectsCount = 0;
-        for (Iterator<Entry<UUID, List<EntityFxExt>>> itList = fxMap.entrySet().iterator(); itList.hasNext();)
+        for (Iterator<Entry<UUID, List<Effect>>> itList = fxMap.entrySet().iterator(); itList.hasNext();)
         {
-            Entry<UUID, List<EntityFxExt>> effectList = itList.next();
+            Entry<UUID, List<Effect>> effectList = itList.next();
             effectsCount += effectList.getValue().size();
         }
         return effectsCount;

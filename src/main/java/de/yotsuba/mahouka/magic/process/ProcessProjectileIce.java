@@ -44,7 +44,7 @@ public class ProcessProjectileIce extends ProcessProjectile
     public void createSpawnEffect(CastingProcess cp, Vec3 point)
     {
         super.createSpawnEffect(cp, point);
-        spawnFx.setColor(0.2f, 0.3f, 1f);
+        spawnFx.setColor(0.2f, 0.3f, 1, 1);
     }
-    
+
 }
