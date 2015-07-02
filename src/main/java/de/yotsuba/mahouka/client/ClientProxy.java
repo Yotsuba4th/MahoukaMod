@@ -67,8 +67,8 @@ public class ClientProxy extends CommonProxy
         MinecraftForge.EVENT_BUS.register(this);
 
         // RenderingRegistry.registerEntityRenderingHandler(EntityMagicProjectileFire.class, new RenderFireball(0.5f));
-        RenderingRegistry.registerEntityRenderingHandler(EntityMagicProjectileIce.class, new RenderCrystal(0.2f, 0.3f, 1f, 0.4f));
-        RenderingRegistry.registerEntityRenderingHandler(EntityMagicProjectileEarth.class, new RenderCrystal(0.2f, 0.3f, 1f, 0.4f));
+        RenderingRegistry.registerEntityRenderingHandler(EntityMagicProjectileIce.class, new RenderCrystal(0.2f, 0.3f, 1f, 0.4f, 0.4f, 2));
+        RenderingRegistry.registerEntityRenderingHandler(EntityMagicProjectileEarth.class, new RenderCrystal(0.5f, 0.36f, 0.05f, 1, 0.5f, 0.5f));
     }
 
     /* ------------------------------------------------------------ */

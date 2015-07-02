@@ -89,6 +89,8 @@ public class CastingProcess
     {
         // TODO Auto-generated method stub
 
+        active = false;
+        
         return true;
     }
 
@@ -248,6 +250,12 @@ public class CastingProcess
             if (processIndex < sequence.getProcesses().size())
             {
                 process = sequence.getProcesses().get(processIndex);
+                if (!currentTarget.matchesTypes(process.getValidTargets()))
+                {
+                    // TODO: Cancel cast with errors
+                    cancel();
+                    return;
+                }
                 currentTarget = process.castStart(this, currentTarget);
             }
             else

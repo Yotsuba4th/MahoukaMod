@@ -13,13 +13,14 @@ public class EntityMagicProjectileIce extends EntityMagicProjectile
     {
         super(world);
         setSize(0.5f, 0.5f);
+        maxTicksToLive = 200;
     }
 
     public EntityMagicProjectileIce(World world, EntityLivingBase shooter, double x, double y, double z)
     {
         super(world, shooter, x, y, z);
         setSize(0.5f, 0.5f);
-        maxTicksToLive = 6000;
+        maxTicksToLive = 200;
     }
 
     @Override

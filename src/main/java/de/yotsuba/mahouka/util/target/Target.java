@@ -18,6 +18,14 @@ public abstract class Target
 
     public abstract boolean matchesType(TargetType matchingType);
 
+    public boolean matchesTypes(TargetType[] matchingTypes)
+    {
+        for (TargetType targetType : matchingTypes)
+            if (matchesType(targetType))
+                return true;
+        return false;
+    }
+    
     public void toBytes(ByteBuf buf)
     {
         buf.writeByte(getType().ordinal());

@@ -7,7 +7,6 @@ import net.minecraft.util.Vec3;
 import cpw.mods.fml.client.config.GuiButtonExt;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import de.yotsuba.mahouka.MahoukaMod;
 import de.yotsuba.mahouka.client.gui.GuiContainerExt;
 import de.yotsuba.mahouka.magic.MagicProcess;
 import de.yotsuba.mahouka.magic.cast.CastingProcess;
@@ -62,12 +61,6 @@ public class ProcessOffset extends MagicProcess
     public String getName()
     {
         return "offset";
-    }
-
-    @Override
-    public String getTextureName()
-    {
-        return MahoukaMod.MODID + ":process_offset";
     }
 
     @Override

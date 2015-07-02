@@ -99,6 +99,7 @@ public abstract class ProcessProjectile extends MagicProcess
         spawnFx.vRoll = 6;
         spawnFx.fadeIn = 10;
         spawnFx.fadeOut = 5;
+        spawnFx.pitch = -90;
         spawnFx.setMaxAge(castDurationCache + spawnFx.fadeOut);
     }
 
