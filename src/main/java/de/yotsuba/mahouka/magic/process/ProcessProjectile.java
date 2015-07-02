@@ -47,12 +47,6 @@ public abstract class ProcessProjectile extends MagicProcess
     /* ------------------------------------------------------------ */
 
     @Override
-    public Target castStart(CastingProcess cp, Target target)
-    {
-        return target;
-    }
-
-    @Override
     public void castStartClient(CastingProcess cp, Target target)
     {
         castDurationCache = getCastDuration(target);
@@ -81,7 +75,7 @@ public abstract class ProcessProjectile extends MagicProcess
     private void createTargetEffect(CastingProcess cp, Vec3 point)
     {
         // TODO: Allow detection of same effects at the same location and prevent it
-        targetFx = new Effect(point.xCoord, point.yCoord, point.zCoord);
+        targetFx = new Effect(point.xCoord, point.yCoord + 0.01, point.zCoord);
         targetFx.setIcon(MahoukaMod.icon_rune_default);
         targetFx.setScale(1);
         targetFx.setColor(0, 0, 0, 0.25f);
@@ -93,7 +87,7 @@ public abstract class ProcessProjectile extends MagicProcess
 
     public void createSpawnEffect(CastingProcess cp, Vec3 point)
     {
-        spawnFx = new Effect(point.xCoord, point.yCoord, point.zCoord);
+        spawnFx = new Effect(point.xCoord, point.yCoord + 0.01, point.zCoord);
         spawnFx.setIcon(MahoukaMod.icon_rune_default);
         spawnFx.setScale(1);
         spawnFx.setColor(1, 0, 0, 1);
@@ -109,14 +103,13 @@ public abstract class ProcessProjectile extends MagicProcess
     @Override
     public void castTickClient(CastingProcess cp, Target target)
     {
-        if (targetFx != null)
+        Vec3 targetPoint = getTargetPoint(target);
+        if (targetPoint != null)
         {
-            Vec3 targetPoint = getTargetPoint(target);
-            if (targetPoint != null)
-            {
-                targetFx.setPositionOnGround(cp.getWorld(), targetPoint.xCoord, targetPoint.yCoord, targetPoint.zCoord);
+            if (targetFx != null)
+                targetFx.setPositionOnGround(cp.getWorld(), targetPoint.xCoord, targetPoint.yCoord + 0.1, targetPoint.zCoord);
+            if (spawnFx != null)
                 spawnFx.lookAt(targetPoint);
-            }
         }
     }
 

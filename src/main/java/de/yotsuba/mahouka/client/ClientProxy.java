@@ -24,7 +24,9 @@ import cpw.mods.fml.common.gameevent.TickEvent.Phase;
 import de.yotsuba.mahouka.CommonProxy;
 import de.yotsuba.mahouka.client.effect.EffectRenderer;
 import de.yotsuba.mahouka.client.render.RenderCrystal;
+import de.yotsuba.mahouka.client.render.RenderFireball;
 import de.yotsuba.mahouka.entity.projectile.EntityMagicProjectileEarth;
+import de.yotsuba.mahouka.entity.projectile.EntityMagicProjectileFire;
 import de.yotsuba.mahouka.entity.projectile.EntityMagicProjectileIce;
 import de.yotsuba.mahouka.item.ItemCad;
 import de.yotsuba.mahouka.magic.MagicProcess;
@@ -66,7 +68,7 @@ public class ClientProxy extends CommonProxy
         FMLCommonHandler.instance().bus().register(this);
         MinecraftForge.EVENT_BUS.register(this);
 
-        // RenderingRegistry.registerEntityRenderingHandler(EntityMagicProjectileFire.class, new RenderFireball(0.5f));
+        RenderingRegistry.registerEntityRenderingHandler(EntityMagicProjectileFire.class, new RenderFireball(0.5f));
         RenderingRegistry.registerEntityRenderingHandler(EntityMagicProjectileIce.class, new RenderCrystal(0.2f, 0.3f, 1f, 0.4f, 0.4f, 2));
         RenderingRegistry.registerEntityRenderingHandler(EntityMagicProjectileEarth.class, new RenderCrystal(0.5f, 0.36f, 0.05f, 1, 0.5f, 0.5f));
     }

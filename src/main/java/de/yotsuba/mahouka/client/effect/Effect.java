@@ -11,9 +11,6 @@ import org.lwjgl.opengl.GL11;
 
 import de.yotsuba.mahouka.util.WorldUtils;
 
-// TODO: Probably need to write our own particle renderer to handle these with special cases
-// Current problem is that it is very complicated to calculate rotations for the texture which would be way easier if we  can directly use OpenGL and its matrices
-// This will also allow us to use large textures for effects as well
 public class Effect
 {
 
@@ -109,7 +106,7 @@ public class Effect
 
     public void setPositionOnGround(World world, double x, double y, double z)
     {
-        setPosition(x, WorldUtils.dropOnGround(world, x, y, z) + 0.51f, z);
+        setPosition(x, WorldUtils.dropOnGround(world, x, y, z) + 0.501f, z);
     }
 
     public void setDead()

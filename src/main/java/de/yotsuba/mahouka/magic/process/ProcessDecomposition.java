@@ -4,10 +4,7 @@ import java.util.Random;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.EntityDamageSource;
 import net.minecraft.util.Vec3;
-import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import de.yotsuba.mahouka.magic.MagicProcess;
@@ -62,7 +59,6 @@ public class ProcessDecomposition extends MagicProcess
     public void castTickClient(CastingProcess cp, Target target)
     {
         Random rand = new Random();
-        World world = cp.getWorld();
         Vec3 point = target.getCurrentPoint();
         String fx = "cloud";
 
@@ -92,8 +88,7 @@ public class ProcessDecomposition extends MagicProcess
     @Override
     public Target castEnd(CastingProcess cp, Target target)
     {
-        DamageSource d = new EntityDamageSource(NAME, cp.getCaster()).setMagicDamage().setDamageBypassesArmor().setDamageIsAbsolute();
-
+        // DamageSource dmgSource = new EntityDamageSource(NAME, cp.getCaster()).setMagicDamage().setDamageBypassesArmor().setDamageIsAbsolute();
         if (target instanceof TargetEntity)
         {
             Entity entity = ((TargetEntity) target).getEntity();
