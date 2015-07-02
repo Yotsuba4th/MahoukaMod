@@ -4,6 +4,7 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
@@ -12,6 +13,7 @@ import de.yotsuba.mahouka.MahoukaMod;
 import de.yotsuba.mahouka.block.BlockProcessProgrammer;
 import de.yotsuba.mahouka.gui.container.ProcessProgrammerContainer;
 import de.yotsuba.mahouka.item.ItemMagicProcess;
+import de.yotsuba.mahouka.magic.ActivationSequence;
 import de.yotsuba.mahouka.magic.MagicProcess;
 
 public class ProcessProgrammerGui extends GuiContainerExt
@@ -61,7 +63,6 @@ public class ProcessProgrammerGui extends GuiContainerExt
             buttonList.clear();
             if (process != null)
                 process.guiUpdate(this);
-            // buttonList.add(new GuiButtonExt(1, x, y, 8, 8, "+"));
         }
     }
 
@@ -69,16 +70,31 @@ public class ProcessProgrammerGui extends GuiContainerExt
     {
         ItemStack stack = container.getSlot(0).getStack();
         if (stack != null)
-        {
-            NBTTagCompound stackData = ((ItemMagicProcess) stack.getItem()).getStackData(stack);
-            return MagicProcess.createFromNBT(stackData);
-        }
+            return ((ItemMagicProcess) stack.getItem()).getProcess(stack);
         return null;
     }
 
     @Override
     protected void actionPerformed(GuiButton button)
     {
-        process.guiButtonClick(button);
+        if (process != null)
+        {
+            process.guiButtonClick(button);
+            updateItemStack();
+        }
     }
+
+    public void updateItemStack()
+    {
+        ItemStack stack = container.getSlot(0).getStack();
+        if (stack != null)
+        {
+            NBTTagCompound tag = new NBTTagCompound();
+            NBTTagList list = new NBTTagList();
+            list.appendTag(process.writeToNBT());
+            tag.setTag(ActivationSequence.NBT_PROCESSES, list);
+            stack.setTagCompound(tag);
+        }
+    }
+
 }

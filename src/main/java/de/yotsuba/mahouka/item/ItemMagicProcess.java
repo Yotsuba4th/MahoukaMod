@@ -55,6 +55,19 @@ public class ItemMagicProcess extends ItemMagicSequence
     {
         return process;
     }
+    
+    public MagicProcess getProcess(ItemStack stack)
+    {
+        NBTTagCompound tag = getStackData(stack);
+        if (tag == null)
+            return null;
+        ActivationSequence sequence = new ActivationSequence();
+        sequence.readFromNBT(getStackData(stack));
+        if (sequence.getProcesses().size() != 1)
+            throw new RuntimeException("Cannot get process of magic sequence!");
+        return sequence.getProcesses().get(0);
+    }
+
 
     /* ------------------------------------------------------------ */
 
