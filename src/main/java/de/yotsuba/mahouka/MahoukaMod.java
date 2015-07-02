@@ -23,6 +23,7 @@ import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import de.yotsuba.mahouka.block.BlockCadProgrammer;
 import de.yotsuba.mahouka.block.BlockProcessProgrammer;
 import de.yotsuba.mahouka.block.BlockSequenceProgrammer;
@@ -179,6 +180,7 @@ public class MahoukaMod
     /* ------------------------------------------------------------ */
 
     @SubscribeEvent
+    @SideOnly(Side.CLIENT)
     public void textureStitchEvent(TextureStitchEvent event)
     {
         icon_rune_default = event.map.registerIcon(MahoukaMod.MODID + ":rune_default");

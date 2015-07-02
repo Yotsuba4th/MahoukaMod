@@ -126,12 +126,11 @@ public class ClientProxy extends CommonProxy
             TargetEntity targetEntity = (TargetEntity) target;
             Entity entity = targetEntity.getEntity();
             AxisAlignedBB aabb = entity.boundingBox;
-            Vec3 point = target.getCurrentPoint();
 
-            GL11.glTranslated(point.xCoord, point.yCoord, point.zCoord);
+            GL11.glTranslated(entity.posX, entity.posY, entity.posZ);
             if (aabb != null)
                 GL11.glScaled((aabb.maxX - aabb.minX) * 1.25 + 0.25, (aabb.maxY - aabb.minY) * 1.25, (aabb.maxZ - aabb.minZ) * 1.25 + 0.25);
-            GL11.glTranslated(0, 0.5, 0);
+            GL11.glTranslated(0, 0.502, 0);
         }
         else if (target instanceof TargetOffset)
         {

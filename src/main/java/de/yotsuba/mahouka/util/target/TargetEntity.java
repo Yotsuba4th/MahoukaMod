@@ -128,7 +128,10 @@ public class TargetEntity extends TargetPoint
     {
         if (entity == null)
             return getPoint();
-        return Vec3.createVectorHelper(entity.posX, entity.posY, entity.posZ);
+        return Vec3.createVectorHelper(//
+                (entity.boundingBox.minX + entity.boundingBox.maxX) / 2, //
+                (entity.boundingBox.minY + entity.boundingBox.maxY) / 2, //
+                (entity.boundingBox.minZ + entity.boundingBox.maxZ) / 2);
     }
 
     public Entity getEntity()
