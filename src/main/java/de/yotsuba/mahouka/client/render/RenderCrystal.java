@@ -46,7 +46,7 @@ public class RenderCrystal extends Render
         GL11.glDisable(GL11.GL_TEXTURE_2D);
 
         GL11.glTranslated(x, y, z);
-        GL11.glScalef(0.2f, 0.2f, 0.2f);
+        GL11.glScalef(0.2f, 0.4f, 0.2f);
         GL11.glRotatef(-entity.rotationYaw - 90, 0, 1, 0);
         GL11.glRotatef(-entity.rotationPitch - 90, 0, 0, 1);
         GL11.glRotatef(System.currentTimeMillis() % 360, 0, 1, 0);
@@ -61,7 +61,7 @@ public class RenderCrystal extends Render
         Tessellator.instance.startDrawing(GL11.GL_TRIANGLE_FAN);
 
         Tessellator.instance.setNormal(-1f, 1f, -1f);
-        Tessellator.instance.addVertex(0, 2, 0);
+        Tessellator.instance.addVertex(0, 1, 0);
         Tessellator.instance.addVertex(+1, 0, +1);
         Tessellator.instance.addVertex(+1, 0, -1);
 
@@ -78,7 +78,7 @@ public class RenderCrystal extends Render
         Tessellator.instance.startDrawing(GL11.GL_TRIANGLE_FAN);;
 
         Tessellator.instance.setNormal(-1f, -1f, -1f);
-        Tessellator.instance.addVertex(0, -2, 0);
+        Tessellator.instance.addVertex(0, -1, 0);
         Tessellator.instance.addVertex(+1, 0, +1);
         Tessellator.instance.addVertex(+1, 0, -1);
 

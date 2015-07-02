@@ -2,7 +2,6 @@ package de.yotsuba.mahouka.client;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.entity.RenderFireball;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -17,13 +16,15 @@ import org.lwjgl.opengl.GL12;
 
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.ClientTickEvent;
+import cpw.mods.fml.common.gameevent.TickEvent.Phase;
 import de.yotsuba.mahouka.CommonProxy;
 import de.yotsuba.mahouka.client.effect.EffectRenderer;
 import de.yotsuba.mahouka.client.render.RenderCrystal;
-import de.yotsuba.mahouka.entity.projectile.EntityMagicProjectileFire;
+import de.yotsuba.mahouka.entity.projectile.EntityMagicProjectileEarth;
 import de.yotsuba.mahouka.entity.projectile.EntityMagicProjectileIce;
 import de.yotsuba.mahouka.item.ItemCad;
 import de.yotsuba.mahouka.magic.MagicProcess;
@@ -62,11 +63,12 @@ public class ClientProxy extends CommonProxy
     @Override
     public void init(FMLInitializationEvent event)
     {
-        // FMLCommonHandler.instance().bus().register(this);
+        FMLCommonHandler.instance().bus().register(this);
         MinecraftForge.EVENT_BUS.register(this);
 
-        RenderingRegistry.registerEntityRenderingHandler(EntityMagicProjectileFire.class, new RenderFireball(0.5f));
+        // RenderingRegistry.registerEntityRenderingHandler(EntityMagicProjectileFire.class, new RenderFireball(0.5f));
         RenderingRegistry.registerEntityRenderingHandler(EntityMagicProjectileIce.class, new RenderCrystal(0.2f, 0.3f, 1f, 0.4f));
+        RenderingRegistry.registerEntityRenderingHandler(EntityMagicProjectileEarth.class, new RenderCrystal(0.2f, 0.3f, 1f, 0.4f));
     }
 
     /* ------------------------------------------------------------ */
@@ -74,7 +76,10 @@ public class ClientProxy extends CommonProxy
     @SubscribeEvent
     public void clientTickEvent(ClientTickEvent event)
     {
-        EffectRenderer.updateEffects();
+        if (event.phase == Phase.END)
+        {
+            EffectRenderer.updateEffects();
+        }
     }
 
     @SubscribeEvent

@@ -21,6 +21,8 @@ public abstract class ProcessProjectile extends MagicProcess
 
     protected Effect spawnFx;
 
+    protected int castDurationCache;
+
     @Override
     public TargetType[] getValidTargets()
     {
@@ -53,13 +55,13 @@ public abstract class ProcessProjectile extends MagicProcess
     @Override
     public void castStartClient(CastingProcess cp, Target target)
     {
+        castDurationCache = getCastDuration(target);
         Vec3 point = target.getCurrentPoint();
         Vec3 targetPoint = getTargetPoint(target);
 
         createSpawnEffect(cp, point);
         if (spawnFx != null)
         {
-            spawnFx.setMaxAge(getCastDuration(target));
             if (targetPoint != null)
                 spawnFx.lookAt(targetPoint);
             EffectRenderer.addEffect(spawnFx, cp.getId());
@@ -70,7 +72,7 @@ public abstract class ProcessProjectile extends MagicProcess
             createTargetEffect(cp, targetPoint);
             if (targetFx != null)
             {
-                targetFx.setMaxAge(getCastDuration(target));
+                targetFx.pitch = -90;
                 EffectRenderer.addEffect(targetFx, cp.getId());
             }
         }
@@ -82,6 +84,10 @@ public abstract class ProcessProjectile extends MagicProcess
         targetFx = new Effect(point.xCoord, point.yCoord, point.zCoord);
         targetFx.setIcon(MahoukaMod.icon_rune_default);
         targetFx.setScale(1);
+        targetFx.vRoll = -2;
+        targetFx.fadeIn = 10;
+        targetFx.fadeOut = 10;
+        targetFx.setMaxAge(castDurationCache + targetFx.fadeOut + 10);
     }
 
     public void createSpawnEffect(CastingProcess cp, Vec3 point)
@@ -90,6 +96,10 @@ public abstract class ProcessProjectile extends MagicProcess
         spawnFx.setIcon(MahoukaMod.icon_rune_default);
         spawnFx.setScale(1);
         spawnFx.setColor(1, 0, 0, 1);
+        spawnFx.vRoll = 6;
+        spawnFx.fadeIn = 10;
+        spawnFx.fadeOut = 5;
+        spawnFx.setMaxAge(castDurationCache + spawnFx.fadeOut);
     }
 
     /* ------------------------------------------------------------ */
@@ -97,11 +107,14 @@ public abstract class ProcessProjectile extends MagicProcess
     @Override
     public void castTickClient(CastingProcess cp, Target target)
     {
-        Vec3 targetPoint = getTargetPoint(target);
-        if (targetPoint != null)
+        if (targetFx != null)
         {
-            targetFx.setPositionOnGround(cp.getWorld(), targetPoint.xCoord, targetPoint.yCoord, targetPoint.zCoord);
-            spawnFx.lookAt(targetPoint);
+            Vec3 targetPoint = getTargetPoint(target);
+            if (targetPoint != null)
+            {
+                targetFx.setPositionOnGround(cp.getWorld(), targetPoint.xCoord, targetPoint.yCoord, targetPoint.zCoord);
+                spawnFx.lookAt(targetPoint);
+            }
         }
     }
 

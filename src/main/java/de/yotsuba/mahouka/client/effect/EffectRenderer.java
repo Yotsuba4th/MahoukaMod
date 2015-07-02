@@ -9,7 +9,6 @@ import java.util.Map.Entry;
 import java.util.UUID;
 import java.util.concurrent.Callable;
 
-import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.crash.CrashReport;
 import net.minecraft.crash.CrashReportCategory;
 import net.minecraft.entity.Entity;
@@ -34,6 +33,7 @@ public abstract class EffectRenderer
         if (list == null)
         {
             list = new ArrayList<Effect>();
+            fxMap.put(uuid, list);
         }
         list.add(entityFx);
     }
@@ -82,7 +82,7 @@ public abstract class EffectRenderer
     {
         CrashReport crashreport = CrashReport.makeCrashReport(throwable, action + "ing Particle");
         CrashReportCategory crashreportcategory = crashreport.makeCategory("Particle being " + action.toLowerCase() + "ed");
-        crashreportcategory.addCrashSectionCallable("Magic Particle", new Callable() {
+        crashreportcategory.addCrashSectionCallable("Magic Particle", new Callable<String>() {
             @Override
             public String call()
             {
@@ -100,19 +100,19 @@ public abstract class EffectRenderer
         if (player.worldObj != world)
             clearEffects(player.worldObj);
 
-        float rotX = ActiveRenderInfo.rotationX;
-        float rotZ = ActiveRenderInfo.rotationZ;
-        float rotYZ = ActiveRenderInfo.rotationYZ;
-        float rotXY = ActiveRenderInfo.rotationXY;
-        float rotXZ = ActiveRenderInfo.rotationXZ;
+        // System.out.println("yaw: " + player.rotationYaw + " pitch: " + player.rotationPitch);
+
         double interpPosX = player.lastTickPosX + (player.posX - player.lastTickPosX) * partialTickTime;
         double interpPosY = player.lastTickPosY + (player.posY - player.lastTickPosY) * partialTickTime;
         double interpPosZ = player.lastTickPosZ + (player.posZ - player.lastTickPosZ) * partialTickTime;
 
         GL11.glPushMatrix();
-        GL11.glTranslated(interpPosX, interpPosY, interpPosZ);
+        GL11.glTranslated(-interpPosX, -interpPosY, -interpPosZ);
 
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        GL11.glDisable(GL11.GL_LIGHTING);
+        GL11.glDisable(GL11.GL_TEXTURE_2D);
+        GL11.glDisable(GL11.GL_CULL_FACE);
+
         GL11.glDepthMask(false);
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
@@ -135,6 +135,8 @@ public abstract class EffectRenderer
             }
         }
 
+        GL11.glEnable(GL11.GL_TEXTURE_2D);
+        GL11.glEnable(GL11.GL_CULL_FACE);
         GL11.glDisable(GL11.GL_BLEND);
         GL11.glDepthMask(true);
         GL11.glAlphaFunc(GL11.GL_GREATER, 0.1F);
