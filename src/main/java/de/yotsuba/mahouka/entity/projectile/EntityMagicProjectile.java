@@ -315,9 +315,10 @@ public abstract class EntityMagicProjectile extends Entity implements Targeting
         Vec3 lookVec = source.getEntity().getLookVec();
         if (lookVec != null)
         {
-            motionX = lookVec.xCoord * 0.1;
-            motionY = lookVec.yCoord * 0.1;
-            motionZ = lookVec.zCoord * 0.1;
+            double speed = Math.min(0.7, Math.sqrt(motionX * motionX + motionY * motionY + motionZ * motionZ));
+            motionX = lookVec.xCoord * speed;
+            motionY = lookVec.yCoord * speed;
+            motionZ = lookVec.zCoord * speed;
 //            accelerationX = motionX * 0.1D;
 //            accelerationY = motionY * 0.1D;
 //            accelerationZ = motionZ * 0.1D;
@@ -327,5 +328,4 @@ public abstract class EntityMagicProjectile extends Entity implements Targeting
             this.shootingEntity = (EntityLivingBase) source.getEntity();
         return true;
     }
-
 }
