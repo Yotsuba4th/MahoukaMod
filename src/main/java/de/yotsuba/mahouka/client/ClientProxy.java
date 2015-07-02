@@ -1,5 +1,6 @@
 package de.yotsuba.mahouka.client;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderFireball;
 import net.minecraft.client.renderer.entity.RenderManager;
@@ -18,7 +19,9 @@ import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.TickEvent.ClientTickEvent;
 import de.yotsuba.mahouka.CommonProxy;
+import de.yotsuba.mahouka.client.render.EffectRenderer;
 import de.yotsuba.mahouka.client.render.RenderCrystal;
 import de.yotsuba.mahouka.entity.projectile.EntityMagicProjectileFire;
 import de.yotsuba.mahouka.entity.projectile.EntityMagicProjectileIce;
@@ -69,7 +72,20 @@ public class ClientProxy extends CommonProxy
     /* ------------------------------------------------------------ */
 
     @SubscribeEvent
-    public void render(RenderWorldLastEvent event)
+    public void clientTickEvent(ClientTickEvent event)
+    {
+        EffectRenderer.updateEffects();
+    }
+
+    @SubscribeEvent
+    public void renderWorldLastEvent(RenderWorldLastEvent event)
+    {
+        renderTargetCUI();
+
+        EffectRenderer.renderParticles(Minecraft.getMinecraft().thePlayer, event.partialTicks);
+    }
+
+    private void renderTargetCUI()
     {
         EntityPlayer player = FMLClientHandler.instance().getClient().thePlayer;
         if (player == null)

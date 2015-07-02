@@ -31,14 +31,14 @@ public class EntityFxFlat extends EntityFxExt
             v2 = particleIcon.getMaxV();
         }
 
-        float f11 = (float) (prevPosX + (posX - prevPosX) * rpt - interpPosX);
-        float f12 = (float) (prevPosY + (posY - prevPosY) * rpt - interpPosY);
-        float f13 = (float) (prevPosZ + (posZ - prevPosZ) * rpt - interpPosZ);
+        float x = (float) (prevPosX + (posX - prevPosX) * rpt - interpPosX);
+        float y = (float) (prevPosY + (posY - prevPosY) * rpt - interpPosY);
+        float z = (float) (prevPosZ + (posZ - prevPosZ) * rpt - interpPosZ);
         tes.setColorRGBA_F(particleRed, particleGreen, particleBlue, particleAlpha);
-        tes.addVertexWithUV(f11 - particleScale, f12, f13 - particleScale, u2, v2);
-        tes.addVertexWithUV(f11 - particleScale, f12, f13 + particleScale, u2, v1);
-        tes.addVertexWithUV(f11 + particleScale, f12, f13 + particleScale, u1, v1);
-        tes.addVertexWithUV(f11 + particleScale, f12, f13 - particleScale, u1, v2);
+        tes.addVertexWithUV(x - particleScale, y, z - particleScale, u2, v2);
+        tes.addVertexWithUV(x - particleScale, y, z + particleScale, u2, v1);
+        tes.addVertexWithUV(x + particleScale, y, z + particleScale, u1, v1);
+        tes.addVertexWithUV(x + particleScale, y, z - particleScale, u1, v2);
     }
 
 }

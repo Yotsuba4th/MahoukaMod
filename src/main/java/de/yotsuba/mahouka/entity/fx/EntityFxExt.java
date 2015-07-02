@@ -95,4 +95,8 @@ public class EntityFxExt extends EntityFX
         tes.addVertexWithUV(f11 + rX * particleScale - rYZ * particleScale, f12 - rXZ * particleScale, f13 + rZ * particleScale - rXY * particleScale, u1, v2);
     }
 
+    public void renderParticle(float partialTickTime)
+    {
+    }
+
 }
