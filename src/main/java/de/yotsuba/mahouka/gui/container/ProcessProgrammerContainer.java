@@ -6,10 +6,16 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import de.yotsuba.mahouka.gui.ButtenClickListener;
 import de.yotsuba.mahouka.gui.slot.SlotProcess;
+import de.yotsuba.mahouka.item.ItemMagicProcess;
+import de.yotsuba.mahouka.magic.ActivationSequence;
+import de.yotsuba.mahouka.magic.MagicProcess;
 import de.yotsuba.mahouka.util.Utils;
 
-public class ProcessProgrammerContainer extends Container
+public class ProcessProgrammerContainer extends Container implements ButtenClickListener
 {
 
     private InventoryBasic invProcess;
@@ -18,14 +24,52 @@ public class ProcessProgrammerContainer extends Container
 
     private static final int PROCESS_SLOT = 0;
 
+    private MagicProcess process;
+
     public ProcessProgrammerContainer(InventoryPlayer playerInventory)
     {
         invProcess = new InventoryBasic("Process", false, 1);
-
         addSlotToContainer(new SlotProcess(this, invProcess, PROCESS_SLOT, 8, 8));
-
         for (Slot slot : Utils.getPlayerContainerSlots(playerInventory))
             addSlotToContainer(slot);
+    }
+
+    public MagicProcess getProcess()
+    {
+        return process;
+    }
+
+    public void processChanged()
+    {
+        needGuiUpdate = true;
+        ItemStack stack = getSlot(0).getStack();
+        if (stack != null)
+            process = ((ItemMagicProcess) stack.getItem()).getProcess(stack);
+        else
+            process = null;
+    }
+
+    public void updateItemStack()
+    {
+        ItemStack stack = getSlot(0).getStack();
+        if (stack != null)
+        {
+            NBTTagCompound tag = new NBTTagCompound();
+            NBTTagList list = new NBTTagList();
+            list.appendTag(process.writeToNBT());
+            tag.setTag(ActivationSequence.NBT_PROCESSES, list);
+            stack.setTagCompound(tag);
+        }
+    }
+
+    @Override
+    public void buttonClicked(int id)
+    {
+        if (process != null)
+        {
+            process.guiButtonClick(id);
+            updateItemStack();
+        }
     }
 
     @Override
@@ -86,9 +130,4 @@ public class ProcessProgrammerContainer extends Container
             player.dropPlayerItemWithRandomChoice(stackProcess, false);
     }
 
-    public void buttonClicked(int id)
-    {
-        // TODO Auto-generated method stub
-
-    }
 }

@@ -1,6 +1,5 @@
 package de.yotsuba.mahouka.client.gui;
 
-import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
 
@@ -10,7 +9,7 @@ import de.yotsuba.mahouka.MahoukaMod;
 import de.yotsuba.mahouka.block.BlockCadProgrammer;
 import de.yotsuba.mahouka.gui.container.CadProgrammerContainer;
 
-public class CadProgrammerGui extends GuiContainer
+public class CadProgrammerGui extends GuiContainerExt
 {
 
     public static final int GUIID = 2;

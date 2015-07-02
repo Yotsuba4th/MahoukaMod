@@ -1,10 +1,6 @@
 package de.yotsuba.mahouka.client.gui;
 
-import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
@@ -12,10 +8,6 @@ import org.lwjgl.opengl.GL11;
 import de.yotsuba.mahouka.MahoukaMod;
 import de.yotsuba.mahouka.block.BlockProcessProgrammer;
 import de.yotsuba.mahouka.gui.container.ProcessProgrammerContainer;
-import de.yotsuba.mahouka.item.ItemMagicProcess;
-import de.yotsuba.mahouka.magic.ActivationSequence;
-import de.yotsuba.mahouka.magic.MagicProcess;
-import de.yotsuba.mahouka.network.S6ProcessProgrammerClick;
 
 public class ProcessProgrammerGui extends GuiContainerExt
 {
@@ -24,24 +16,18 @@ public class ProcessProgrammerGui extends GuiContainerExt
 
     private final ProcessProgrammerContainer container;
 
-    private MagicProcess process;
-
-    private int x;
-    private int y;
-    private int z;
-
     // TODO: Design gui texture
     private static final ResourceLocation texture = new ResourceLocation(MahoukaMod.MODID + ":textures/gui/" + BlockProcessProgrammer.ID + ".png");
 
-    public ProcessProgrammerGui(InventoryPlayer playerInventory, int x, int y, int z)
+    /* ------------------------------------------------------------ */
+
+    public ProcessProgrammerGui(InventoryPlayer playerInventory)
     {
         super(new ProcessProgrammerContainer(playerInventory));
         container = (ProcessProgrammerContainer) inventorySlots;
-        this.x = x;
-        this.y = y;
-        this.z = z;
-
     }
+
+    /* ------------------------------------------------------------ */
 
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
@@ -53,8 +39,8 @@ public class ProcessProgrammerGui extends GuiContainerExt
         fontRendererObj.drawString(header, (xSize - fontRendererObj.getStringWidth(header)) / 2 + 10, 6, 4210752);
 
         // Dynamically update gui
-        if (process != null)
-            process.guiDraw(this);
+        if (container.getProcess() != null)
+            container.getProcess().guiDraw(this);
     }
 
     @Override
@@ -68,42 +54,9 @@ public class ProcessProgrammerGui extends GuiContainerExt
         if (container.needGuiUpdate)
         {
             container.needGuiUpdate = false;
-            process = getProcess();
             buttonList.clear();
-            if (process != null)
-                process.guiUpdate(this);
-        }
-    }
-
-    public MagicProcess getProcess()
-    {
-        ItemStack stack = container.getSlot(0).getStack();
-        if (stack != null)
-            return ((ItemMagicProcess) stack.getItem()).getProcess(stack);
-        return null;
-    }
-
-    @Override
-    protected void actionPerformed(GuiButton button)
-    {
-        if (process != null)
-        {
-            S6ProcessProgrammerClick.send(button.id, x, y, z);
-            process.guiButtonClick(button.id);
-            updateItemStack();
-        }
-    }
-
-    public void updateItemStack()
-    {
-        ItemStack stack = container.getSlot(0).getStack();
-        if (stack != null)
-        {
-            NBTTagCompound tag = new NBTTagCompound();
-            NBTTagList list = new NBTTagList();
-            list.appendTag(process.writeToNBT());
-            tag.setTag(ActivationSequence.NBT_PROCESSES, list);
-            stack.setTagCompound(tag);
+            if (container.getProcess() != null)
+                container.getProcess().guiUpdate(this);
         }
     }
 

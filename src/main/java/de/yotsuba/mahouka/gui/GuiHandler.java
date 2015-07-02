@@ -35,7 +35,7 @@ public class GuiHandler implements IGuiHandler
         switch (ID)
         {
         case 0:
-            return new ProcessProgrammerGui(player.inventory, x, y, z);
+            return new ProcessProgrammerGui(player.inventory);
         case 1:
             return new SequenceProgrammerGui(player.inventory);
         case 2:

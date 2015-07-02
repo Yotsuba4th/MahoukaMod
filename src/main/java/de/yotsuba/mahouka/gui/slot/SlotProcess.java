@@ -22,7 +22,7 @@ public class SlotProcess extends Slot
     public void onSlotChanged()
     {
         super.onSlotChanged();
-        container.needGuiUpdate = true;
+        container.processChanged();
     }
 
     @Override

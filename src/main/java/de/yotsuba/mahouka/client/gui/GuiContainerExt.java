@@ -12,15 +12,19 @@ import net.minecraft.inventory.Container;
 import net.minecraft.util.ResourceLocation;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import de.yotsuba.mahouka.gui.ButtenClickListener;
+import de.yotsuba.mahouka.network.S6ButtonClick;
 
 @SideOnly(Side.CLIENT)
 public abstract class GuiContainerExt extends GuiContainer
 {
-
+    
     public GuiContainerExt(Container container)
     {
         super(container);
     }
+
+    /* ------------------------------------------------------------ */
 
     public int getX()
     {
@@ -42,6 +46,8 @@ public abstract class GuiContainerExt extends GuiContainer
         return ySize;
     }
 
+    /* ------------------------------------------------------------ */
+
     @SuppressWarnings("unchecked")
     public List<GuiButton> getButtons()
     {
@@ -53,6 +59,16 @@ public abstract class GuiContainerExt extends GuiContainer
     {
         return labelList;
     }
+
+    @Override
+    protected void actionPerformed(GuiButton button)
+    {
+        if (inventorySlots instanceof ButtenClickListener)
+            ((ButtenClickListener) inventorySlots).buttonClicked(button.id);
+        S6ButtonClick.send(button.id);
+    }
+
+    /* ------------------------------------------------------------ */
 
     public TextureManager getRenderEngine()
     {
