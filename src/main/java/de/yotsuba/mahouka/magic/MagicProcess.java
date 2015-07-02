@@ -1,5 +1,6 @@
 package de.yotsuba.mahouka.magic;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,22 +46,29 @@ public abstract class MagicProcess implements Cloneable
 
     static
     {
-        registerProcess(ProcessParticle.class, (short) 0);
-        registerProcess(ProcessExplosion.class, (short) 1);
-        registerProcess(ProcessShockwave.class, (short) 2);
-        registerProcess(ProcessFirebomb.class, (short) 3);
-        registerProcess(ProcessFireShockwave.class, (short) 4);
-        registerProcess(ProcessOffset.class, (short) 5);
-        registerProcess(ProcessMovingOffset.class, (short) 6);
-        registerProcess(ProcessParallel.class, (short) 7);
-        registerProcess(ProcessFireball.class, (short) 8);
-        registerProcess(ProcessAccelerate.class, (short) 9);
+        List<Class<? extends MagicProcess>> processes = new ArrayList<Class<? extends MagicProcess>>();
+        // To remove processes from registry, set them to null
+        processes.add(ProcessParticle.class);
+        processes.add(ProcessExplosion.class);
+        processes.add(ProcessShockwave.class);
+        processes.add(ProcessFirebomb.class);
+        processes.add(ProcessFireShockwave.class);
+        processes.add(ProcessOffset.class);
+        processes.add(ProcessMovingOffset.class);
+        processes.add(ProcessParallel.class);
+        processes.add(ProcessFireball.class);
+        processes.add(ProcessAccelerate.class);
+
+        for (short id = 1; id <= processes.size(); id++)
+            registerProcess(processes.get(id), id);
     }
 
     /* ------------------------------------------------------------ */
 
     public static void registerProcess(Class<? extends MagicProcess> clazz, short id)
     {
+        if (clazz == null)
+            return;
         if (processById.containsKey(id))
             throw new RuntimeException(String.format("Duplicate assignment of magic process id %d", id));
         processById.put(id, clazz);

@@ -43,10 +43,6 @@ public class ProcessProgrammerContainer extends Container
             int end = start + player.inventory.mainInventory.length;
             if (!mergeItemStack(slotStack, start, end, true))
                 return null;
-            else
-            {
-                // TODO: Unload process specific gui elements
-            }
         }
         else
         {
@@ -59,10 +55,6 @@ public class ProcessProgrammerContainer extends Container
                 {
                     slotStack.stackSize++;
                     return null;
-                }
-                else
-                {
-                    // TODO: Load process specific gui elements
                 }
             }
         }
