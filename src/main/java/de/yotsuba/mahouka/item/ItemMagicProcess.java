@@ -85,6 +85,7 @@ public class ItemMagicProcess extends ItemMagicSequence
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister iconRegistry)
     {
+        /* do nothing */
     }
 
     /* ------------------------------------------------------------ */
@@ -112,7 +113,7 @@ public class ItemMagicProcess extends ItemMagicSequence
 
     public void drawGuiParts()
     {
-
+        /* do nothing */
     }
 
 }

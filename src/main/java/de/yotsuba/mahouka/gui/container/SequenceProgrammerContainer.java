@@ -253,11 +253,13 @@ public class SequenceProgrammerContainer extends Container implements IInventory
     @Override
     public void openInventory()
     {
+        /* do nothing */
     }
 
     @Override
     public void closeInventory()
     {
+        /* do nothing */
     }
 
     @Override
@@ -287,6 +289,7 @@ public class SequenceProgrammerContainer extends Container implements IInventory
     @Override
     public void markDirty()
     {
+        /* do nothing */
     }
 
 }

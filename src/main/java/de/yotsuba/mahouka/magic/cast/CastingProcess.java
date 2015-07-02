@@ -90,7 +90,7 @@ public class CastingProcess
         // TODO Auto-generated method stub
 
         active = false;
-        
+
         return true;
     }
 
@@ -164,6 +164,7 @@ public class CastingProcess
 
     private void channelStart()
     {
+        /* do nothing */
     }
 
     private void channelStartClient()
@@ -180,6 +181,7 @@ public class CastingProcess
 
     private void channelTick()
     {
+        /* do nothing */
     }
 
     private void channelTickClient()
@@ -213,10 +215,12 @@ public class CastingProcess
 
     private void castStart()
     {
+        /* do nothing */
     }
 
     private void castStartClient()
     {
+        /* do nothing */
     }
 
     /* ------------------------------------------------------------ */

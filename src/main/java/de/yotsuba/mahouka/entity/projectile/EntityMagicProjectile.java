@@ -54,6 +54,7 @@ public abstract class EntityMagicProjectile extends Entity implements Targeting
     @Override
     protected void entityInit()
     {
+        /* do nothing */
     }
 
     /* ------------------------------------------------------------ */
@@ -264,10 +265,12 @@ public abstract class EntityMagicProjectile extends Entity implements Targeting
 
     public void onImpactBlock(int x, int y, int z)
     {
+        /* do nothing */
     }
 
     public void onImpactEntity(Entity entity)
     {
+        /* do nothing */
     }
 
     /* ------------------------------------------------------------ */

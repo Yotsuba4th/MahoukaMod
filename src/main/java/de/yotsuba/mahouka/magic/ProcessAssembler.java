@@ -15,6 +15,7 @@ public class ProcessAssembler
 
     public static class AssemblyException extends Exception
     {
+        /* default exception */
     }
 
     public static ItemStack combine(ItemStack input1, ItemStack input2)

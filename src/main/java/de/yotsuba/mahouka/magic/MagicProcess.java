@@ -141,6 +141,7 @@ public abstract class MagicProcess implements Cloneable
 
     public void readFromNBT(NBTTagCompound tag)
     {
+        /* do nothing */
     }
 
     public short getId()
@@ -220,6 +221,7 @@ public abstract class MagicProcess implements Cloneable
     @SideOnly(Side.CLIENT)
     public void guiUpdate(GuiContainerExt gui)
     {
+        /* do nothing */
     }
 
     @SideOnly(Side.CLIENT)
@@ -233,6 +235,7 @@ public abstract class MagicProcess implements Cloneable
 
     public void guiButtonClick(int id)
     {
+        /* do nothing */
     }
 
     /* ------------------------------------------------------------ */
@@ -258,6 +261,7 @@ public abstract class MagicProcess implements Cloneable
      */
     public void castTick(CastingProcess cp, Target target)
     {
+        /* do nothing */
     }
 
     /**

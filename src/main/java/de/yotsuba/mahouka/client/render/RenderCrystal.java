@@ -83,7 +83,7 @@ public class RenderCrystal extends Render
         Tessellator.instance.addVertex(+0.5f, 0, +0.5f);
         Tessellator.instance.draw();
 
-        Tessellator.instance.startDrawing(GL11.GL_TRIANGLE_FAN);;
+        Tessellator.instance.startDrawing(GL11.GL_TRIANGLE_FAN);
 
         Tessellator.instance.setNormal(-1f, -1f, -1f);
         Tessellator.instance.addVertex(0, -0.5f, 0);

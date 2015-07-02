@@ -10,20 +10,24 @@ public class CommonProxy
 
     public void castStartClient(MagicProcess process, CastingProcess cp, Target target)
     {
+        /* do nothing */
     }
 
     public void castTickClient(MagicProcess process, CastingProcess cp, Target target)
     {
+        /* do nothing */
     }
 
     public void castEndClient(MagicProcess process, CastingProcess cp, Target target)
     {
+        /* do nothing */
     }
 
     /* ------------------------------------------------------------ */
 
     public void init(FMLInitializationEvent event)
     {
+        /* do nothing */
     }
 
 }
