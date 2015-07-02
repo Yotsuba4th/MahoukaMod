@@ -47,16 +47,13 @@ public abstract class EffectRenderer
             for (Iterator<EntityFxExt> itEffect = effectList.getValue().iterator(); itEffect.hasNext();)
             {
                 EntityFxExt effect = itEffect.next();
-                if (effect.isDead)
+                if (effect.isDead())
                 {
                     itEffect.remove();
                 }
             }
             if (effectList.getValue().isEmpty())
                 itList.remove();
-            // if (entityfx == null || entityfx.isDead) {
-            // fxList.remove(index);
-            // }
         }
 
     }
@@ -71,7 +68,7 @@ public abstract class EffectRenderer
                 EntityFxExt effect = itEffect.next();
                 try
                 {
-                    effect.onUpdate();
+                    effect.update();
                 }
                 catch (Throwable throwable)
                 {
@@ -109,9 +106,12 @@ public abstract class EffectRenderer
         float rotYZ = ActiveRenderInfo.rotationYZ;
         float rotXY = ActiveRenderInfo.rotationXY;
         float rotXZ = ActiveRenderInfo.rotationXZ;
-        EntityFxExt.interpPosX = player.lastTickPosX + (player.posX - player.lastTickPosX) * partialTickTime;
-        EntityFxExt.interpPosY = player.lastTickPosY + (player.posY - player.lastTickPosY) * partialTickTime;
-        EntityFxExt.interpPosZ = player.lastTickPosZ + (player.posZ - player.lastTickPosZ) * partialTickTime;
+        double interpPosX = player.lastTickPosX + (player.posX - player.lastTickPosX) * partialTickTime;
+        double interpPosY = player.lastTickPosY + (player.posY - player.lastTickPosY) * partialTickTime;
+        double interpPosZ = player.lastTickPosZ + (player.posZ - player.lastTickPosZ) * partialTickTime;
+
+        GL11.glPushMatrix();
+        GL11.glTranslated(interpPosX, interpPosY, interpPosZ);
 
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GL11.glDepthMask(false);
@@ -139,6 +139,8 @@ public abstract class EffectRenderer
         GL11.glDisable(GL11.GL_BLEND);
         GL11.glDepthMask(true);
         GL11.glAlphaFunc(GL11.GL_GREATER, 0.1F);
+
+        GL11.glPopMatrix();
     }
 
     public static void clearEffects(World world)
@@ -147,7 +149,7 @@ public abstract class EffectRenderer
         fxMap.clear();
     }
 
-    public static String getStatistics()
+    public static int getEffectsCount()
     {
         int effectsCount = 0;
         for (Iterator<Entry<UUID, List<EntityFxExt>>> itList = fxMap.entrySet().iterator(); itList.hasNext();)
@@ -155,7 +157,7 @@ public abstract class EffectRenderer
             Entry<UUID, List<EntityFxExt>> effectList = itList.next();
             effectsCount += effectList.getValue().size();
         }
-        return "" + effectsCount;
+        return effectsCount;
     }
 
 }

@@ -2,6 +2,7 @@ package de.yotsuba.mahouka.util;
 
 import java.util.List;
 
+import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -9,6 +10,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
+import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -125,5 +127,22 @@ public class WorldUtils
             return 0;
         }
     }
-    
+
+    public static float dropOnGround(World world, float posX, float posY, float posZ)
+    {
+        int x = (int) Math.floor(posX);
+        int y = (int) Math.floor(posY);
+        int z = (int) Math.floor(posZ);
+        while (y >= 0)
+        {
+            Block block = world.getBlock(x, y, z);
+            if (block.getMaterial().isSolid())
+            {
+                return y + 0.5f;
+            }
+            y--;
+        }
+        return posY;
+    }
+
 }

@@ -41,12 +41,12 @@ public class EntityFxDirected extends EntityFxExt
         float u2 = u1 + 0.0624375F;
         float v1 = particleTextureIndexY / 16.0F;
         float v2 = v1 + 0.0624375F;
-        if (particleIcon != null)
+        if (icon != null)
         {
-            u1 = particleIcon.getMinU();
-            u2 = particleIcon.getMaxU();
-            v1 = particleIcon.getMinV();
-            v2 = particleIcon.getMaxV();
+            u1 = icon.getMinU();
+            u2 = icon.getMaxU();
+            v1 = icon.getMinV();
+            v2 = icon.getMaxV();
         }
 
         float x = (float) (prevPosX + (posX - prevPosX) * rpt - interpPosX);

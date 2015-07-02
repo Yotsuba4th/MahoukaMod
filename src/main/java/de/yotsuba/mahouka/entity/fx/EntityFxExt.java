@@ -1,102 +1,144 @@
 package de.yotsuba.mahouka.entity.fx;
 
-import net.minecraft.block.Block;
-import net.minecraft.client.particle.EntityFX;
+import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
+import de.yotsuba.mahouka.util.WorldUtils;
 
 // TODO: Probably need to write our own particle renderer to handle these with special cases
 // Current problem is that it is very complicated to calculate rotations for the texture which would be way easier if we  can directly use OpenGL and its matrices
 // This will also allow us to use large textures for effects as well
-public class EntityFxExt extends EntityFX
+public class EntityFxExt
 {
 
-    public EntityFxExt(World world, double x, double y, double z)
+    private boolean isDead;
+    public int maxAge;
+    protected IIcon icon;
+    protected float vx;
+    protected float vy;
+    protected float vz;
+    protected float r;
+    protected float g;
+    protected float b;
+    protected float a;
+    protected float scale;
+    protected float x;
+    protected float y;
+    protected float z;
+    protected float xt;
+    protected float yt;
+    protected float zt;
+    protected float lastX;
+    protected float lastY;
+    protected float lastZ;
+
+    public EntityFxExt(float x, float y, float z)
     {
-        super(world, x, y, z);
+        this(x, y, z, 0, 0, 0);
     }
 
-    public EntityFxExt(World world, double x, double y, double z, double vx, double vy, double vz)
+    public EntityFxExt(float x, float y, float z, float vx, float vy, float vz)
     {
-        super(world, x, y, z, vx, vy, vz);
-        motionX = vx;
-        motionY = vy;
-        motionZ = vz;
-        particleMaxAge = 20;
+
     }
 
-    @Override
-    public int getFXLayer()
+    public EntityFxExt(float x, float y, float z, float vx, float vy, float vz, float r, float g, float b, float a)
     {
-        return 1;
+        setPosition(x, y, z);
+
+        setVelocity(vx, vy, vz);
+
+        setColor(r, g, b, a);
+
+        maxAge = 20;
     }
 
-    public void setMaxAge(int particleMaxAge)
+    private void setColor(float r, float g, float b, float a)
     {
-        this.particleMaxAge = particleMaxAge;
+        this.r = r;
+        this.g = g;
+        this.b = b;
+        this.a = a;
     }
 
-    public void setRadius(float scale)
+    private void setVelocity(float vx, float vy, float vz)
     {
-        particleScale = scale;
+        this.vx = vx;
+        this.vy = vy;
+        this.vz = vz;
     }
 
-    public void setColor(float r, float g, float b)
+    public void setPosition(float x, float y, float z)
     {
-        this.particleRed = r;
-        this.particleGreen = g;
-        this.particleBlue = b;
+        this.x = x;
+        this.y = y;
+        this.z = z;
     }
 
-    public void setPositionOnGround(double x, double y, double z)
+    public void setMaxAge(int maxAge)
     {
-        super.setPosition(x, dropOnGround(x, y, z) + 0.51, z);
+        this.maxAge = maxAge;
     }
 
-    public double dropOnGround(double posX, double posY, double posZ)
+    public void setScale(float scale)
     {
-        int x = (int) Math.floor(posX);
-        int y = (int) Math.floor(posY);
-        int z = (int) Math.floor(posZ);
-        while (y >= 0)
-        {
-            Block block = worldObj.getBlock(x, y, z);
-            if (block.getMaterial().isSolid())
-            {
-                return y + 0.5;
-            }
-            y--;
-        }
-        return posY;
+        this.scale = scale;
     }
 
-    @Override
-    public void renderParticle(Tessellator tes, float rpt, float rX, float rXZ, float rZ, float rYZ, float rXY)
+    public void setPositionOnGround(World world, float x, float y, float z)
     {
-        float u1 = particleTextureIndexX / 16.0F;
-        float u2 = u1 + 0.0624375F;
-        float v1 = particleTextureIndexY / 16.0F;
-        float v2 = v1 + 0.0624375F;
-        if (particleIcon != null)
-        {
-            u1 = particleIcon.getMinU();
-            u2 = particleIcon.getMaxU();
-            v1 = particleIcon.getMinV();
-            v2 = particleIcon.getMaxV();
-        }
-
-        float f11 = (float) (prevPosX + (posX - prevPosX) * rpt - interpPosX);
-        float f12 = (float) (prevPosY + (posY - prevPosY) * rpt - interpPosY);
-        float f13 = (float) (prevPosZ + (posZ - prevPosZ) * rpt - interpPosZ);
-        tes.setColorRGBA_F(particleRed, particleGreen, particleBlue, particleAlpha);
-        tes.addVertexWithUV(f11 - rX * particleScale - rYZ * particleScale, f12 - rXZ * particleScale, f13 - rZ * particleScale - rXY * particleScale, u2, v2);
-        tes.addVertexWithUV(f11 - rX * particleScale + rYZ * particleScale, f12 + rXZ * particleScale, f13 - rZ * particleScale + rXY * particleScale, u2, v1);
-        tes.addVertexWithUV(f11 + rX * particleScale + rYZ * particleScale, f12 + rXZ * particleScale, f13 + rZ * particleScale + rXY * particleScale, u1, v1);
-        tes.addVertexWithUV(f11 + rX * particleScale - rYZ * particleScale, f12 - rXZ * particleScale, f13 + rZ * particleScale - rXY * particleScale, u1, v2);
+        setPosition(x, WorldUtils.dropOnGround(world, x, y, z) + 0.51f, z);
     }
 
     public void renderParticle(float partialTickTime)
     {
+        float rX = ActiveRenderInfo.rotationX;
+        float rZ = ActiveRenderInfo.rotationZ;
+        float rYZ = ActiveRenderInfo.rotationYZ;
+        float rXY = ActiveRenderInfo.rotationXY;
+        float rXZ = ActiveRenderInfo.rotationXZ;
+
+        float u1 = icon.getMinU();
+        float u2 = icon.getMaxU();
+        float v1 = icon.getMinV();
+        float v2 = icon.getMaxV();
+
+        updatePartialPosition(partialTickTime);
+
+        Tessellator tes = Tessellator.instance;
+        tes.startDrawingQuads();
+
+        tes.setColorRGBA_F(r, g, b, a);
+        tes.addVertexWithUV(xt - rX * scale - rYZ * scale, yt - rXZ * scale, zt - rZ * scale - rXY * scale, u2, v2);
+        tes.addVertexWithUV(xt - rX * scale + rYZ * scale, yt + rXZ * scale, zt - rZ * scale + rXY * scale, u2, v1);
+        tes.addVertexWithUV(xt + rX * scale + rYZ * scale, yt + rXZ * scale, zt + rZ * scale + rXY * scale, u1, v1);
+        tes.addVertexWithUV(xt + rX * scale - rYZ * scale, yt - rXZ * scale, zt + rZ * scale - rXY * scale, u1, v2);
+
+        tes.draw();
+    }
+
+    protected void updatePartialPosition(float partialTickTime)
+    {
+        xt = (lastX + (x - lastX) * partialTickTime);
+        yt = (lastY + (y - lastY) * partialTickTime);
+        zt = (lastZ + (z - lastZ) * partialTickTime);
+    }
+
+    public boolean isDead()
+    {
+        return isDead;
+    }
+
+    public void update()
+    {
+        lastX = x;
+        lastY = y;
+        lastZ = z;
+
+        x += vx;
+        y += vy;
+        z += vz;
     }
 
 }
