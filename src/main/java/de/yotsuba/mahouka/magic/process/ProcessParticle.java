@@ -49,7 +49,7 @@ public class ProcessParticle extends MagicProcess
     @Override
     public int getCastDuration(Target target)
     {
-        return Utils.secondsToTicks(3);
+        return Utils.secondsToTicks(5);
     }
 
     @Override
