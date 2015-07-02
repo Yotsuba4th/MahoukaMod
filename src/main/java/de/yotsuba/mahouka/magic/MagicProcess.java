@@ -59,8 +59,9 @@ public abstract class MagicProcess implements Cloneable
         processes.add(ProcessFireball.class);
         processes.add(ProcessAccelerate.class);
 
-        for (short id = 1; id <= processes.size(); id++)
-            registerProcess(processes.get(id), id);
+        short idx = 1;
+        for (Class<? extends MagicProcess> proc : processes)
+            registerProcess(proc, idx++);
     }
 
     /* ------------------------------------------------------------ */
