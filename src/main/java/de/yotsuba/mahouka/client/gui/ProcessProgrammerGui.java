@@ -15,6 +15,7 @@ import de.yotsuba.mahouka.gui.container.ProcessProgrammerContainer;
 import de.yotsuba.mahouka.item.ItemMagicProcess;
 import de.yotsuba.mahouka.magic.ActivationSequence;
 import de.yotsuba.mahouka.magic.MagicProcess;
+import de.yotsuba.mahouka.network.S6ProcessProgrammerClick;
 
 public class ProcessProgrammerGui extends GuiContainerExt
 {
@@ -79,7 +80,8 @@ public class ProcessProgrammerGui extends GuiContainerExt
     {
         if (process != null)
         {
-            process.guiButtonClick(button);
+            S6ProcessProgrammerClick.send(button.id);
+            process.guiButtonClick(button.id);
             updateItemStack();
         }
     }

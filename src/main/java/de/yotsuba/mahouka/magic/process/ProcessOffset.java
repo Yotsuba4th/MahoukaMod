@@ -1,6 +1,5 @@
 package de.yotsuba.mahouka.magic.process;
 
-import net.minecraft.client.gui.GuiButton;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.Vec3;
 import cpw.mods.fml.client.config.GuiButtonExt;
@@ -113,10 +112,9 @@ public class ProcessOffset extends MagicProcess
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void guiButtonClick(GuiButton button)
+    public void guiButtonClick(int id)
     {
-        switch (button.id)
+        switch (id)
         {
         case 0:
             offset.xCoord += 1;

@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.minecraft.client.gui.GuiButton;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
@@ -225,8 +224,7 @@ public abstract class MagicProcess implements Cloneable
         gui.getFontRenderer().drawString(text, x, y, 4210752);
     }
 
-    @SideOnly(Side.CLIENT)
-    public void guiButtonClick(GuiButton button)
+    public void guiButtonClick(int id)
     {
     }
 

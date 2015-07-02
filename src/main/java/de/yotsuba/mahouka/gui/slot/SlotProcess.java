@@ -23,10 +23,6 @@ public class SlotProcess extends Slot
     {
         super.onSlotChanged();
         container.needGuiUpdate = true;
-        if (getStack() != null)
-        {
-            // TODO: Read/Write NBT settings for process
-        }
     }
 
     @Override

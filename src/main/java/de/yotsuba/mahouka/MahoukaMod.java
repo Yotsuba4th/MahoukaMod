@@ -38,6 +38,7 @@ import de.yotsuba.mahouka.network.C3CancelCast;
 import de.yotsuba.mahouka.network.C5CastUpdate;
 import de.yotsuba.mahouka.network.S1StartChanneling;
 import de.yotsuba.mahouka.network.S4CancelCast;
+import de.yotsuba.mahouka.network.S6ProcessProgrammerClick;
 
 @Mod(modid = MahoukaMod.MODID, version = MahoukaMod.VERSION)
 public class MahoukaMod
@@ -161,6 +162,7 @@ public class MahoukaMod
         netChannel.registerMessage(C3CancelCast.class, C3CancelCast.class, 3, Side.CLIENT);
         netChannel.registerMessage(S4CancelCast.class, S4CancelCast.class, 4, Side.SERVER);
         netChannel.registerMessage(C5CastUpdate.class, C5CastUpdate.class, 5, Side.CLIENT);
+        netChannel.registerMessage(S6ProcessProgrammerClick.class, S6ProcessProgrammerClick.class, 6, Side.CLIENT);
     }
 
     /* ------------------------------------------------------------ */
