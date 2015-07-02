@@ -69,4 +69,9 @@ public abstract class GuiContainerExt extends GuiContainer
         return fontRendererObj;
     }
 
+    public static int getColor(int r, int g, int b, int a)
+    {
+        return (a & 255) << 24 | (r & 255) << 16 | (b & 255) << 8 | (g & 255);
+    }
+
 }
