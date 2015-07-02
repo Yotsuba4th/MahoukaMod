@@ -27,7 +27,8 @@ import de.yotsuba.mahouka.block.BlockCadProgrammer;
 import de.yotsuba.mahouka.block.BlockProcessProgrammer;
 import de.yotsuba.mahouka.block.BlockSequenceProgrammer;
 import de.yotsuba.mahouka.core.MahoukaEventHandler;
-import de.yotsuba.mahouka.entity.projectile.EntityMagicFireball;
+import de.yotsuba.mahouka.entity.projectile.EntityMagicProjectileFire;
+import de.yotsuba.mahouka.entity.projectile.EntityMagicProjectileIce;
 import de.yotsuba.mahouka.gui.GuiHandler;
 import de.yotsuba.mahouka.item.ItemCad;
 import de.yotsuba.mahouka.item.ItemMagicProcess;
@@ -119,7 +120,8 @@ public class MahoukaMod
 
     private void registerEntites()
     {
-        registerEntity(EntityMagicFireball.class, "magic_fireball");
+        registerEntity(EntityMagicProjectileFire.class, "magic_projectile_fire");
+        registerEntity(EntityMagicProjectileIce.class, "magic_projectile_ice");
     }
 
     public static int registerEntity(Class<? extends Entity> entityClass, String name)

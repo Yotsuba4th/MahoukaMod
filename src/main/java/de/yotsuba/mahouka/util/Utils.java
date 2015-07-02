@@ -5,12 +5,14 @@ import java.util.List;
 import java.util.UUID;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.Vec3;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -75,6 +77,20 @@ public class Utils
         for (int i = 0; i < 9; ++i)
             slots.add(new Slot(playerInventory, i, 8 + i * 18, 142));
         return slots;
+    }
+
+    public static void setEntityHeading(Entity entity)
+    {
+        setEntityHeading(entity, Vec3.createVectorHelper(entity.posX + entity.motionX, entity.posY + entity.motionY, entity.posZ + entity.motionZ));
+    }
+
+    public static void setEntityHeading(Entity entity, Vec3 lookAt)
+    {
+        double xd = lookAt.xCoord - entity.posX;
+        double yd = lookAt.yCoord - entity.posY;
+        double zd = lookAt.zCoord - entity.posZ;
+        entity.rotationYaw = (float) (Math.atan2(zd, xd) * 180.0D / Math.PI) - 90.0F;
+        entity.rotationPitch = (float) (Math.atan2(Math.sqrt(xd * xd + zd * zd), yd) * 180.0D / Math.PI) - 90.0F;
     }
 
 }

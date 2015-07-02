@@ -1,25 +1,19 @@
 package de.yotsuba.mahouka.magic.process;
 
 import net.minecraft.entity.Entity;
-import de.yotsuba.mahouka.MahoukaMod;
-import de.yotsuba.mahouka.entity.projectile.EntityMagicFireball;
+import net.minecraft.util.Vec3;
+import de.yotsuba.mahouka.entity.projectile.EntityMagicProjectileIce;
 import de.yotsuba.mahouka.magic.cast.CastingProcess;
 import de.yotsuba.mahouka.util.Utils;
 import de.yotsuba.mahouka.util.target.Target;
 
-public class ProcessFireball extends ProcessProjectile
+public class ProcessProjectileIce extends ProcessProjectile
 {
 
     @Override
     public String getName()
     {
-        return "fireball";
-    }
-
-    @Override
-    public String getTextureName()
-    {
-        return MahoukaMod.MODID + ":process_fireball";
+        return "icecrystal";
     }
 
     @Override
@@ -43,7 +37,14 @@ public class ProcessFireball extends ProcessProjectile
     @Override
     public Entity createProjectile(CastingProcess cp, Target target)
     {
-        return new EntityMagicFireball(cp.getCaster().worldObj, cp.getCaster(), 0, 0, 0);
+        return new EntityMagicProjectileIce(cp.getCaster().worldObj, cp.getCaster(), 0, 0, 0);
+    }
+
+    @Override
+    public void createSpawnEffect(CastingProcess cp, Vec3 point)
+    {
+        super.createSpawnEffect(cp, point);
+        spawnFx.setColor(0.2f, 0.3f, 1f);
     }
     
 }

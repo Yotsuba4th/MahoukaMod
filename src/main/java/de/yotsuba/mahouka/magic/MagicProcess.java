@@ -18,12 +18,13 @@ import de.yotsuba.mahouka.magic.cast.CastingProcess;
 import de.yotsuba.mahouka.magic.process.ProcessAccelerate;
 import de.yotsuba.mahouka.magic.process.ProcessExplosion;
 import de.yotsuba.mahouka.magic.process.ProcessFireShockwave;
-import de.yotsuba.mahouka.magic.process.ProcessFireball;
 import de.yotsuba.mahouka.magic.process.ProcessFirebomb;
 import de.yotsuba.mahouka.magic.process.ProcessMovingOffset;
 import de.yotsuba.mahouka.magic.process.ProcessOffset;
 import de.yotsuba.mahouka.magic.process.ProcessParallel;
 import de.yotsuba.mahouka.magic.process.ProcessParticle;
+import de.yotsuba.mahouka.magic.process.ProcessProjectileFire;
+import de.yotsuba.mahouka.magic.process.ProcessProjectileIce;
 import de.yotsuba.mahouka.magic.process.ProcessShockwave;
 import de.yotsuba.mahouka.util.target.Target;
 import de.yotsuba.mahouka.util.target.TargetType;
@@ -55,8 +56,9 @@ public abstract class MagicProcess implements Cloneable
         processes.add(ProcessMovingOffset.class);
         processes.add(ProcessOffset.class);
         processes.add(ProcessParallel.class);
-        processes.add(ProcessFireball.class);
+        processes.add(ProcessProjectileFire.class);
         processes.add(ProcessAccelerate.class);
+        processes.add(ProcessProjectileIce.class);
 
         short idx = 1;
         for (Class<? extends MagicProcess> proc : processes)
@@ -195,7 +197,10 @@ public abstract class MagicProcess implements Cloneable
         return itemByProcess.get(getClass());
     }
 
-    public abstract String getTextureName();
+    public String getTextureName()
+    {
+        return MahoukaMod.MODID + ":process_" + getName();
+    }
 
     public void registerIcons()
     {

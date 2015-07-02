@@ -192,8 +192,7 @@ public class CastingProcess
 
     private void channelEnd()
     {
-        // TODO Auto-generated method stub
-        if (!caster.capabilities.isCreativeMode || true) // TODO: Remove test flag
+        if (!caster.capabilities.isCreativeMode)
         {
             PlayerData playerData = new PlayerData(caster);
             playerData.setPsion(playerData.getPsion() - psion);

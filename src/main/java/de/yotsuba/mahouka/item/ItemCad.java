@@ -14,6 +14,7 @@ import de.yotsuba.mahouka.MahoukaMod;
 import de.yotsuba.mahouka.magic.cad.CadBase;
 import de.yotsuba.mahouka.magic.cad.CadManager;
 
+// TODO: Make item use different texture based on psion level etc.
 public class ItemCad extends Item
 {
 

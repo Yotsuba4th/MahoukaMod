@@ -5,6 +5,9 @@ import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.world.World;
 
+// TODO: Probably need to write our own particle renderer to handle these with special cases
+// Current problem is that it is very complicated to calculate rotations for the texture which would be way easier if we  can directly use OpenGL and its matrices
+// This will also allow us to use large textures for effects as well
 public class EntityFxExt extends EntityFX
 {
 

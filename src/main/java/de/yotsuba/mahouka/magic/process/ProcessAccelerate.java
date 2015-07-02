@@ -63,7 +63,7 @@ public class ProcessAccelerate extends MagicProcess
         TargetEntity targetEntity = (TargetEntity) target;
         Entity entity = targetEntity.getEntity();
 
-        speed = 1.2f;
+        speed = 1.0f;
         if (entity instanceof Targeting && ((Targeting) entity).getTarget() != null)
         {
             Target entityTarget = ((Targeting) entity).getTarget();

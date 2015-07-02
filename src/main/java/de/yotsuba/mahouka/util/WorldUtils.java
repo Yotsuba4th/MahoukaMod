@@ -6,6 +6,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import cpw.mods.fml.relauncher.Side;
@@ -61,10 +62,11 @@ public class WorldUtils
         Vec3 hitVec = null;
         for (Entity entity : entities)
         {
+            // TODO: Add map of classes that should be collided
             if (ignoreNonClollidables && !entity.canBeCollidedWith())
                 continue;
 
-            float size = entity.getCollisionBorderSize() + 0.5f;
+            float size = 0.4f; // entity.getCollisionBorderSize() + 0.5f;
             AxisAlignedBB entityAABB = entity.boundingBox.expand(size, size, size);
             MovingObjectPosition entityHit = entityAABB.calculateIntercept(start, rayEnd);
 
@@ -106,4 +108,22 @@ public class WorldUtils
         return result;
     }
 
+    /* ------------------------------------------------------------ */
+
+    public static int getBrightnessForRender(Entity entity)
+    {
+        int x = MathHelper.floor_double(entity.posX);
+        int z = MathHelper.floor_double(entity.posZ);
+        if (entity.worldObj.blockExists(x, 0, z))
+        {
+            double d0 = (entity.boundingBox.maxY - entity.boundingBox.minY) * 0.66D;
+            int k = MathHelper.floor_double(entity.posY - entity.yOffset + d0);
+            return entity.worldObj.getLightBrightnessForSkyBlocks(x, k, z, 0);
+        }
+        else
+        {
+            return 0;
+        }
+    }
+    
 }

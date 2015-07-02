@@ -1,6 +1,7 @@
 package de.yotsuba.mahouka.client;
 
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.entity.RenderFireball;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -14,9 +15,13 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
 import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import de.yotsuba.mahouka.CommonProxy;
+import de.yotsuba.mahouka.client.render.RenderCrystal;
+import de.yotsuba.mahouka.entity.projectile.EntityMagicProjectileFire;
+import de.yotsuba.mahouka.entity.projectile.EntityMagicProjectileIce;
 import de.yotsuba.mahouka.item.ItemCad;
 import de.yotsuba.mahouka.magic.MagicProcess;
 import de.yotsuba.mahouka.magic.cad.CadBase;
@@ -56,6 +61,9 @@ public class ClientProxy extends CommonProxy
     {
         // FMLCommonHandler.instance().bus().register(this);
         MinecraftForge.EVENT_BUS.register(this);
+
+        RenderingRegistry.registerEntityRenderingHandler(EntityMagicProjectileFire.class, new RenderFireball(0.5f));
+        RenderingRegistry.registerEntityRenderingHandler(EntityMagicProjectileIce.class, new RenderCrystal(0.2f, 0.3f, 1f, 0.4f));
     }
 
     /* ------------------------------------------------------------ */
@@ -79,7 +87,6 @@ public class ClientProxy extends CommonProxy
         if (target == null)
             return;
 
-
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         GL11.glEnable(GL12.GL_RESCALE_NORMAL);
         GL11.glDisable(GL11.GL_LIGHTING);
@@ -97,7 +104,7 @@ public class ClientProxy extends CommonProxy
             Entity entity = targetEntity.getEntity();
             AxisAlignedBB aabb = entity.boundingBox;
             Vec3 point = target.getCurrentPoint();
-            
+
             GL11.glTranslated(point.xCoord, point.yCoord, point.zCoord);
             if (aabb != null)
                 GL11.glScaled((aabb.maxX - aabb.minX) * 1.25 + 0.25, (aabb.maxY - aabb.minY) * 1.25, (aabb.maxZ - aabb.minZ) * 1.25 + 0.25);

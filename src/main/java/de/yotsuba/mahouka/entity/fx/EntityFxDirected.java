@@ -2,9 +2,12 @@ package de.yotsuba.mahouka.entity.fx;
 
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
 import org.lwjgl.opengl.GL11;
+
+import de.yotsuba.mahouka.util.Utils;
 
 public class EntityFxDirected extends EntityFxExt
 {
@@ -18,7 +21,12 @@ public class EntityFxDirected extends EntityFxExt
     {
         super(world, x, y, zz, vx, vy, vz);
     }
-    
+
+    public void lookAt(Vec3 lookAt)
+    {
+        Utils.setEntityHeading(this, lookAt);
+    }
+
     @Override
     public void renderParticle(Tessellator tes, float rpt, float rX_, float rXZ_, float rZ_, float rYZ_, float rXY_)
     {
@@ -51,10 +59,10 @@ public class EntityFxDirected extends EntityFxExt
         tes.addVertexWithUV(x + rX * particleScale + rYZ * particleScale, y + rXZ * particleScale, z + rZ * particleScale + rXY * particleScale, u1, v1);
         tes.addVertexWithUV(x + rX * particleScale - rYZ * particleScale, y - rXZ * particleScale, z + rZ * particleScale - rXY * particleScale, u1, v2);
 
-//        tes.addVertexWithUV(x - rX * particleScale + rYZ * particleScale, y + rXZ * particleScale, z - rZ * particleScale + rXY * particleScale, u2, v1);
-//        tes.addVertexWithUV(x - rX * particleScale - rYZ * particleScale, y - rXZ * particleScale, z - rZ * particleScale - rXY * particleScale, u2, v2);
-//        tes.addVertexWithUV(x + rX * particleScale - rYZ * particleScale, y - rXZ * particleScale, z + rZ * particleScale - rXY * particleScale, u1, v2);
-//        tes.addVertexWithUV(x + rX * particleScale + rYZ * particleScale, y + rXZ * particleScale, z + rZ * particleScale + rXY * particleScale, u1, v1);
+        // tes.addVertexWithUV(x - rX * particleScale + rYZ * particleScale, y + rXZ * particleScale, z - rZ * particleScale + rXY * particleScale, u2, v1);
+        // tes.addVertexWithUV(x - rX * particleScale - rYZ * particleScale, y - rXZ * particleScale, z - rZ * particleScale - rXY * particleScale, u2, v2);
+        // tes.addVertexWithUV(x + rX * particleScale - rYZ * particleScale, y - rXZ * particleScale, z + rZ * particleScale - rXY * particleScale, u1, v2);
+        // tes.addVertexWithUV(x + rX * particleScale + rYZ * particleScale, y + rXZ * particleScale, z + rZ * particleScale + rXY * particleScale, u1, v1);
     }
 
 }
