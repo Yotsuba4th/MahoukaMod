@@ -1,5 +1,7 @@
 package de.yotsuba.mahouka.magic.process;
 
+import java.util.Random;
+
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.Vec3;
 import cpw.mods.fml.client.config.GuiButtonExt;
@@ -16,15 +18,19 @@ import de.yotsuba.mahouka.util.target.TargetType;
 public class ProcessOffset extends MagicProcess
 {
 
-    private Vec3 offset;
+    protected Vec3 offset;
 
-    private Vec3 range;
+    protected Vec3 range;
+
+    /* ------------------------------------------------------------ */
 
     public ProcessOffset()
     {
         offset = Vec3.createVectorHelper(0, 5, 0);
         range = Vec3.createVectorHelper(0, 0, 0);
     }
+
+    /* ------------------------------------------------------------ */
 
     @Override
     public NBTTagCompound writeToNBT()
@@ -49,6 +55,8 @@ public class ProcessOffset extends MagicProcess
         range.yCoord = tag.getDouble("ry");
         range.zCoord = tag.getDouble("rz");
     }
+
+    /* ------------------------------------------------------------ */
 
     @Override
     public String getName()
@@ -89,8 +97,20 @@ public class ProcessOffset extends MagicProcess
     @Override
     public Target castStart(CastingProcess cp, Target target)
     {
-        return new TargetOffset(target, offset);
+        return new TargetOffset(target, getRandomOffset());
     }
+
+    public Vec3 getRandomOffset()
+    {
+        Random rnd = new Random();
+        double xd = (rnd.nextDouble() * 2 - 1) * range.xCoord;
+        double yd = (rnd.nextDouble() * 2 - 1) * range.yCoord;
+        double zd = (rnd.nextDouble() * 2 - 1) * range.zCoord;
+        Vec3 rndOffset = Vec3.createVectorHelper(offset.xCoord + xd, offset.yCoord + yd, offset.zCoord + zd);
+        return rndOffset;
+    }
+
+    /* ------------------------------------------------------------ */
 
     @Override
     @SideOnly(Side.CLIENT)

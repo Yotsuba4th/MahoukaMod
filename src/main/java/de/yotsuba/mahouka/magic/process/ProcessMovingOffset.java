@@ -1,6 +1,5 @@
 package de.yotsuba.mahouka.magic.process;
 
-import net.minecraft.util.Vec3;
 import de.yotsuba.mahouka.MahoukaMod;
 import de.yotsuba.mahouka.magic.cast.CastingProcess;
 import de.yotsuba.mahouka.util.target.Target;
@@ -9,13 +8,6 @@ import de.yotsuba.mahouka.util.target.TargetType;
 
 public class ProcessMovingOffset extends ProcessOffset
 {
-
-    private Vec3 offset;
-
-    public ProcessMovingOffset()
-    {
-        offset = Vec3.createVectorHelper(0, 5, 0);
-    }
 
     @Override
     public String getName()
@@ -50,7 +42,7 @@ public class ProcessMovingOffset extends ProcessOffset
     @Override
     public Target castStart(CastingProcess cp, Target target)
     {
-        return new TargetMovingOffset(target, offset);
+        return new TargetMovingOffset(target, getRandomOffset());
     }
 
 }

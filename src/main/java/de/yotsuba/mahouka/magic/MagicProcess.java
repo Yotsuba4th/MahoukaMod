@@ -52,8 +52,8 @@ public abstract class MagicProcess implements Cloneable
         processes.add(ProcessShockwave.class);
         processes.add(ProcessFirebomb.class);
         processes.add(ProcessFireShockwave.class);
-        processes.add(ProcessOffset.class);
         processes.add(ProcessMovingOffset.class);
+        processes.add(ProcessOffset.class);
         processes.add(ProcessParallel.class);
         processes.add(ProcessFireball.class);
         processes.add(ProcessAccelerate.class);
