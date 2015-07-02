@@ -85,4 +85,10 @@ public class ProcessProgrammerContainer extends Container
         if (stackProcess != null)
             player.dropPlayerItemWithRandomChoice(stackProcess, false);
     }
+
+    public void buttonClicked(int id)
+    {
+        // TODO Auto-generated method stub
+
+    }
 }

@@ -26,13 +26,21 @@ public class ProcessProgrammerGui extends GuiContainerExt
 
     private MagicProcess process;
 
+    private int x;
+    private int y;
+    private int z;
+
     // TODO: Design gui texture
     private static final ResourceLocation texture = new ResourceLocation(MahoukaMod.MODID + ":textures/gui/" + BlockProcessProgrammer.ID + ".png");
 
-    public ProcessProgrammerGui(InventoryPlayer playerInventory)
+    public ProcessProgrammerGui(InventoryPlayer playerInventory, int x, int y, int z)
     {
         super(new ProcessProgrammerContainer(playerInventory));
         container = (ProcessProgrammerContainer) inventorySlots;
+        this.x = x;
+        this.y = y;
+        this.z = z;
+
     }
 
     @Override
@@ -80,7 +88,7 @@ public class ProcessProgrammerGui extends GuiContainerExt
     {
         if (process != null)
         {
-            S6ProcessProgrammerClick.send(button.id);
+            S6ProcessProgrammerClick.send(button.id, x, y, z);
             process.guiButtonClick(button.id);
             updateItemStack();
         }
