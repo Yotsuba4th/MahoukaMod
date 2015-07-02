@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.minecraft.client.gui.GuiButton;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
@@ -202,12 +203,17 @@ public abstract class MagicProcess implements Cloneable
     /* ------------------------------------------------------------ */
 
     @SideOnly(Side.CLIENT)
-    public void updateGui(GuiContainerExt gui)
+    public void guiUpdate(GuiContainerExt gui)
     {
     }
 
     @SideOnly(Side.CLIENT)
-    public void drawGui(GuiContainerExt gui)
+    public void guiDraw(GuiContainerExt gui)
+    {
+    }
+
+    @SideOnly(Side.CLIENT)
+    public void guiButtonClick(GuiButton button)
     {
     }
 

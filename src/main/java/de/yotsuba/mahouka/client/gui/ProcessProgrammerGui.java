@@ -36,23 +36,22 @@ public class ProcessProgrammerGui extends GuiContainerExt
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        this.mc.renderEngine.bindTexture(texture);
+        bindTexture(texture);
 
         String header = BlockProcessProgrammer.BLOCK.getLocalizedName();
         fontRendererObj.drawString(header, (xSize - fontRendererObj.getStringWidth(header)) / 2 + 10, 6, 4210752);
 
+        // Dynamically update gui
         if (process != null)
-            process.drawGui(this);
+            process.guiDraw(this);
     }
 
     @Override
     protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_)
     {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        this.mc.renderEngine.bindTexture(texture);
-        int x = (width - xSize) / 2;
-        int y = (height - ySize) / 2;
-        this.drawTexturedModalRect(x, y, 0, 0, xSize, ySize);
+        bindTexture(texture);
+        drawTexturedModalRect(getX(), getY(), 0, 0, getWidth(), getHeight());
 
         // Dynamically update gui
         if (container.needGuiUpdate)
@@ -61,7 +60,7 @@ public class ProcessProgrammerGui extends GuiContainerExt
             process = getProcess();
             buttonList.clear();
             if (process != null)
-                process.updateGui(this);
+                process.guiUpdate(this);
             // buttonList.add(new GuiButtonExt(1, x, y, 8, 8, "+"));
         }
     }
@@ -80,7 +79,6 @@ public class ProcessProgrammerGui extends GuiContainerExt
     @Override
     protected void actionPerformed(GuiButton button)
     {
-        // TODO Auto-generated method stub
-        super.actionPerformed(button);
+        process.guiButtonClick(button);
     }
 }
