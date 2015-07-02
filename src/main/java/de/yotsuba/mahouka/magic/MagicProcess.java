@@ -16,6 +16,7 @@ import de.yotsuba.mahouka.item.ItemMagicProcess;
 import de.yotsuba.mahouka.item.ItemMagicSequence;
 import de.yotsuba.mahouka.magic.cast.CastingProcess;
 import de.yotsuba.mahouka.magic.process.ProcessAccelerate;
+import de.yotsuba.mahouka.magic.process.ProcessDecomposition;
 import de.yotsuba.mahouka.magic.process.ProcessExplosion;
 import de.yotsuba.mahouka.magic.process.ProcessFireShockwave;
 import de.yotsuba.mahouka.magic.process.ProcessFirebomb;
@@ -59,6 +60,7 @@ public abstract class MagicProcess implements Cloneable
         processes.add(ProcessProjectileFire.class);
         processes.add(ProcessAccelerate.class);
         processes.add(ProcessProjectileIce.class);
+        processes.add(ProcessDecomposition.class);
 
         short idx = 1;
         for (Class<? extends MagicProcess> proc : processes)

@@ -62,7 +62,8 @@ public abstract class ProcessProjectile extends MagicProcess
         if (spawnFx != null)
         {
             spawnFx.setMaxAge(getCastDuration(target));
-            spawnFx.lookAt(targetPoint);
+            if (targetPoint != null)
+                spawnFx.lookAt(targetPoint);
             Minecraft.getMinecraft().effectRenderer.addEffect(spawnFx);
         }
 
@@ -99,8 +100,11 @@ public abstract class ProcessProjectile extends MagicProcess
     public void castTickClient(CastingProcess cp, Target target)
     {
         Vec3 targetPoint = getTargetPoint(target);
-        targetFx.setPositionOnGround(targetPoint.xCoord, targetPoint.yCoord, targetPoint.zCoord);
-        spawnFx.lookAt(targetPoint);
+        if (targetPoint != null)
+        {
+            targetFx.setPositionOnGround(targetPoint.xCoord, targetPoint.yCoord, targetPoint.zCoord);
+            spawnFx.lookAt(targetPoint);
+        }
     }
 
     /* ------------------------------------------------------------ */

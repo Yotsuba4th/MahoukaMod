@@ -294,6 +294,11 @@ public class CastingProcess
         return caster;
     }
 
+    public World getWorld()
+    {
+        return caster.worldObj;
+    }
+
     public Target getTarget()
     {
         return target;
