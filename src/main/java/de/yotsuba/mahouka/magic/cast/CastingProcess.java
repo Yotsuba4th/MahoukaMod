@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import cpw.mods.fml.common.network.ByteBufUtils;
@@ -17,6 +18,8 @@ import de.yotsuba.mahouka.magic.ActivationSequence;
 import de.yotsuba.mahouka.magic.MagicProcess;
 import de.yotsuba.mahouka.magic.cad.CadBase;
 import de.yotsuba.mahouka.magic.cad.CadManager;
+import de.yotsuba.mahouka.network.C2StartChanneling;
+import de.yotsuba.mahouka.network.C3CancelCast;
 import de.yotsuba.mahouka.network.C5CastUpdate;
 import de.yotsuba.mahouka.util.BufUtils;
 import de.yotsuba.mahouka.util.Utils;
@@ -63,6 +66,15 @@ public class CastingProcess
         currentTarget = target;
     }
 
+    public static CastingProcess create(EntityPlayer caster, ActivationSequence sequence, Target target, UUID id)
+    {
+        // TODO (1) Check if magic sequence is valid for target!!
+        int channelingDuration = sequence.getChannelingDuration();
+        int psionCost = sequence.getPsionCost();
+        CastingProcess cast = new CastingProcess(caster, sequence, target, id, psionCost, channelingDuration);
+        return cast;
+    }
+
     /* ------------------------------------------------------------ */
 
     public static CastingProcess fromBytes(World world, ByteBuf buf)
@@ -90,17 +102,39 @@ public class CastingProcess
 
     /* ------------------------------------------------------------ */
 
-    public boolean cancel()
+    public boolean start()
+    {
+        if (CastingManager.isServerCasting(id))
+        {
+            // TODO: Error sound / message
+            caster.addChatMessage(new ChatComponentText("Another magic is still active!"));
+            return false;
+        }
+        C2StartChanneling.send(this);
+        CastingManager.serverCasts.put(id, this);
+        return true;
+    }
+
+    public void startClient()
+    {
+        CastingManager.clientCasts.put(id, this);
+    }
+
+    /* ------------------------------------------------------------ */
+
+    public boolean cancel(boolean force)
     {
         if (processIndex >= 0 && processIndex < sequence.getProcesses().size())
         {
             MagicProcess process = sequence.getProcesses().get(processIndex);
-            if (!process.castCancel(this, currentTarget))
+            if (!process.castCancel(this, currentTarget) && !force)
             {
                 return false;
             }
         }
         active = false;
+        CastingManager.serverCasts.remove(id);
+        C3CancelCast.send(this);
         if (MahoukaMod.DEBUG)
             MahoukaMod.getLogger().info("Cancelled cast {}", id);
         return true;
@@ -110,34 +144,9 @@ public class CastingProcess
     {
         EffectRenderer.cancelEffects(id);
         active = false;
+        CastingManager.clientCasts.remove(id);
         if (MahoukaMod.DEBUG)
             MahoukaMod.getLogger().info("Cancelled client cast {}", id);
-    }
-
-    public void clientUpdate(int newProcess, Target target)
-    {
-        if (processIndex < 0)
-        {
-            channelEndClient();
-            castStartClient();
-        }
-        else
-        {
-            MagicProcess process = sequence.getProcesses().get(processIndex);
-            process.castEndClient(this, currentTarget);
-        }
-
-        processIndex = newProcess;
-        currentTarget = target;
-        if (processIndex < sequence.getProcesses().size())
-        {
-            MagicProcess process = sequence.getProcesses().get(processIndex);
-            process.castStartClient(this, currentTarget);
-        }
-        else
-        {
-            castEndClient();
-        }
     }
 
     /* ------------------------------------------------------------ */
@@ -178,6 +187,32 @@ public class CastingProcess
             castTickClient();
         }
         t++;
+    }
+
+    public void updateClient(int newProcess, Target target)
+    {
+        if (processIndex < 0)
+        {
+            channelEndClient();
+            castStartClient();
+        }
+        else
+        {
+            MagicProcess process = sequence.getProcesses().get(processIndex);
+            process.castEndClient(this, currentTarget);
+        }
+
+        processIndex = newProcess;
+        currentTarget = target;
+        if (processIndex < sequence.getProcesses().size())
+        {
+            MagicProcess process = sequence.getProcesses().get(processIndex);
+            process.castStartClient(this, currentTarget);
+        }
+        else
+        {
+            castEndClient();
+        }
     }
 
     /* ------------------------------------------------------------ */
@@ -284,7 +319,7 @@ public class CastingProcess
                 if (!currentTarget.matchesTypes(process.getValidTargets()))
                 {
                     // TODO: Cancel cast with errors
-                    cancel();
+                    cancel(true);
                     return;
                 }
                 currentTarget = process.castStart(this, currentTarget);

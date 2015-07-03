@@ -10,7 +10,8 @@ import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import de.yotsuba.mahouka.MahoukaMod;
+import de.yotsuba.mahouka.magic.cast.CastingManager;
+import de.yotsuba.mahouka.magic.cast.CastingProcess;
 import de.yotsuba.mahouka.util.BufUtils;
 import de.yotsuba.mahouka.util.target.Target;
 
@@ -57,7 +58,10 @@ public class C5CastUpdate implements IMessage, IMessageHandler<C5CastUpdate, IMe
         UUID id = BufUtils.uuidFromBytes(message.buf);
         int process = message.buf.readInt();
         Target target = Target.fromBytes(Minecraft.getMinecraft().theWorld, message.buf);
-        MahoukaMod.getCastingManagerClient().castUpdate(id, process, target);
+
+        CastingProcess cast = CastingManager.getClientCast(id);
+        if (cast != null)
+            cast.updateClient(process, target);
         return null;
     }
 

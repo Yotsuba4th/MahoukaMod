@@ -37,8 +37,7 @@ import de.yotsuba.mahouka.item.ItemMagicProcess;
 import de.yotsuba.mahouka.item.ItemMagicSequence;
 import de.yotsuba.mahouka.magic.MagicProcess;
 import de.yotsuba.mahouka.magic.cad.CadManager;
-import de.yotsuba.mahouka.magic.cast.CastingManagerClient;
-import de.yotsuba.mahouka.magic.cast.CastingManagerServer;
+import de.yotsuba.mahouka.magic.cast.CastingManager;
 import de.yotsuba.mahouka.network.C0PlayerData;
 import de.yotsuba.mahouka.network.C2StartChanneling;
 import de.yotsuba.mahouka.network.C3CancelCast;
@@ -72,10 +71,9 @@ public class MahoukaMod
 
     private static CadManager cadManager = new CadManager();
 
-    private static CastingManagerServer castingManagerServer = new CastingManagerServer();
-
-    private static CastingManagerClient castingManagerClient = new CastingManagerClient();
-
+    @SuppressWarnings("unused")
+    private static CastingManager castingManager = new CastingManager();
+    
     @SuppressWarnings("unused")
     private static MahoukaEventHandler eventHandler = new MahoukaEventHandler();
 
@@ -185,7 +183,7 @@ public class MahoukaMod
     public void serverStoppedEvent(FMLServerStoppedEvent event)
     {
         CadManager.serverStoppedEvent(event);
-        castingManagerServer.serverStoppedEvent(event);
+        CastingManager.serverStoppedEvent();
     }
 
     /* ------------------------------------------------------------ */
@@ -213,16 +211,6 @@ public class MahoukaMod
     public static SimpleNetworkWrapper getNetChannel()
     {
         return netChannel;
-    }
-
-    public static CastingManagerServer getCastingManagerServer()
-    {
-        return castingManagerServer;
-    }
-
-    public static CastingManagerClient getCastingManagerClient()
-    {
-        return castingManagerClient;
     }
 
 }

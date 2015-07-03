@@ -130,7 +130,7 @@ public class ProcessParallel extends MagicProcess
             return true;
         boolean cancelledAny = false;
         for (CastingProcess castingProcess : casts)
-            cancelledAny |= MahoukaMod.getCastingManagerServer().cancelCast(castingProcess.getId());
+            cancelledAny |= castingProcess.cancel(false);
         cleanCasts();
         return cancelledAny;
     }
@@ -143,7 +143,7 @@ public class ProcessParallel extends MagicProcess
         {
             UUID id = UUID.randomUUID();
             CastingProcess cast = new CastingProcess(cp.getCaster(), sequence, target, id, 0, 0);
-            MahoukaMod.getCastingManagerServer().startChanneling(cast);
+            cast.start();
             casts.add(cast);
         }
         return target;

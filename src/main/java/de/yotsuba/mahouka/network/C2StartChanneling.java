@@ -42,7 +42,7 @@ public class C2StartChanneling implements IMessage, IMessageHandler<C2StartChann
     @Override
     public IMessage onMessage(C2StartChanneling message, MessageContext ctx)
     {
-        MahoukaMod.getCastingManagerClient().startChanneling(message.cast);
+        message.cast.startClient();
         return null;
     }
 

@@ -12,9 +12,11 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.Phase;
 import cpw.mods.fml.common.gameevent.TickEvent.ServerTickEvent;
+import cpw.mods.fml.common.network.FMLNetworkEvent;
 import de.yotsuba.mahouka.item.ItemCad;
 import de.yotsuba.mahouka.magic.cad.CadBase;
 import de.yotsuba.mahouka.magic.cad.CadManager;
+import de.yotsuba.mahouka.magic.cast.CastingManager;
 import de.yotsuba.mahouka.network.C0PlayerData;
 import de.yotsuba.mahouka.util.Utils;
 
@@ -34,9 +36,15 @@ public class MahoukaEventHandler
     }
 
     @SubscribeEvent
+    public void clientDisconnectionFromServerEvent(FMLNetworkEvent.ClientDisconnectionFromServerEvent e)
+    {
+        CastingManager.clientDisconnectEvent();
+    }
+
+    @SubscribeEvent
     public void serverTickEvent(ServerTickEvent event)
     {
-        if (event.phase == Phase.END)
+        if (event.phase != Phase.START)
             return;
 
         if (MinecraftServer.getServer().getEntityWorld().getWorldInfo().getWorldTotalTime() % 200 == 0)

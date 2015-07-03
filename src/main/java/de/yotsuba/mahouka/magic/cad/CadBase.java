@@ -11,9 +11,9 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import de.yotsuba.mahouka.MahoukaMod;
 import de.yotsuba.mahouka.core.PlayerData;
 import de.yotsuba.mahouka.magic.ActivationSequence;
+import de.yotsuba.mahouka.magic.cast.CastingManager;
 import de.yotsuba.mahouka.network.S1StartChanneling;
 import de.yotsuba.mahouka.network.S4CancelCast;
 import de.yotsuba.mahouka.util.WorldUtils;
@@ -83,7 +83,7 @@ public class CadBase
     {
         if (!player.worldObj.isRemote)
             return;
-        if (MahoukaMod.getCastingManagerClient().isCasting(id))
+        if (CastingManager.isServerCasting(id))
         {
             if (player.isSneaking())
                 S4CancelCast.send(id);
@@ -159,7 +159,7 @@ public class CadBase
 
     public void setSelectedSequenceIndex(byte index)
     {
-        if (MahoukaMod.getCastingManagerClient().isCasting(id))
+        if (CastingManager.isServerCasting(id))
             return;
         if (index < 0)
             selectedSequence = (byte) (activationSequences.length - 1);

@@ -1,18 +1,23 @@
 package de.yotsuba.mahouka.magic.cast;
 
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-import net.minecraft.entity.player.EntityPlayer;
 import cpw.mods.fml.common.FMLCommonHandler;
-import de.yotsuba.mahouka.magic.ActivationSequence;
-import de.yotsuba.mahouka.util.target.Target;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.TickEvent.ClientTickEvent;
+import cpw.mods.fml.common.gameevent.TickEvent.Phase;
+import cpw.mods.fml.common.gameevent.TickEvent.ServerTickEvent;
 
-public abstract class CastingManager
+public class CastingManager
 {
 
-    protected Map<UUID, CastingProcess> casts = new ConcurrentHashMap<UUID, CastingProcess>();
+    protected static Map<UUID, CastingProcess> serverCasts = new ConcurrentHashMap<UUID, CastingProcess>();
+
+    protected static Map<UUID, CastingProcess> clientCasts = new ConcurrentHashMap<UUID, CastingProcess>();
 
     /* ------------------------------------------------------------ */
 
@@ -21,22 +26,66 @@ public abstract class CastingManager
         FMLCommonHandler.instance().bus().register(this);
     }
 
+    public static void clientDisconnectEvent()
+    {
+        clientCasts.clear();
+    }
+
+    public static void serverStoppedEvent()
+    {
+        serverCasts.clear();
+    }
+
+    @SubscribeEvent
+    public void clientTickEvent(ClientTickEvent event)
+    {
+        if (event.phase != Phase.START)
+            return;
+        for (Iterator<CastingProcess> it = clientCasts.values().iterator(); it.hasNext();)
+        {
+            CastingProcess cast = it.next();
+            cast.clientTick();
+            if (!cast.isActive())
+                it.remove();
+        }
+    }
+
+    @SubscribeEvent
+    public void serverTickEvent(ServerTickEvent event)
+    {
+        if (event.phase != Phase.START)
+            return;
+        for (Iterator<Entry<UUID, CastingProcess>> it = serverCasts.entrySet().iterator(); it.hasNext();)
+        {
+            CastingProcess cast = it.next().getValue();
+            cast.serverTick();
+            if (!cast.isActive())
+                it.remove();
+        }
+    }
+
     /* ------------------------------------------------------------ */
 
-    public boolean isCasting(UUID id)
+    public static CastingProcess getServerCast(UUID id)
     {
-        CastingProcess cast = casts.get(id);
+        return serverCasts.get(id);
+    }
+
+    public static CastingProcess getClientCast(UUID id)
+    {
+        return clientCasts.get(id);
+    }
+
+    public static boolean isServerCasting(UUID id)
+    {
+        CastingProcess cast = serverCasts.get(id);
         return cast != null && cast.isActive();
     }
 
-    public CastingProcess constructCastingProcess(EntityPlayer caster, ActivationSequence sequence, Target target, UUID id)
+    public static boolean isClientCasting(UUID id)
     {
-        // TODO: Check if magic sequence is valid for target!!
-
-        int channelingDuration = sequence.getChannelingDuration();
-        int psionCost = sequence.getPsionCost();
-        CastingProcess cast = new CastingProcess(caster, sequence, target, id, psionCost, channelingDuration);
-        return cast;
+        CastingProcess cast = clientCasts.get(id);
+        return cast != null && cast.isActive();
     }
 
 }

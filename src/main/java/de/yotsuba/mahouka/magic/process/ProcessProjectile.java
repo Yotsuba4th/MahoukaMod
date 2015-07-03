@@ -75,7 +75,7 @@ public abstract class ProcessProjectile extends MagicProcess
 
     private void createTargetEffect(CastingProcess cp, Vec3 point)
     {
-        // TODO: Allow detection of same effects at the same location and prevent it
+        // TODO (5) Allow detection of same effects at the same location and prevent it
         targetFx = new EffectCast(point.xCoord, point.yCoord + 0.01, point.zCoord);
         targetFx.setIcon(MahoukaMod.icon_rune_default);
         targetFx.setScale(1);

@@ -13,6 +13,7 @@ import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import de.yotsuba.mahouka.MahoukaMod;
 import de.yotsuba.mahouka.magic.cad.CadBase;
 import de.yotsuba.mahouka.magic.cad.CadManager;
+import de.yotsuba.mahouka.magic.cast.CastingProcess;
 import de.yotsuba.mahouka.util.BufUtils;
 import de.yotsuba.mahouka.util.target.Target;
 
@@ -61,11 +62,17 @@ public class S1StartChanneling implements IMessage, IMessageHandler<S1StartChann
         CadBase cad = CadManager.getCad(id);
         if (cad == null || cad.getSelectedSequence() == null)
         {
-            // TODO: Error
+            // TODO (3) Error
             return null;
         }
 
-        MahoukaMod.getCastingManagerServer().startChanneling(cad, caster, target) ;
+        CastingProcess cast = CastingProcess.create(caster, cad.getSelectedSequence(), target, cad.getId());
+        if (cast == null)
+        {
+            // TODO (3) Error
+            return null;
+        }
+        cast.start();
         return null;
     }
 

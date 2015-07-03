@@ -8,6 +8,7 @@ import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import de.yotsuba.mahouka.MahoukaMod;
+import de.yotsuba.mahouka.magic.cast.CastingManager;
 import de.yotsuba.mahouka.magic.cast.CastingProcess;
 import de.yotsuba.mahouka.util.BufUtils;
 
@@ -40,7 +41,9 @@ public class C3CancelCast implements IMessage, IMessageHandler<C3CancelCast, IMe
     @Override
     public IMessage onMessage(C3CancelCast message, MessageContext ctx)
     {
-        MahoukaMod.getCastingManagerClient().cancelCast(message.id);
+        CastingProcess cast = CastingManager.getClientCast(message.id);
+        if (cast != null)
+            cast.cancelClient();
         return null;
     }
 
