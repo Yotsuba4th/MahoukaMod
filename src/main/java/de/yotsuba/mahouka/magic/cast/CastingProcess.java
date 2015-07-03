@@ -87,7 +87,7 @@ public class CastingProcess
 
     public boolean cancel()
     {
-        // TODO Auto-generated method stub
+        // TODO Cast cancelling
 
         active = false;
 
@@ -104,7 +104,7 @@ public class CastingProcess
         else
         {
             MagicProcess process = sequence.getProcesses().get(processIndex);
-            MahoukaMod.proxy.castEndClient(process, this, currentTarget);
+            process.castEndClient(this, currentTarget);
         }
 
         processIndex = newProcess;
@@ -112,7 +112,7 @@ public class CastingProcess
         if (processIndex < sequence.getProcesses().size())
         {
             MagicProcess process = sequence.getProcesses().get(processIndex);
-            MahoukaMod.proxy.castStartClient(process, this, currentTarget);
+            process.castStartClient(this, currentTarget);
         }
         else
         {
@@ -272,7 +272,8 @@ public class CastingProcess
     private void castTickClient()
     {
         MagicProcess process = sequence.getProcesses().get(processIndex);
-        MahoukaMod.proxy.castTickClient(process, this, currentTarget);
+        process.castTickClient(this, currentTarget);
+        // MahoukaMod.proxy.castTickClient(process, this, currentTarget);
     }
 
     /* ------------------------------------------------------------ */

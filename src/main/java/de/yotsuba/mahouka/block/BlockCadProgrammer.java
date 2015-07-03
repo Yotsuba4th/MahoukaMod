@@ -54,7 +54,7 @@ public class BlockCadProgrammer extends Block
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entity, int l, float m, float n, float o)
     {
-        entity.openGui(MahoukaMod.instance, CadProgrammerGui.GUIID, world, x, y, z);
+        entity.openGui(MahoukaMod.getInstance(), CadProgrammerGui.GUIID, world, x, y, z);
         return true;
     }
 

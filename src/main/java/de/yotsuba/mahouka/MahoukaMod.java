@@ -60,10 +60,10 @@ public class MahoukaMod
     /* ------------------------------------------------------------ */
 
     @Instance(MODID)
-    public static MahoukaMod instance;
+    private static MahoukaMod instance;
 
     @SidedProxy(clientSide = "de.yotsuba.mahouka.client.ClientProxy", serverSide = "de.yotsuba.mahouka.CommonProxy")
-    public static CommonProxy proxy;
+    private static CommonProxy proxy;
 
     private static SimpleNetworkWrapper netChannel = NetworkRegistry.INSTANCE.newSimpleChannel("mahouka");
 
@@ -198,6 +198,16 @@ public class MahoukaMod
     }
 
     /* ------------------------------------------------------------ */
+
+    public static MahoukaMod getInstance()
+    {
+        return instance;
+    }
+
+    public static CommonProxy getProxy()
+    {
+        return proxy;
+    }
 
     public static CadManager getCadManager()
     {

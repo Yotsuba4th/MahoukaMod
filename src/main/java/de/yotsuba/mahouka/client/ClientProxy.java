@@ -29,10 +29,8 @@ import de.yotsuba.mahouka.entity.projectile.EntityMagicProjectileEarth;
 import de.yotsuba.mahouka.entity.projectile.EntityMagicProjectileFire;
 import de.yotsuba.mahouka.entity.projectile.EntityMagicProjectileIce;
 import de.yotsuba.mahouka.item.ItemCad;
-import de.yotsuba.mahouka.magic.MagicProcess;
 import de.yotsuba.mahouka.magic.cad.CadBase;
 import de.yotsuba.mahouka.magic.cad.CadManager;
-import de.yotsuba.mahouka.magic.cast.CastingProcess;
 import de.yotsuba.mahouka.util.target.Target;
 import de.yotsuba.mahouka.util.target.TargetArea;
 import de.yotsuba.mahouka.util.target.TargetBlock;
@@ -41,26 +39,6 @@ import de.yotsuba.mahouka.util.target.TargetOffset;
 
 public class ClientProxy extends CommonProxy
 {
-
-    @Override
-    public void castStartClient(MagicProcess process, CastingProcess cp, Target target)
-    {
-        process.castStartClient(cp, target);
-    }
-
-    @Override
-    public void castTickClient(MagicProcess process, CastingProcess cp, Target target)
-    {
-        process.castTickClient(cp, target);
-    }
-
-    @Override
-    public void castEndClient(MagicProcess process, CastingProcess cp, Target target)
-    {
-        process.castEndClient(cp, target);
-    }
-
-    /* ------------------------------------------------------------ */
 
     @Override
     public void init(FMLInitializationEvent event)
@@ -134,7 +112,7 @@ public class ClientProxy extends CommonProxy
         }
         else if (target instanceof TargetOffset)
         {
-            // TODO
+            // TODO Target CUI for offset targets
         }
         else if (target instanceof TargetArea)
         {
