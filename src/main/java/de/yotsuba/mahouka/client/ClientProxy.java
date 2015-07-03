@@ -112,7 +112,7 @@ public class ClientProxy extends CommonProxy
         }
         else if (target instanceof TargetOffset)
         {
-            // TODO Target CUI for offset targets
+            // TODO (4) Target CUI for offset targets
         }
         else if (target instanceof TargetArea)
         {

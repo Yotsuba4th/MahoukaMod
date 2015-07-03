@@ -2,10 +2,12 @@ package de.yotsuba.mahouka.util;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.UUID;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityList;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -13,8 +15,10 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.Vec3;
+import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import de.yotsuba.mahouka.MahoukaMod;
 
 public class Utils
 {
@@ -91,6 +95,26 @@ public class Utils
         double zd = lookAt.zCoord - entity.posZ;
         entity.rotationYaw = (float) (Math.atan2(zd, xd) * 180.0D / Math.PI) - 90.0F;
         entity.rotationPitch = (float) (Math.atan2(Math.sqrt(xd * xd + zd * zd), yd) * 180.0D / Math.PI) - 90.0F;
+    }
+
+    public static int registerEntity(Class<? extends Entity> entityClass, String name)
+    {
+        int entityID = EntityRegistry.findGlobalUniqueEntityId();
+        EntityRegistry.registerGlobalEntityID(entityClass, name, entityID);
+        EntityRegistry.registerModEntity(entityClass, name, entityID, MahoukaMod.instance, 64, 1, true);
+        return entityID;
+    }
+
+    @SuppressWarnings("unchecked")
+    public static int registerMob(Class<? extends Entity> entityClass, String name)
+    {
+        int entityID = registerEntity(entityClass, name);
+        long seed = name.hashCode();
+        Random rand = new Random(seed);
+        int primaryColor = rand.nextInt() * 16777215;
+        int secondaryColor = rand.nextInt() * 16777215;
+        EntityList.entityEggs.put(entityID, new EntityList.EntityEggInfo(entityID, primaryColor, secondaryColor));
+        return entityID;
     }
 
 }

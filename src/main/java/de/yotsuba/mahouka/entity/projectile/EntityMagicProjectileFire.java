@@ -33,18 +33,23 @@ public class EntityMagicProjectileFire extends EntityMagicProjectile
     @Override
     public float getDamage()
     {
-        return 1;
+        return 1.0f;
     }
 
     @Override
     public void onImpactEntity(Entity entity)
     {
-        entity.setFire(1);
+        entity.setFire(4);
+        // int x = (int) Math.floor(posX);
+        // int y = (int) Math.floor(posY);
+        // int z = (int) Math.floor(posZ);
+        // onImpactBlock(x, y, z);
     }
 
     @Override
     public void onImpactBlock(int x, int y, int z)
     {
+        System.out.println(String.format("Set fire %d,%d,%d", x, y, z));
         worldObj.setBlock(x, y, z, Blocks.fire);
     }
 

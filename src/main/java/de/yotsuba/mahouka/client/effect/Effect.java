@@ -29,10 +29,6 @@ public class Effect
     public double y;
     public double z;
 
-    protected double xt;
-    protected double yt;
-    protected double zt;
-
     protected double lastX;
     protected double lastY;
     protected double lastZ;
@@ -141,9 +137,34 @@ public class Effect
         this.icon = icon;
     }
 
-    public void renderParticle(float partialTickTime)
+    public void update()
     {
-        updatePartialPosition(partialTickTime);
+        lastX = x;
+        lastY = y;
+        lastZ = z;
+
+        x += vx;
+        y += vy;
+        z += vz;
+
+        yaw += vYaw;
+        pitch += vPitch;
+        roll += vRoll;
+
+        if (++age > maxAge)
+            setDead();
+    }
+
+    public void cancel()
+    {
+        /* do nothing */
+    }
+
+    public void render(float partialTickTime)
+    {
+        double xt = (lastX + (x - lastX) * partialTickTime);
+        double yt = (lastY + (y - lastY) * partialTickTime);
+        double zt = (lastZ + (z - lastZ) * partialTickTime);
 
         GL11.glPushMatrix();
         GL11.glTranslated(xt, yt, zt);
@@ -179,34 +200,9 @@ public class Effect
         GL11.glPopMatrix();
     }
 
-    protected void updatePartialPosition(float partialTickTime)
-    {
-        xt = (lastX + (x - lastX) * partialTickTime);
-        yt = (lastY + (y - lastY) * partialTickTime);
-        zt = (lastZ + (z - lastZ) * partialTickTime);
-    }
-
     public boolean isDead()
     {
         return isDead;
-    }
-
-    public void update()
-    {
-        lastX = x;
-        lastY = y;
-        lastZ = z;
-
-        x += vx;
-        y += vy;
-        z += vz;
-
-        yaw += vYaw;
-        pitch += vPitch;
-        roll += vRoll;
-
-        if (++age > maxAge)
-            setDead();
     }
 
 }

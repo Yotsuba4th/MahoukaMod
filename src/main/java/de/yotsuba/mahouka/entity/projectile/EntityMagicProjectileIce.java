@@ -35,7 +35,7 @@ public class EntityMagicProjectileIce extends EntityMagicProjectile
         if (entity instanceof EntityLivingBase)
         {
             EntityLivingBase player = (EntityLivingBase) entity;
-            player.addPotionEffect(new PotionEffect(2, Utils.millisecondsToTicks(1500), 3));
+            player.addPotionEffect(new PotionEffect(2, Utils.millisecondsToTicks(3000), 3));
         }
     }
 

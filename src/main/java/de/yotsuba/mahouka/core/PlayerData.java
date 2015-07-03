@@ -25,7 +25,7 @@ public class PlayerData
         tag = playerTag.getCompoundTag(TAG_NAME);
         if (!playerTag.hasKey(TAG_NAME))
         {
-            // TODO Proper initialization
+            // TODO (3) Proper initialization of player data
             setMaxPsion(1000);
             setPsion(1000);
         }

@@ -53,7 +53,7 @@ public class CastingManagerServer extends CastingManager
         return true;
     }
 
-    public void cancelCast(UUID id)
+    public boolean cancelCast(UUID id)
     {
         CastingProcess cast = casts.get(id);
         if (cast != null)
@@ -62,8 +62,10 @@ public class CastingManagerServer extends CastingManager
             {
                 casts.remove(id);
                 C3CancelCast.send(cast);
+                return true;
             }
         }
+        return false;
     }
 
     public void startChanneling(CadBase cad, EntityPlayerMP caster, Target target)

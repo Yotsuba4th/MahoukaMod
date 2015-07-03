@@ -5,13 +5,18 @@ import io.netty.buffer.ByteBuf;
 import java.util.UUID;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import cpw.mods.fml.common.network.ByteBufUtils;
 import de.yotsuba.mahouka.MahoukaMod;
+import de.yotsuba.mahouka.client.effect.EffectRenderer;
 import de.yotsuba.mahouka.core.PlayerData;
+import de.yotsuba.mahouka.item.ItemCad;
 import de.yotsuba.mahouka.magic.ActivationSequence;
 import de.yotsuba.mahouka.magic.MagicProcess;
+import de.yotsuba.mahouka.magic.cad.CadBase;
+import de.yotsuba.mahouka.magic.cad.CadManager;
 import de.yotsuba.mahouka.network.C5CastUpdate;
 import de.yotsuba.mahouka.util.BufUtils;
 import de.yotsuba.mahouka.util.Utils;
@@ -87,11 +92,26 @@ public class CastingProcess
 
     public boolean cancel()
     {
-        // TODO Cast cancelling
-
+        if (processIndex >= 0 && processIndex < sequence.getProcesses().size())
+        {
+            MagicProcess process = sequence.getProcesses().get(processIndex);
+            if (!process.castCancel(this, currentTarget))
+            {
+                return false;
+            }
+        }
         active = false;
-
+        if (MahoukaMod.DEBUG)
+            MahoukaMod.getLogger().info("Cancelled cast {}", id);
         return true;
+    }
+
+    public void cancelClient()
+    {
+        EffectRenderer.cancelEffects(id);
+        active = false;
+        if (MahoukaMod.DEBUG)
+            MahoukaMod.getLogger().info("Cancelled client cast {}", id);
     }
 
     public void clientUpdate(int newProcess, Target target)
@@ -201,6 +221,13 @@ public class CastingProcess
             PlayerData playerData = new PlayerData(caster);
             playerData.setPsion(playerData.getPsion() - psion);
             playerData.sendUpdate();
+
+            ItemStack stack = caster.getCurrentEquippedItem();
+            if (stack == null || !(stack.getItem() instanceof ItemCad))
+                return;
+            CadBase cad = CadManager.getCad(stack);
+            if (cad != null)
+                cad.updateItemStack(stack, caster);
         }
     }
 

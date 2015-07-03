@@ -49,6 +49,8 @@ public class ProcessParallel extends MagicProcess
         }
     }
 
+    /* ------------------------------------------------------------ */
+
     @Override
     public String getName()
     {
@@ -74,10 +76,10 @@ public class ProcessParallel extends MagicProcess
         for (ActivationSequence seq : sequences)
         {
             int oldLength2 = info.size() + 1;
-            
+
             for (MagicProcess process : seq.getProcesses())
                 process.addInformation(info, true);
-            
+
             for (int i = oldLength2; i < info.size(); i++)
                 info.set(i, "   " + info.get(i));
         }
@@ -108,6 +110,8 @@ public class ProcessParallel extends MagicProcess
         return casts.isEmpty() ? 0 : Integer.MAX_VALUE;
     }
 
+    /* ------------------------------------------------------------ */
+
     private void cleanCasts()
     {
         for (Iterator<CastingProcess> it = casts.iterator(); it.hasNext();)
@@ -116,6 +120,19 @@ public class ProcessParallel extends MagicProcess
             if (!cast.isActive())
                 it.remove();
         }
+    }
+
+    @Override
+    public boolean castCancel(CastingProcess cp, Target target)
+    {
+        cleanCasts();
+        if (casts.isEmpty())
+            return true;
+        boolean cancelledAny = false;
+        for (CastingProcess castingProcess : casts)
+            cancelledAny |= MahoukaMod.getCastingManagerServer().cancelCast(castingProcess.getId());
+        cleanCasts();
+        return cancelledAny;
     }
 
     @Override

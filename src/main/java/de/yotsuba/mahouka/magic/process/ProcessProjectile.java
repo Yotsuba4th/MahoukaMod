@@ -4,6 +4,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.Vec3;
 import de.yotsuba.mahouka.MahoukaMod;
 import de.yotsuba.mahouka.client.effect.Effect;
+import de.yotsuba.mahouka.client.effect.EffectCast;
 import de.yotsuba.mahouka.client.effect.EffectRenderer;
 import de.yotsuba.mahouka.magic.MagicProcess;
 import de.yotsuba.mahouka.magic.cast.CastingProcess;
@@ -75,7 +76,7 @@ public abstract class ProcessProjectile extends MagicProcess
     private void createTargetEffect(CastingProcess cp, Vec3 point)
     {
         // TODO: Allow detection of same effects at the same location and prevent it
-        targetFx = new Effect(point.xCoord, point.yCoord + 0.01, point.zCoord);
+        targetFx = new EffectCast(point.xCoord, point.yCoord + 0.01, point.zCoord);
         targetFx.setIcon(MahoukaMod.icon_rune_default);
         targetFx.setScale(1);
         targetFx.setColor(0, 0, 0, 0.25f);
@@ -87,7 +88,7 @@ public abstract class ProcessProjectile extends MagicProcess
 
     public void createSpawnEffect(CastingProcess cp, Vec3 point)
     {
-        spawnFx = new Effect(point.xCoord, point.yCoord + 0.01, point.zCoord);
+        spawnFx = new EffectCast(point.xCoord, point.yCoord + 0.01, point.zCoord);
         spawnFx.setIcon(MahoukaMod.icon_rune_default);
         spawnFx.setScale(1);
         spawnFx.setColor(1, 0, 0, 1);

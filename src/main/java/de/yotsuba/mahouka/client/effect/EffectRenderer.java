@@ -38,6 +38,22 @@ public abstract class EffectRenderer
         list.add(entityFx);
     }
 
+    public static List<Effect> getEffectList(UUID id)
+    {
+        return fxMap.get(id);
+    }
+
+    public static void cancelEffects(UUID id)
+    {
+
+        List<Effect> effects = fxMap.get(id);
+        if (effects != null)
+        {
+            for (Effect effect : effects)
+                effect.cancel();
+        }
+    }
+
     public static void removeEffects()
     {
         for (Iterator<Entry<UUID, List<Effect>>> itList = fxMap.entrySet().iterator(); itList.hasNext();)
@@ -126,7 +142,7 @@ public abstract class EffectRenderer
                 Effect effect = itEffect.next();
                 try
                 {
-                    effect.renderParticle(partialTickTime);
+                    effect.render(partialTickTime);
                 }
                 catch (Throwable throwable)
                 {

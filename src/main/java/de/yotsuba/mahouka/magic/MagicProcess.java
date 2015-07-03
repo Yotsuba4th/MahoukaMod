@@ -242,6 +242,13 @@ public abstract class MagicProcess implements Cloneable
 
     /* ------------------------------------------------------------ */
 
+    public boolean castCancel(CastingProcess cp, Target target)
+    {
+        return true;
+    }
+
+    /* ------------------------------------------------------------ */
+
     public Target castStart(CastingProcess cp, Target target)
     {
         return target;

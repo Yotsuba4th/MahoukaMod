@@ -13,19 +13,35 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import de.yotsuba.mahouka.entity.projectile.EntityMagicProjectile;
 
 public class WorldUtils
 {
 
+    /* ------------------------------------------------------------ */
+
     @SideOnly(Side.CLIENT)
-    public static MovingObjectPosition rayTraceClient(double maxDistance, boolean ignoreNonClollidables)
+    @SuppressWarnings("unchecked")
+    public static MovingObjectPosition rayTraceTarget(double maxDistance)
     {
-        Minecraft mc = Minecraft.getMinecraft();
-        return rayTraceClient(mc.renderViewEntity, maxDistance, ignoreNonClollidables);
+        return rayTraceClient(Minecraft.getMinecraft().renderViewEntity, maxDistance, new Class[] { EntityMagicProjectile.class });
     }
 
     @SideOnly(Side.CLIENT)
+    public static MovingObjectPosition rayTraceClient(double maxDistance, boolean ignoreNonClollidables)
+    {
+        return rayTraceClient(Minecraft.getMinecraft().renderViewEntity, maxDistance, ignoreNonClollidables);
+    }
+
+    @SideOnly(Side.CLIENT)
+    @SuppressWarnings("unchecked")
     public static MovingObjectPosition rayTraceClient(EntityLivingBase viewEntity, double maxDistance, boolean ignoreNonClollidables)
+    {
+        return rayTraceClient(viewEntity, maxDistance, ignoreNonClollidables ? null : new Class[] {});
+    }
+
+    @SideOnly(Side.CLIENT)
+    public static MovingObjectPosition rayTraceClient(EntityLivingBase viewEntity, double maxDistance, Class<? extends Entity>[] ignoreNonClollidables)
     {
         float timeOffset = 1;
         Vec3 start = viewEntity.getPosition(timeOffset);
@@ -33,7 +49,15 @@ public class WorldUtils
         return rayTrace(viewEntity, maxDistance, start, dir, ignoreNonClollidables);
     }
 
+    /* ------------------------------------------------------------ */
+
+    @SuppressWarnings("unchecked")
     public static MovingObjectPosition rayTraceServer(EntityLivingBase viewEntity, double maxDistance, boolean ignoreNonClollidables)
+    {
+        return rayTraceServer(viewEntity, maxDistance, ignoreNonClollidables ? null : new Class[] {});
+    }
+
+    public static MovingObjectPosition rayTraceServer(EntityLivingBase viewEntity, double maxDistance, Class<? extends Entity>[] ignoreNonClollidables)
     {
         float timeOffset = 1;
         Vec3 start = Vec3.createVectorHelper(viewEntity.posX, viewEntity.posY + viewEntity.getEyeHeight() - 0.12, viewEntity.posZ);
@@ -41,7 +65,10 @@ public class WorldUtils
         return rayTrace(viewEntity, maxDistance, start, dir, ignoreNonClollidables);
     }
 
-    public static MovingObjectPosition rayTrace(EntityLivingBase viewEntity, double maxDistance, Vec3 start, Vec3 dir, boolean ignoreNonClollidables)
+    /* ------------------------------------------------------------ */
+
+    public static MovingObjectPosition rayTrace(EntityLivingBase viewEntity, double maxDistance, Vec3 start, Vec3 dir,
+            Class<? extends Entity>[] ignoreNonClollidables)
     {
         Vec3 rayEnd = start.addVector(dir.xCoord * maxDistance, dir.yCoord * maxDistance, dir.zCoord * maxDistance);
 
@@ -64,9 +91,23 @@ public class WorldUtils
         Vec3 hitVec = null;
         for (Entity entity : entities)
         {
-            // TODO: Add map of classes that should be collided
-            if (ignoreNonClollidables && !entity.canBeCollidedWith())
-                continue;
+            if (ignoreNonClollidables != null)
+            {
+                boolean ignore = false;
+                for (Class<? extends Entity> clazz : ignoreNonClollidables)
+                    if (clazz.isAssignableFrom(entity.getClass()))
+                    {
+                        ignore = true;
+                        break;
+                    }
+                if (ignore)
+                    continue;
+            }
+            else
+            {
+                if (!entity.canBeCollidedWith())
+                    continue;
+            }
 
             float size = 0.4f; // entity.getCollisionBorderSize() + 0.5f;
             AxisAlignedBB entityAABB = entity.boundingBox.expand(size, size, size);

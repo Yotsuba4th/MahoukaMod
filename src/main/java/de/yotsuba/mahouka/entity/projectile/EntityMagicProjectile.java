@@ -18,7 +18,7 @@ import de.yotsuba.mahouka.util.Utils;
 import de.yotsuba.mahouka.util.target.Target;
 import de.yotsuba.mahouka.util.target.Targeting;
 
-//TODO: Add interface to let this play a sound on acceleration for example
+//TODO (2) Add interface to let this play a sound on acceleration for example
 public abstract class EntityMagicProjectile extends Entity implements Targeting
 {
 
@@ -142,6 +142,8 @@ public abstract class EntityMagicProjectile extends Entity implements Targeting
                 continue;
             if (!canHitSource() && (!entity.isEntityEqual(shootingEntity) || ticksAlive >= 25))
                 continue;
+            if (entity instanceof EntityMagicProjectile && ((EntityMagicProjectile) entity).shootingEntity == shootingEntity)
+                continue;
 
             float f = 0.3F;
             AxisAlignedBB axisalignedbb = entity.boundingBox.expand(f, f, f);
@@ -225,6 +227,9 @@ public abstract class EntityMagicProjectile extends Entity implements Targeting
         {
             if (mop.entityHit != null)
             {
+                // TODO (4) Decide if we should allow multiple projectiles to hit the entity right after another
+                mop.entityHit.hurtResistantTime = 0;
+
                 DamageSource dmgSrc = getDamageSource(this, shootingEntity);
                 if (mop.entityHit.attackEntityFrom(dmgSrc, getDamage()))
                 {
@@ -284,7 +289,7 @@ public abstract class EntityMagicProjectile extends Entity implements Targeting
     @Override
     public float getCollisionBorderSize()
     {
-        return 1.0F;
+        return 2.0f;
     }
 
     @Override
@@ -315,17 +320,20 @@ public abstract class EntityMagicProjectile extends Entity implements Targeting
         Vec3 lookVec = source.getEntity().getLookVec();
         if (lookVec != null)
         {
-            double speed = Math.min(0.7, Math.sqrt(motionX * motionX + motionY * motionY + motionZ * motionZ));
-            motionX = lookVec.xCoord * speed;
-            motionY = lookVec.yCoord * speed;
-            motionZ = lookVec.zCoord * speed;
-//            accelerationX = motionX * 0.1D;
-//            accelerationY = motionY * 0.1D;
-//            accelerationZ = motionZ * 0.1D;
+            double speed = Math.sqrt(motionX * motionX + motionY * motionY + motionZ * motionZ);
+            double newSpeed = getReflectedSpeed(speed);
+            motionX = lookVec.xCoord * newSpeed;
+            motionY = lookVec.yCoord * newSpeed;
+            motionZ = lookVec.zCoord * newSpeed;
         }
 
         if (source.getEntity() instanceof EntityLivingBase)
             this.shootingEntity = (EntityLivingBase) source.getEntity();
         return true;
+    }
+
+    private double getReflectedSpeed(double speed)
+    {
+        return Math.sqrt(speed + 2) - 1.3;
     }
 }

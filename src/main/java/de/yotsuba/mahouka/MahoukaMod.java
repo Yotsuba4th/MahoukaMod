@@ -1,11 +1,8 @@
 package de.yotsuba.mahouka;
 
 import java.io.File;
-import java.util.Random;
 
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityList;
 import net.minecraft.item.Item;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.client.event.TextureStitchEvent;
@@ -24,7 +21,6 @@ import cpw.mods.fml.common.event.FMLServerStoppedEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
-import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -50,6 +46,7 @@ import de.yotsuba.mahouka.network.C5CastUpdate;
 import de.yotsuba.mahouka.network.S1StartChanneling;
 import de.yotsuba.mahouka.network.S4CancelCast;
 import de.yotsuba.mahouka.network.S6ButtonClick;
+import de.yotsuba.mahouka.util.Utils;
 
 @Mod(modid = MahoukaMod.MODID, version = MahoukaMod.VERSION)
 public class MahoukaMod
@@ -64,7 +61,9 @@ public class MahoukaMod
     /* ------------------------------------------------------------ */
 
     @Instance(MODID)
-    private static MahoukaMod instance;
+    public static MahoukaMod instance;
+
+    public static boolean DEBUG = false;
 
     @SidedProxy(clientSide = "de.yotsuba.mahouka.client.ClientProxy", serverSide = "de.yotsuba.mahouka.CommonProxy")
     private static CommonProxy proxy;
@@ -108,7 +107,6 @@ public class MahoukaMod
     public void preInit(FMLPreInitializationEvent event)
     {
         logger = (Logger) event.getModLog();
-        // logger.setLevel(Level.DEBUG);
     }
 
     @EventHandler
@@ -135,29 +133,9 @@ public class MahoukaMod
 
     private void registerEntites()
     {
-        registerEntity(EntityMagicProjectileFire.class, "magic_projectile_fire");
-        registerEntity(EntityMagicProjectileIce.class, "magic_projectile_ice");
-        registerEntity(EntityMagicProjectileEarth.class, "magic_projectile_earth");
-    }
-
-    public static int registerEntity(Class<? extends Entity> entityClass, String name)
-    {
-        int entityID = EntityRegistry.findGlobalUniqueEntityId();
-        EntityRegistry.registerGlobalEntityID(entityClass, name, entityID);
-        EntityRegistry.registerModEntity(entityClass, name, entityID, instance, 64, 1, true);
-        return entityID;
-    }
-
-    @SuppressWarnings("unchecked")
-    public static int registerMob(Class<? extends Entity> entityClass, String name)
-    {
-        int entityID = registerEntity(entityClass, name);
-        long seed = name.hashCode();
-        Random rand = new Random(seed);
-        int primaryColor = rand.nextInt() * 16777215;
-        int secondaryColor = rand.nextInt() * 16777215;
-        EntityList.entityEggs.put(entityID, new EntityList.EntityEggInfo(entityID, primaryColor, secondaryColor));
-        return entityID;
+        Utils.registerEntity(EntityMagicProjectileFire.class, "magic_projectile_fire");
+        Utils.registerEntity(EntityMagicProjectileIce.class, "magic_projectile_ice");
+        Utils.registerEntity(EntityMagicProjectileEarth.class, "magic_projectile_earth");
     }
 
     private void registerItems()

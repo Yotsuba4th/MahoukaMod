@@ -45,7 +45,7 @@ public class CastingManagerClient extends CastingManager
         CastingProcess cast = casts.get(id);
         if (cast != null)
         {
-            cast.cancel();
+            cast.cancelClient();
             casts.remove(id);
         }
     }
