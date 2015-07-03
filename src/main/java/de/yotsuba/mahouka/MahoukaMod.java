@@ -11,11 +11,15 @@ import net.minecraft.util.IIcon;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
+
+import org.apache.logging.log4j.core.Logger;
+
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStoppedEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
@@ -76,6 +80,8 @@ public class MahoukaMod
     @SuppressWarnings("unused")
     private static MahoukaEventHandler eventHandler = new MahoukaEventHandler();
 
+    private static Logger logger;
+
     /* ------------------------------------------------------------ */
 
     public static final CreativeTabs creativeTab = new CreativeTabs("Mahouka") {
@@ -94,9 +100,16 @@ public class MahoukaMod
 
     public static final ItemCad cad = new ItemCad();
 
-    public static final Item item_magic_sequence = new ItemMagicSequence();
+    public static final ItemMagicSequence item_magic_sequence = new ItemMagicSequence();
 
     /* ------------------------------------------------------------ */
+
+    @EventHandler
+    public void preInit(FMLPreInitializationEvent event)
+    {
+        logger = (Logger) event.getModLog();
+        // logger.setLevel(Level.DEBUG);
+    }
 
     @EventHandler
     public void init(FMLInitializationEvent event)
@@ -202,6 +215,11 @@ public class MahoukaMod
     public static MahoukaMod getInstance()
     {
         return instance;
+    }
+
+    public static org.apache.logging.log4j.Logger getLogger()
+    {
+        return logger;
     }
 
     public static CommonProxy getProxy()

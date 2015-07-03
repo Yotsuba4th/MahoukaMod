@@ -8,6 +8,9 @@ import java.util.Map;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
+
+import org.apache.logging.log4j.Level;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import de.yotsuba.mahouka.MahoukaMod;
@@ -124,8 +127,7 @@ public abstract class MagicProcess implements Cloneable
         }
         catch (ReflectiveOperationException e)
         {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            MahoukaMod.getLogger().log(Level.ERROR, "Error instantiating magic process", e);
             return null;
         }
     }

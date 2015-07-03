@@ -281,13 +281,11 @@ public class CastingProcess
     private void castEnd()
     {
         active = false;
-        // TODO Auto-generated method stub
     }
 
     private void castEndClient()
     {
         active = false;
-        // TODO Auto-generated method stub
     }
 
     /* ------------------------------------------------------------ */
