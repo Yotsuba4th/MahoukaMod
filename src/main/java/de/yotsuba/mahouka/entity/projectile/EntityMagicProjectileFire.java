@@ -13,12 +13,14 @@ public class EntityMagicProjectileFire extends EntityMagicProjectile
     public EntityMagicProjectileFire(World world)
     {
         super(world);
+        accelerationY = -0.01;
         setSize(0.3125F, 0.3125F);
     }
 
     public EntityMagicProjectileFire(World world, EntityLivingBase shooter, double x, double y, double z)
     {
         super(world, shooter, x, y, z);
+        accelerationY = -0.01;
         setSize(0.3125F, 0.3125F);
     }
 

@@ -26,15 +26,15 @@ public abstract class EntityMagicProjectile extends Entity implements Targeting
 
     protected int ticksAlive;
 
-    protected double accelerationX;
+    public double accelerationX;
 
-    protected double accelerationY;
+    public double accelerationY;
 
-    protected double accelerationZ;
-
-    protected Target target;
+    public double accelerationZ;
 
     public int maxTicksToLive = 250;
+
+    protected Target target;
 
     /* ------------------------------------------------------------ */
 
@@ -336,4 +336,5 @@ public abstract class EntityMagicProjectile extends Entity implements Targeting
     {
         return Math.sqrt(speed + 2) - 1.3;
     }
+
 }
