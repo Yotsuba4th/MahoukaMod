@@ -2,6 +2,8 @@ package de.yotsuba.mahouka.magic.process;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.util.Vec3;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import de.yotsuba.mahouka.MahoukaMod;
 import de.yotsuba.mahouka.client.effect.Effect;
 import de.yotsuba.mahouka.client.effect.EffectCast;
@@ -18,8 +20,10 @@ import de.yotsuba.mahouka.util.target.Targeting;
 public abstract class ProcessProjectile extends MagicProcess
 {
 
+    @SideOnly(Side.CLIENT)
     protected Effect targetFx;
 
+    @SideOnly(Side.CLIENT)
     protected Effect spawnFx;
 
     protected int castDurationCache;
@@ -73,7 +77,8 @@ public abstract class ProcessProjectile extends MagicProcess
         }
     }
 
-    private void createTargetEffect(CastingProcess cp, Vec3 point)
+    @SideOnly(Side.CLIENT)
+    protected void createTargetEffect(CastingProcess cp, Vec3 point)
     {
         // TODO (5) Allow detection of same effects at the same location and prevent it
         targetFx = new EffectCast(point.xCoord, point.yCoord + 0.01, point.zCoord);
@@ -86,7 +91,8 @@ public abstract class ProcessProjectile extends MagicProcess
         targetFx.setMaxAge(castDurationCache + targetFx.fadeOut + 10);
     }
 
-    public void createSpawnEffect(CastingProcess cp, Vec3 point)
+    @SideOnly(Side.CLIENT)
+    protected void createSpawnEffect(CastingProcess cp, Vec3 point)
     {
         spawnFx = new EffectCast(point.xCoord, point.yCoord + 0.01, point.zCoord);
         spawnFx.setIcon(MahoukaMod.icon_rune_default);
