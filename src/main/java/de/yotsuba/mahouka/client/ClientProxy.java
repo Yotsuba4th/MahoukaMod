@@ -28,6 +28,7 @@ import de.yotsuba.mahouka.entity.projectile.EntityMagicProjectileEarth;
 import de.yotsuba.mahouka.entity.projectile.EntityMagicProjectileFire;
 import de.yotsuba.mahouka.entity.projectile.EntityMagicProjectileIce;
 import de.yotsuba.mahouka.item.ItemCad;
+import de.yotsuba.mahouka.magic.ActivationSequence;
 import de.yotsuba.mahouka.magic.cad.CadBase;
 import de.yotsuba.mahouka.magic.cad.CadManager;
 import de.yotsuba.mahouka.util.target.Target;
@@ -83,8 +84,12 @@ public class ClientProxy extends CommonProxy
         if (cad == null || cad.getSelectedSequence() == null)
             return;
 
+        ActivationSequence sequence = cad.getSelectedSequence();
+        if (sequence == null || sequence.getProcesses().isEmpty())
+            return;
+
         Target target = cad.selectTarget(player);
-        if (target == null)
+        if (target == null || !sequence.getProcesses().get(0).isTargetValid(target))
             return;
 
         GL11.glDisable(GL11.GL_TEXTURE_2D);

@@ -122,11 +122,15 @@ public class CadBase
                 player.addChatMessage(new ChatComponentText("Empty sequence in CAD!"));
                 return;
             }
-            if (sequence.getProcesses().get(0).isTargetValid(target))
+            if (!sequence.getProcesses().get(0).isTargetValid(target))
             {
-                // TODO (4) Error sound
-                player.addChatMessage(new ChatComponentText("Invalid target!"));
-                return;
+                target = new TargetEntity(player, true, false);
+                if (!sequence.getProcesses().get(0).isTargetValid(target))
+                {
+                    // TODO (4) Error sound
+                    player.addChatMessage(new ChatComponentText("Invalid target!"));
+                    return;
+                }
             }
 
             S1StartChanneling.send(player, id, target);

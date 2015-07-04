@@ -7,6 +7,7 @@ import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -62,6 +63,18 @@ public class ItemCad extends Item
             cad.rightClick(stack, player);
         }
         return stack;
+    }
+
+    @Override
+    public String getItemStackDisplayName(ItemStack stack)
+    {
+        String cadName = StatCollector.translateToLocal(getUnlocalizedNameInefficiently(stack) + ".name").trim();
+        CadBase cad = CadManager.getCad(stack);
+        if (cad != null && cad.getSelectedSequence() != null && !cad.getSelectedSequence().getProcesses().isEmpty())
+        {
+            cadName += ": " + cad.getSelectedSequence().getProcesses().get(0).getLocalizedName();
+        }
+        return cadName;
     }
 
     /**

@@ -169,6 +169,7 @@ public abstract class MagicProcess implements Cloneable
     /* ------------------------------------------------------------ */
     /* Magic process information */
 
+    // TODO (2) This does not cover cases where e.g. ENTITY is allowed, but not SELF
     public abstract TargetType[] getValidTargets();
 
     public boolean isTargetValid(Target target)
