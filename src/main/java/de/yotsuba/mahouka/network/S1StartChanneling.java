@@ -1,10 +1,6 @@
 package de.yotsuba.mahouka.network;
 
 import io.netty.buffer.ByteBuf;
-
-import java.util.UUID;
-
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.NetHandlerPlayServer;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
@@ -14,7 +10,6 @@ import de.yotsuba.mahouka.MahoukaMod;
 import de.yotsuba.mahouka.magic.cad.CadBase;
 import de.yotsuba.mahouka.magic.cad.CadManager;
 import de.yotsuba.mahouka.magic.cast.CastingProcess;
-import de.yotsuba.mahouka.util.BufUtils;
 import de.yotsuba.mahouka.util.target.Target;
 
 public class S1StartChanneling implements IMessage, IMessageHandler<S1StartChanneling, IMessage>
@@ -22,7 +17,7 @@ public class S1StartChanneling implements IMessage, IMessageHandler<S1StartChann
 
     private Target target;
 
-    private UUID id;
+    // private UUID id;
 
     private ByteBuf buf;
 
@@ -30,9 +25,9 @@ public class S1StartChanneling implements IMessage, IMessageHandler<S1StartChann
     {
     }
 
-    public S1StartChanneling(EntityPlayer caster, UUID id, Target target)
+    public S1StartChanneling(Target target)
     {
-        this.id = id;
+        // this.id = id;
         this.target = target;
     }
 
@@ -45,7 +40,7 @@ public class S1StartChanneling implements IMessage, IMessageHandler<S1StartChann
     @Override
     public void toBytes(ByteBuf buf)
     {
-        BufUtils.uuidToBytes(buf, id);
+        // BufUtils.uuidToBytes(buf, id);
         target.toBytes(buf);
     }
 
@@ -53,7 +48,7 @@ public class S1StartChanneling implements IMessage, IMessageHandler<S1StartChann
     public IMessage onMessage(S1StartChanneling message, MessageContext ctx)
     {
         EntityPlayerMP caster = ((NetHandlerPlayServer) ctx.netHandler).playerEntity;
-        UUID id = BufUtils.uuidFromBytes(message.buf);
+        // UUID id = BufUtils.uuidFromBytes(message.buf);
         Target target = Target.fromBytes(caster.worldObj, message.buf);
         message.buf = null;
         if (target == null)
@@ -76,9 +71,9 @@ public class S1StartChanneling implements IMessage, IMessageHandler<S1StartChann
         return null;
     }
 
-    public static void send(EntityPlayer caster, UUID id, Target target)
+    public static void send(Target target)
     {
-        S1StartChanneling message = new S1StartChanneling(caster, id, target);
+        S1StartChanneling message = new S1StartChanneling(target);
         MahoukaMod.getNetChannel().sendToServer(message);
     }
 

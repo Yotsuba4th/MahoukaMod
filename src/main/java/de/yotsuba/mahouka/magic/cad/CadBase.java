@@ -152,7 +152,7 @@ public class CadBase extends InventoryBasic
                 }
             }
 
-            S1StartChanneling.send(player, id, target);
+            S1StartChanneling.send(target);
         }
         updateItemStack(stack, player);
     }
