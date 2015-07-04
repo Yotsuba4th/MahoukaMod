@@ -7,8 +7,8 @@ import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import de.yotsuba.mahouka.gui.slot.SlotCad;
+import de.yotsuba.mahouka.gui.slot.SlotSequence;
 import de.yotsuba.mahouka.item.ItemCad;
-import de.yotsuba.mahouka.magic.ActivationSequence;
 import de.yotsuba.mahouka.magic.cad.CadBase;
 import de.yotsuba.mahouka.magic.cad.CadManager;
 import de.yotsuba.mahouka.util.Utils;
@@ -16,82 +16,42 @@ import de.yotsuba.mahouka.util.Utils;
 public class CadProgrammerContainer extends Container
 {
 
-    private InventoryBasic invCad;
+    protected InventoryBasic invCad = new InventoryBasic("CAD", false, 1);
 
-    private InventoryBasic invSequences;
-
-    private ItemStack[] sequences;
+    protected CadBase cad;
 
     public CadProgrammerContainer(InventoryPlayer playerInventory)
     {
-        invCad = new InventoryBasic("CAD", false, 1);
-        invSequences = new InventoryBasic("MS", false, 9 * 3);
-
         addSlotToContainer(new SlotCad(this, invCad, 0, 8, 8));
+
         for (int iy = 0; iy < 3; ++iy)
             for (int ix = 0; ix < 9; ++ix)
-                addSlotToContainer(new Slot(invSequences, ix + iy * 9, 8 + ix * 18, 26 + iy * 18));
+                addSlotToContainer(new SlotSequence(this, ix + iy * 9, 8 + ix * 18, 26 + iy * 18));
+
         for (Slot slot : Utils.getPlayerContainerSlots(playerInventory))
             addSlotToContainer(slot);
     }
 
-    public void cadToSequences()
+    public void onCadChanged()
     {
-        sequences = null;
         ItemStack cadStack = invCad.getStackInSlot(0);
-        if (cadStack == null)
-            return;
-        CadBase cad = CadManager.getCad(cadStack);
-
-        sequences = new ItemStack[cad.getActivationSequences().length];
-        for (int i = 0; i < sequences.length; i++)
-        {
-            ItemStack seqStack = null;
-            ActivationSequence seq = cad.getActivationSequences()[i];
-            if (seq != null)
-            {
-                seqStack = seq.getItemStack();
-                invSequences.setInventorySlotContents(i, seqStack);
-            }
-            sequences[i] = seqStack;
-            cad.getActivationSequences()[i] = null;
-        }
-
-        // TODO: Handle scrolling
-        for (int i = 0; i < invSequences.getSizeInventory(); i++)
-            invSequences.setInventorySlotContents(i, i < sequences.length ? sequences[i] : null);
+        cad = (cadStack == null) ? null : CadManager.getCad(cadStack);
     }
 
-    public void sequencesToCad(ItemStack cadStack)
+    public CadBase getCad()
     {
-        if (cadStack == null || sequences == null)
-            return;
-        CadBase cad = CadManager.getCad(cadStack);
-
-        for (int i = 0; i < sequences.length; i++)
-        {
-            ActivationSequence seq = null;
-            ItemStack seqStack = invSequences.getStackInSlot(i);
-            if (seqStack != null)
-            {
-                seq = new ActivationSequence();
-                seq.readFromNBT(seqStack.getTagCompound());
-            }
-            cad.getActivationSequences()[i] = seq;
-        }
-        sequences = null;
-        cad.writeToNBT(cadStack.getTagCompound());
-
-        for (int i = 0; i < invSequences.getSizeInventory(); i++)
-            invSequences.setInventorySlotContents(i, null);
+        return cad;
     }
 
     @Override
     public void onContainerClosed(EntityPlayer player)
     {
         super.onContainerClosed(player);
+
+        if (cad != null)
+            cad.readFromItems();
+
         ItemStack stackCad = invCad.getStackInSlot(0);
-        sequencesToCad(stackCad);
         if (stackCad != null)
             player.dropPlayerItemWithRandomChoice(stackCad, false);
     }
@@ -100,14 +60,23 @@ public class CadProgrammerContainer extends Container
     public ItemStack transferStackInSlot(EntityPlayer player, int index)
     {
         Slot slot = (Slot) inventorySlots.get(index);
-        if (slot == null || !slot.getHasStack())
+        if (slot == null)
             return null;
 
         ItemStack slotStack = slot.getStack();
-        ItemStack resultStack = slotStack.copy();
-        if (index < 1 + invSequences.getSizeInventory())
+        if (slotStack == null)
+            return null;
+
+        CadBase cad = getCad();
+        if (cad == null)
         {
-            int start = 1 + invSequences.getSizeInventory();
+            return slotStack;
+        }
+
+        ItemStack resultStack = slotStack.copy();
+        if (index < 1 + cad.getSizeInventory())
+        {
+            int start = 1 + cad.getSizeInventory();
             int end = start + player.inventory.mainInventory.length;
             if (!mergeItemStack(slotStack, start, end, true))
                 return null;
@@ -121,7 +90,7 @@ public class CadProgrammerContainer extends Container
             }
             else if (true)
             {
-                if (!mergeItemStack(slotStack, 1, 1 + invSequences.getSizeInventory(), false))
+                if (!mergeItemStack(slotStack, 1, 1 + cad.getSizeInventory(), false))
                     return null;
             }
         }

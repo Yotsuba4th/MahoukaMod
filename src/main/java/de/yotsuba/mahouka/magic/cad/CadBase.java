@@ -3,6 +3,7 @@ package de.yotsuba.mahouka.magic.cad;
 import java.util.UUID;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -12,6 +13,7 @@ import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import de.yotsuba.mahouka.core.PlayerData;
+import de.yotsuba.mahouka.item.ItemMagicSequence;
 import de.yotsuba.mahouka.magic.ActivationSequence;
 import de.yotsuba.mahouka.magic.cast.CastingManager;
 import de.yotsuba.mahouka.network.S1StartChanneling;
@@ -22,7 +24,7 @@ import de.yotsuba.mahouka.util.target.TargetBlock;
 import de.yotsuba.mahouka.util.target.TargetEntity;
 import de.yotsuba.mahouka.util.target.TargetPoint;
 
-public class CadBase
+public class CadBase extends InventoryBasic
 {
 
     public static final String NBT_SEQUENCES = "seq";
@@ -31,12 +33,15 @@ public class CadBase
 
     private ActivationSequence[] activationSequences = new ActivationSequence[1];
 
+    private ItemStack[] items = new ItemStack[1];
+
     private byte selectedSequence;
 
     /* ------------------------------------------------------------ */
 
-    public CadBase()
+    public CadBase(int size)
     {
+        super(null, false, size);
         id = UUID.randomUUID();
     }
 
@@ -55,10 +60,12 @@ public class CadBase
         {
             if (activationSequences[i] == null)
                 continue;
-            NBTTagCompound tagSequence = activationSequences[i].writeToNBT();
+            NBTTagCompound tagSequence = new NBTTagCompound();
+            items[i].writeToNBT(tagSequence);
             tagSequence.setByte("idx", (byte) i);
             tagSequences.appendTag(tagSequence);
         }
+
     }
 
     public void readFromNBT(NBTTagCompound tag)
@@ -69,12 +76,26 @@ public class CadBase
         // Read sequences
         NBTTagList tagSequences = tag.getTagList(NBT_SEQUENCES, 10);
         for (int i = 0; i < activationSequences.length; i++)
+        {
             activationSequences[i] = null;
+            items[i] = null;
+        }
         for (int i = 0; i < tagSequences.tagCount(); i++)
         {
             NBTTagCompound tagSequence = tagSequences.getCompoundTagAt(i);
-            activationSequences[tagSequence.getByte("idx")] = new ActivationSequence(tagSequence);
+            ItemStack stack = ItemStack.loadItemStackFromNBT(tagSequence);
+            if (!(stack.getItem() instanceof ItemMagicSequence))
+                continue;
+            ItemMagicSequence item = (ItemMagicSequence) stack.getItem();
+            items[tagSequence.getByte("idx")] = stack;
+            activationSequences[tagSequence.getByte("idx")] = new ActivationSequence(item.getStackData(stack));
         }
+    }
+
+    public void readFromItems()
+    {
+        // TODO Auto-generated method stub
+
     }
 
     /* ------------------------------------------------------------ */
@@ -188,6 +209,16 @@ public class CadBase
     public ActivationSequence getSelectedSequence()
     {
         return activationSequences[selectedSequence];
+    }
+
+    /* ------------------------------------------------------------ */
+
+    @Override
+    public void setInventorySlotContents(int index, ItemStack stack)
+    {
+        if (index >= getSizeInventory())
+            return;
+        super.setInventorySlotContents(index, stack);
     }
 
 }

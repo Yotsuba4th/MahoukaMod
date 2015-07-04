@@ -31,7 +31,7 @@ public class ItemCad extends Item
 
     public CadBase createNewCad()
     {
-        return new CadBase();
+        return new CadBase(1);
     }
 
     @Override

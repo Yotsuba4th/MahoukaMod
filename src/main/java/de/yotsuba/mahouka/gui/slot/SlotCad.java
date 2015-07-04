@@ -1,14 +1,15 @@
 package de.yotsuba.mahouka.gui.slot;
 
-import de.yotsuba.mahouka.gui.container.CadProgrammerContainer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import de.yotsuba.mahouka.gui.container.CadProgrammerContainer;
 
 public class SlotCad extends Slot
 {
 
+    @SuppressWarnings("unused")
     private final CadProgrammerContainer container;
 
     public SlotCad(CadProgrammerContainer container, IInventory inventory, int index, int x, int y)
@@ -21,15 +22,14 @@ public class SlotCad extends Slot
     public void onSlotChanged()
     {
         super.onSlotChanged();
-        if (getStack() != null)
-            container.cadToSequences();
+        container.onCadChanged();
     }
 
     @Override
     public void onPickupFromSlot(EntityPlayer player, ItemStack stack)
     {
-        container.sequencesToCad(stack);
         super.onPickupFromSlot(player, stack);
+        container.onCadChanged();
     }
 
     @Override
