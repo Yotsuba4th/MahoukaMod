@@ -29,9 +29,11 @@ public class CadBase extends InventoryBasic
 
     public static final String NBT_SEQUENCES = "seq";
 
+    /* ------------------------------------------------------------ */
+
     private UUID id;
 
-    private ActivationSequence[] activationSequences = new ActivationSequence[1];
+    private final ActivationSequence[] activationSequences;
 
     private byte selectedSequence;
 
@@ -40,6 +42,7 @@ public class CadBase extends InventoryBasic
     public CadBase(int size)
     {
         super(null, false, size);
+        activationSequences = new ActivationSequence[size];
         id = UUID.randomUUID();
     }
 
@@ -91,12 +94,6 @@ public class CadBase extends InventoryBasic
             setInventorySlotContents(tagSequence.getByte("idx"), stack);
             activationSequences[tagSequence.getByte("idx")] = new ActivationSequence(item.getStackData(stack));
         }
-    }
-
-    public void readFromItems()
-    {
-        // TODO Auto-generated method stub
-
     }
 
     /* ------------------------------------------------------------ */

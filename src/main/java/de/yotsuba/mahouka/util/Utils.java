@@ -12,6 +12,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.Vec3;
@@ -115,6 +116,79 @@ public class Utils
         int secondaryColor = rand.nextInt() * 16777215;
         EntityList.entityEggs.put(entityID, new EntityList.EntityEggInfo(entityID, primaryColor, secondaryColor));
         return entityID;
+    }
+
+    public static boolean mergeItemStack(List<Slot> inventorySlots, ItemStack stack, int fromSlot, int toSlot, boolean backward)
+    {
+        boolean mergedSomething = false;
+        int index = backward ? toSlot - 1 : fromSlot;
+        Slot slot;
+        ItemStack slotStack;
+        if (stack.isStackable())
+        {
+            while (stack.stackSize > 0 && (!backward && index < toSlot || backward && index >= fromSlot))
+            {
+                slot = inventorySlots.get(index);
+                slotStack = slot.getStack();
+                if (slot.isItemValid(stack))
+                {
+                    int slotLimit = Math.min(stack.getMaxStackSize(), slot.getSlotStackLimit());
+                    if (slotStack != null && slotStack.getItem() == stack.getItem()
+                            && (!stack.getHasSubtypes() || stack.getItemDamage() == slotStack.getItemDamage())
+                            && ItemStack.areItemStackTagsEqual(stack, slotStack))
+                    {
+                        int total = slotStack.stackSize + stack.stackSize;
+                        if (total <= slotLimit)
+                        {
+                            stack.stackSize = 0;
+                            slotStack.stackSize = total;
+                            slot.onSlotChanged();
+                            mergedSomething = true;
+                        }
+                        else if (slotStack.stackSize < slotLimit)
+                        {
+                            stack.stackSize -= slotLimit - slotStack.stackSize;
+                            slotStack.stackSize = slotLimit;
+                            slot.onSlotChanged();
+                            mergedSomething = true;
+                        }
+                    }
+                }
+    
+                if (backward)
+                    --index;
+                else
+                    ++index;
+            }
+        }
+    
+        if (stack.stackSize > 0)
+        {
+            index = backward ? toSlot - 1 : fromSlot;
+            while (!backward && index < toSlot || backward && index >= fromSlot)
+            {
+                slot = inventorySlots.get(index);
+                if (slot.isItemValid(stack))
+                {
+                    slotStack = slot.getStack();
+                    if (slotStack == null)
+                    {
+                        int amount = Math.min(stack.stackSize, slot.getSlotStackLimit());
+                        slot.putStack(stack.splitStack(amount));
+                        slot.onSlotChanged();
+                        mergedSomething = true;
+                        if (stack.stackSize <= 0)
+                            break;
+                    }
+                }
+    
+                if (backward)
+                    --index;
+                else
+                    ++index;
+            }
+        }
+        return mergedSomething;
     }
 
 }

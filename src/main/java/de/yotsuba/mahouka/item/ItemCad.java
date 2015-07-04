@@ -79,7 +79,7 @@ public class ItemCad extends Item
             {
                 String seqName = seqStack.getDisplayName();
                 String seqFormattedName = seqStack.hasDisplayName() ? EnumChatFormatting.ITALIC + seqName + EnumChatFormatting.RESET : seqName;
-                cadName += ": " + seqFormattedName;
+                cadName += ": " + seqFormattedName + " (" + cad.getSelectedSequence().getPsionCost() + ")";
             }
         }
         return cadName;
