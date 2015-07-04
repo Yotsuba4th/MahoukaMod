@@ -46,11 +46,11 @@ processResources
     }
 }
 
-artifacts {
-    archives deobfJar
-}
-
 task deobfJar(type: Jar, dependsOn: 'jar') {
     from "build/source/main"
     classifier "dev"
+}
+
+artifacts {
+    archives deobfJar
 }
