@@ -2,7 +2,6 @@ package de.yotsuba.mahouka.magic.cad;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -12,7 +11,7 @@ import de.yotsuba.mahouka.item.ItemCad;
 public class CadManager
 {
 
-    public static Map<UUID, CadBase> cads = new HashMap<UUID, CadBase>();
+    public static Map<ItemStack, CadBase> cads = new HashMap<ItemStack, CadBase>();
 
     /* ------------------------------------------------------------ */
 
@@ -24,31 +23,26 @@ public class CadManager
 
     public static CadBase getCad(ItemStack stack)
     {
+        if (!(stack.getItem() instanceof ItemCad))
+            return null;
+        CadBase cad = cads.get(stack);
         NBTTagCompound tag = stack.getTagCompound();
-        if (tag == null)
-        {
-            tag = new NBTTagCompound();
-            stack.setTagCompound(tag);
-            CadBase cad = ((ItemCad) stack.getItem()).createNewCad();
-            cad.writeToNBT(tag);
-            cads.put(cad.getId(), cad);
-            return cad;
-        }
-        CadBase cad = cads.get(UUID.fromString(tag.getString("id")));
         if (cad == null)
         {
             cad = ((ItemCad) stack.getItem()).createNewCad();
-            cad.readFromNBT(tag);
-            cads.put(cad.getId(), cad);
+            cads.put(stack, cad);
+            if (tag == null)
+            {
+                tag = new NBTTagCompound();
+                cad.writeToNBT(tag);
+                stack.setTagCompound(tag);
+            }
+            else
+                cad.readFromNBT(tag);
         }
-        else if (tag.getBoolean("changed"))
+        if (tag != null && tag.getBoolean("changed"))
             cad.readFromNBT(tag);
         return cad;
-    }
-
-    public static CadBase getCad(UUID id)
-    {
-        return cads.get(id);
     }
 
 }

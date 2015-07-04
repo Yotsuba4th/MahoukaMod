@@ -7,6 +7,7 @@ import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
@@ -71,9 +72,15 @@ public class ItemCad extends Item
     {
         String cadName = StatCollector.translateToLocal(getUnlocalizedNameInefficiently(stack) + ".name").trim();
         CadBase cad = CadManager.getCad(stack);
-        if (cad != null && cad.getSelectedSequence() != null && !cad.getSelectedSequence().getProcesses().isEmpty())
+        if (cad != null)
         {
-            cadName += ": " + cad.getSelectedSequence().getProcesses().get(0).getLocalizedName();
+            ItemStack seqStack = cad.getStackInSlot(cad.getSelectedSequenceIndex());
+            if (seqStack != null)
+            {
+                String seqName = seqStack.getDisplayName();
+                String seqFormattedName = seqStack.hasDisplayName() ? EnumChatFormatting.ITALIC + seqName + EnumChatFormatting.RESET : seqName;
+                cadName += ": " + seqFormattedName;
+            }
         }
         return cadName;
     }

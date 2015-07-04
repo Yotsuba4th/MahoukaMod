@@ -33,8 +33,6 @@ public class CadBase extends InventoryBasic
 
     private ActivationSequence[] activationSequences = new ActivationSequence[1];
 
-    private ItemStack[] items = new ItemStack[1];
-
     private byte selectedSequence;
 
     /* ------------------------------------------------------------ */
@@ -58,18 +56,21 @@ public class CadBase extends InventoryBasic
         tag.setTag(NBT_SEQUENCES, tagSequences);
         for (int i = 0; i < activationSequences.length; i++)
         {
-            if (activationSequences[i] == null)
-                continue;
-            NBTTagCompound tagSequence = new NBTTagCompound();
-            items[i].writeToNBT(tagSequence);
-            tagSequence.setByte("idx", (byte) i);
-            tagSequences.appendTag(tagSequence);
+            ItemStack stack = getStackInSlot(i);
+            if (stack != null)
+            {
+                NBTTagCompound tagSequence = new NBTTagCompound();
+                getStackInSlot(i).writeToNBT(tagSequence);
+                tagSequence.setByte("idx", (byte) i);
+                tagSequences.appendTag(tagSequence);
+            }
         }
 
     }
 
     public void readFromNBT(NBTTagCompound tag)
     {
+        tag.setBoolean("changed", false);
         id = UUID.fromString(tag.getString("id"));
         selectedSequence = tag.getByte("sel");
 
@@ -78,7 +79,7 @@ public class CadBase extends InventoryBasic
         for (int i = 0; i < activationSequences.length; i++)
         {
             activationSequences[i] = null;
-            items[i] = null;
+            setInventorySlotContents(i, null);
         }
         for (int i = 0; i < tagSequences.tagCount(); i++)
         {
@@ -87,7 +88,7 @@ public class CadBase extends InventoryBasic
             if (!(stack.getItem() instanceof ItemMagicSequence))
                 continue;
             ItemMagicSequence item = (ItemMagicSequence) stack.getItem();
-            items[tagSequence.getByte("idx")] = stack;
+            setInventorySlotContents(tagSequence.getByte("idx"), stack);
             activationSequences[tagSequence.getByte("idx")] = new ActivationSequence(item.getStackData(stack));
         }
     }

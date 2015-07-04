@@ -24,8 +24,12 @@ public class SlotSequence extends Slot
     @Override
     public boolean isItemValid(ItemStack stack)
     {
-        // TODO (2) Return false if slot out of CAD size
-        return stack.getItem() instanceof ItemMagicSequence;
+        if (!(stack.getItem() instanceof ItemMagicSequence))
+            return false;
+        CadBase cad = container.getCad();
+        if (cad == null)
+            return false;
+        return getSlotIndex() < cad.getSizeInventory();
     }
 
     @Override
@@ -37,9 +41,6 @@ public class SlotSequence extends Slot
         return stack;
     }
 
-    /**
-     * Helper method to put a stack in the slot.
-     */
     @Override
     public void putStack(ItemStack stack)
     {
@@ -47,7 +48,6 @@ public class SlotSequence extends Slot
         if (cad == null)
             return;
         cad.setInventorySlotContents(getSlotIndex(), stack);
-        cad.writeToNBT(container.getSlot(0).getStack().getTagCompound());
         onSlotChanged();
     }
 
@@ -58,15 +58,13 @@ public class SlotSequence extends Slot
         if (cad == null)
             return;
         cad.markDirty();
+        cad.writeToNBT(container.getSlot(0).getStack().getTagCompound());
     }
 
     @Override
     public int getSlotStackLimit()
     {
-        CadBase cad = container.getCad();
-        if (cad == null)
-            return 0;
-        return cad.getInventoryStackLimit();
+        return 1;
     }
 
     @Override

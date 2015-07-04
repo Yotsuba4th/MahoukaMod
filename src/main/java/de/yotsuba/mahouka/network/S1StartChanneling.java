@@ -59,7 +59,7 @@ public class S1StartChanneling implements IMessage, IMessageHandler<S1StartChann
         if (target == null)
             return null;
 
-        CadBase cad = CadManager.getCad(id);
+        CadBase cad = CadManager.getCad(caster.getCurrentEquippedItem());
         if (cad == null || cad.getSelectedSequence() == null)
         {
             // TODO (5) Error handling
