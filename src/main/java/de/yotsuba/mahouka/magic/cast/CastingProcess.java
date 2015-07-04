@@ -13,10 +13,10 @@ import de.yotsuba.mahouka.MahoukaMod;
 import de.yotsuba.mahouka.client.effect.EffectRenderer;
 import de.yotsuba.mahouka.core.PlayerData;
 import de.yotsuba.mahouka.item.ItemCad;
-import de.yotsuba.mahouka.magic.ActivationSequence;
 import de.yotsuba.mahouka.magic.MagicProcess;
 import de.yotsuba.mahouka.magic.cad.CadBase;
 import de.yotsuba.mahouka.magic.cad.CadManager;
+import de.yotsuba.mahouka.magic.process.ProcessSequence;
 import de.yotsuba.mahouka.network.C2StartChanneling;
 import de.yotsuba.mahouka.network.C3CancelCast;
 import de.yotsuba.mahouka.network.C5CastUpdate;
@@ -27,7 +27,7 @@ import de.yotsuba.mahouka.util.target.Target;
 public class CastingProcess
 {
 
-    private ActivationSequence sequence;
+    private ProcessSequence sequence;
 
     private EntityPlayer caster;
 
@@ -53,19 +53,27 @@ public class CastingProcess
 
     /* ------------------------------------------------------------ */
 
-    public CastingProcess(EntityPlayer caster, ActivationSequence sequence, Target target, UUID id, int psion, int channelTime)
+    public CastingProcess(EntityPlayer caster, MagicProcess sequence, Target target, UUID id, int psion, int channelTime)
     {
         this.id = id;
-        this.sequence = sequence;
         this.caster = caster;
         this.target = target;
         this.psion = psion;
         this.channelTime = channelTime;
+        if (sequence instanceof ProcessSequence)
+        {
+            this.sequence = (ProcessSequence) sequence;
+        }
+        else
+        {
+            this.sequence = new ProcessSequence();
+            this.sequence.getProcesses().add(sequence);
+        }
         t = 0;
         currentTarget = target;
     }
 
-    public static CastingProcess create(EntityPlayer caster, ActivationSequence sequence, Target target, UUID id)
+    public static CastingProcess create(EntityPlayer caster, MagicProcess sequence, Target target, UUID id)
     {
         int channelingDuration = sequence.getChannelingDuration();
         int psionCost = sequence.getPsionCost();
@@ -80,7 +88,7 @@ public class CastingProcess
         UUID id = BufUtils.uuidFromBytes(buf);
         EntityPlayer caster = Utils.getClientPlayerByUuid(BufUtils.uuidFromBytes(buf));
         Target target = Target.fromBytes(world, buf);
-        ActivationSequence sequence = new ActivationSequence(ByteBufUtils.readTag(buf));
+        MagicProcess sequence = MagicProcess.createFromStack(ByteBufUtils.readItemStack(buf));
         int psion = buf.readInt();
         int channelTime = buf.readInt();
         if (id == null || caster == null || target == null || sequence == null)
@@ -93,7 +101,7 @@ public class CastingProcess
         BufUtils.uuidToBytes(buf, id);
         BufUtils.uuidToBytes(buf, caster.getPersistentID());
         target.toBytes(buf);
-        ByteBufUtils.writeTag(buf, sequence.writeToNBT());
+        ByteBufUtils.writeItemStack(buf, sequence.getItemStack());
         buf.writeInt(psion);
         buf.writeInt(channelTime);
     }
@@ -351,7 +359,7 @@ public class CastingProcess
         return id;
     }
 
-    public ActivationSequence getSequence()
+    public ProcessSequence getSequence()
     {
         return sequence;
     }

@@ -2,160 +2,101 @@ package de.yotsuba.mahouka.magic;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 import de.yotsuba.mahouka.MahoukaMod;
-import de.yotsuba.mahouka.item.ItemMagicSequence;
-import de.yotsuba.mahouka.magic.cad.CadBase;
+import de.yotsuba.mahouka.item.ItemMagicProcess;
 import de.yotsuba.mahouka.magic.process.ProcessParallel;
+import de.yotsuba.mahouka.magic.process.ProcessSequence;
 
 // TODO (4) Improve process assembler so it does not require exceptions any more
 public class ProcessAssembler
 {
 
-    private static String lastError;
-
-    public static class AssemblyException extends Exception
-    {
-        /* default exception */
-    }
-
     public static ItemStack combine(ItemStack input1, ItemStack input2)
     {
-        setLastError(null);
         if (input1 == null || input2 == null)
             return null;
-        try
-        {
-            input1 = newSequence(input1);
-            NBTTagList list1 = getProcessList(input1);
-            NBTTagList list2 = getProcessList(input2);
-            if (list1.tagCount() == 1 && list1.getCompoundTagAt(0).getShort("id") == MagicProcess.idByProcess.get(ProcessParallel.class))
-            {
-                // Handle appending to ProcessParallel
-                list1 = list1.getCompoundTagAt(0).getTagList(CadBase.NBT_SEQUENCES, 10);
-                NBTTagCompound tag2 = new NBTTagCompound();
-                tag2.setTag(ActivationSequence.NBT_PROCESSES, list2);
-                list1.appendTag(tag2);
-            }
-            else
-            {
-                for (int i = 0; i < list2.tagCount(); i++)
-                    list1.appendTag(list2.getCompoundTagAt(i));
-            }
-            return input1;
-        }
-        catch (AssemblyException e)
-        {
-            setLastError(e.getMessage());
-            e.printStackTrace();
-            System.out.println("Could not combine magic sequences!");
+        if (!(input1.getItem() instanceof ItemMagicProcess) || !(input2.getItem() instanceof ItemMagicProcess))
             return null;
+
+        ItemMagicProcess item1 = (ItemMagicProcess) input1.getItem();
+        ItemMagicProcess item2 = (ItemMagicProcess) input2.getItem();
+        if (item1.getItemProcess() instanceof ProcessParallel)
+        {
+            ItemStack output = new ItemStack(item1);
+            NBTTagCompound tag = new NBTTagCompound();
+            ProcessParallel process = new ProcessParallel();
+
+            // Add all processes of input 1
+            if (item1.getItemProcess() instanceof ProcessSequence)
+                process.getProcesses().addAll(((ProcessSequence) item1.getProcess(input1)).getProcesses());
+            else
+                process.getProcesses().add(item1.getProcess(input1));
+
+            // Add all processes of input 2
+            if (item2.getItemProcess() instanceof ProcessSequence)
+                process.getProcesses().addAll(((ProcessSequence) item2.getProcess(input2)).getProcesses());
+            else
+                process.getProcesses().add(item2.getProcess(input2));
+
+            process.writeToNBT(tag);
+            output.setTagCompound(tag);
+            return output;
+        }
+        else
+        {
+            ItemStack output = new ItemStack(MahoukaMod.item_magic_sequence);
+            NBTTagCompound tag = new NBTTagCompound();
+            ProcessSequence process = new ProcessSequence();
+
+            // Add all processes of input 1
+            if (item1.getItemProcess() instanceof ProcessSequence)
+                process.getProcesses().addAll(((ProcessSequence) item1.getProcess(input1)).getProcesses());
+            else
+                process.getProcesses().add(item1.getProcess(input1));
+
+            // Add all processes of input 2
+            if (item2.getItemProcess() instanceof ProcessSequence)
+                process.getProcesses().addAll(((ProcessSequence) item2.getProcess(input2)).getProcesses());
+            else
+                process.getProcesses().add(item2.getProcess(input2));
+
+            process.writeToNBT(tag);
+            output.setTagCompound(tag);
+            return output;
         }
     }
 
     public static ItemStack split(ItemStack input)
     {
-        setLastError(null);
-        if (input == null)
+        if (input == null || !(input.getItem() instanceof ItemMagicProcess))
             return null;
-        try
-        {
-            NBTTagList list1 = getProcessList(input);
-            if (list1.tagCount() == 1)
-            {
-                if (list1.getCompoundTagAt(0).getShort("id") == MagicProcess.idByProcess.get(ProcessParallel.class))
-                {
-                    // Handle splitting ProcessParallel
-                    list1 = list1.getCompoundTagAt(0).getTagList(CadBase.NBT_SEQUENCES, 10);
-                    if (list1.tagCount() > 0)
-                    {
-                        ItemStack result = new ItemStack(MahoukaMod.item_magic_sequence);
-                        result.setTagCompound((NBTTagCompound) list1.removeTag(list1.tagCount() - 1));
-                        return result;
-                    }
-                }
-                return null;
-            }
-
-            NBTTagCompound tag2 = new NBTTagCompound();
-            NBTTagList list2 = new NBTTagList();
-            tag2.setTag(ActivationSequence.NBT_PROCESSES, list2);
-            list2.appendTag(list1.removeTag(list1.tagCount() - 1));
-
-            MagicProcess process = MagicProcess.createFromNBT(list2.getCompoundTagAt(0));
-            ItemStack output = new ItemStack(process.getItem());
-            output.setTagCompound(tag2);
-            output.stackSize = input.stackSize;
-            return output;
-        }
-        catch (AssemblyException e)
-        {
-            setLastError(e.getMessage());
-            e.printStackTrace();
-            System.out.println("Could not combine magic sequences!");
+        ItemMagicProcess item = (ItemMagicProcess) input.getItem();
+        if (!(item.getItemProcess() instanceof ProcessSequence))
             return null;
-        }
-    }
 
-    public static ItemStack newSequence(ItemStack stack) throws AssemblyException
-    {
-        ItemStack newStack = new ItemStack(MahoukaMod.item_magic_sequence);
-        newStack.setTagCompound((NBTTagCompound) getSequenceTag(stack).copy());
-        return newStack;
-    }
-
-    public static ItemStack convertToProcess(ItemStack stack)
-    {
-        try
-        {
-            if (stack.getItem() instanceof ItemMagicSequence)
-            {
-                NBTTagCompound tag = getSequenceTag(stack);
-                NBTTagList list = tag.getTagList(ActivationSequence.NBT_PROCESSES, 10);
-                if (list.tagCount() == 1)
-                {
-                    MagicProcess process = MagicProcess.createFromNBT(list.getCompoundTagAt(0));
-                    ItemStack newStack = new ItemStack(process.getItem());
-                    newStack.stackSize = stack.stackSize;
-                    newStack.setTagCompound(tag);
-                    stack = newStack;
-                }
-            }
-        }
-        catch (AssemblyException e)
-        {
+        ProcessSequence sequence = (ProcessSequence) item.getProcess(input);
+        if (sequence.getProcesses().size() <= 1)
             return null;
-        }
-        return stack;
+
+        ItemStack result = sequence.getProcesses().remove(sequence.getProcesses().size() - 1).getItemStack();
+        sequence.writeToNBT(input.getTagCompound());
+        return result;
     }
 
-    public static NBTTagCompound getSequenceTag(ItemStack stack) throws AssemblyException
+    public static ItemStack unwrapSequence(ItemStack input)
     {
-        if (!(stack.getItem() instanceof ItemMagicSequence))
-            throw new AssemblyException();
-        ItemMagicSequence item = (ItemMagicSequence) stack.getItem();
-        NBTTagCompound tag = item.getStackData(stack);
-        if (tag == null)
-            throw new RuntimeException("Found magic sequence with empty data!");
-        return tag;
-    }
+        if (input == null || !(input.getItem() instanceof ItemMagicProcess))
+            return null;
 
-    public static NBTTagList getProcessList(ItemStack stack) throws AssemblyException
-    {
-        NBTTagList list = getSequenceTag(stack).getTagList(ActivationSequence.NBT_PROCESSES, 10);
-        if (list == null)
-            throw new RuntimeException("Found magic sequence with empty data!");
-        return list;
-    }
+        ItemMagicProcess item = (ItemMagicProcess) input.getItem();
+        if (!(item.getItemProcess() instanceof ProcessSequence))
+            return input;
 
-    public static String getLastError()
-    {
-        return lastError;
-    }
-
-    private static void setLastError(String lastError)
-    {
-        ProcessAssembler.lastError = lastError;
+        ProcessSequence sequence = (ProcessSequence) item.getProcess(input);
+        if (sequence.getProcesses().size() == 1)
+            return sequence.getProcesses().get(0).getItemStack();
+        else
+            return input;
     }
 
 }

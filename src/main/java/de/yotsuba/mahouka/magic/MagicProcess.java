@@ -1,166 +1,84 @@
 package de.yotsuba.mahouka.magic;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
-
-import org.apache.logging.log4j.Level;
-
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import de.yotsuba.mahouka.MahoukaMod;
 import de.yotsuba.mahouka.client.gui.GuiContainerExt;
 import de.yotsuba.mahouka.item.ItemMagicProcess;
-import de.yotsuba.mahouka.item.ItemMagicSequence;
 import de.yotsuba.mahouka.magic.cast.CastingProcess;
-import de.yotsuba.mahouka.magic.process.ProcessAccelerate;
-import de.yotsuba.mahouka.magic.process.ProcessDecomposition;
-import de.yotsuba.mahouka.magic.process.ProcessExplosion;
-import de.yotsuba.mahouka.magic.process.ProcessFireShockwave;
-import de.yotsuba.mahouka.magic.process.ProcessFirebomb;
-import de.yotsuba.mahouka.magic.process.ProcessMovingOffset;
-import de.yotsuba.mahouka.magic.process.ProcessOffset;
-import de.yotsuba.mahouka.magic.process.ProcessParallel;
-import de.yotsuba.mahouka.magic.process.ProcessParticle;
-import de.yotsuba.mahouka.magic.process.ProcessProjectileFire;
-import de.yotsuba.mahouka.magic.process.ProcessProjectileIce;
-import de.yotsuba.mahouka.magic.process.ProcessShockwave;
 import de.yotsuba.mahouka.util.target.Target;
 import de.yotsuba.mahouka.util.target.TargetType;
 
-public abstract class MagicProcess implements Cloneable
+public abstract class MagicProcess
 {
 
     public static final String DEFAULT_ICON = MahoukaMod.MODID + ":process_default_blue";
 
     /* ------------------------------------------------------------ */
 
-    public static Map<Short, Class<? extends MagicProcess>> processById = new HashMap<Short, Class<? extends MagicProcess>>();
-
-    public static Map<String, Class<? extends MagicProcess>> processByName = new HashMap<String, Class<? extends MagicProcess>>();
-
-    public static Map<Class<? extends MagicProcess>, Short> idByProcess = new HashMap<Class<? extends MagicProcess>, Short>();
-
     public static Map<Class<? extends MagicProcess>, ItemMagicProcess> itemByProcess = new HashMap<Class<? extends MagicProcess>, ItemMagicProcess>();
 
-    static
-    {
-        List<Class<? extends MagicProcess>> processes = new ArrayList<Class<? extends MagicProcess>>();
-        // To remove processes from registry, set them to null
-        processes.add(ProcessParticle.class);
-        processes.add(ProcessExplosion.class);
-        processes.add(ProcessShockwave.class);
-        processes.add(ProcessFirebomb.class);
-        processes.add(ProcessFireShockwave.class);
-        processes.add(ProcessMovingOffset.class);
-        processes.add(ProcessOffset.class);
-        processes.add(ProcessParallel.class);
-        processes.add(ProcessProjectileFire.class);
-        processes.add(ProcessAccelerate.class);
-        processes.add(ProcessProjectileIce.class);
-        processes.add(ProcessDecomposition.class);
-
-        short idx = 1;
-        for (Class<? extends MagicProcess> proc : processes)
-            registerProcess(proc, idx++);
-    }
-
     /* ------------------------------------------------------------ */
-
-    public static void registerProcess(Class<? extends MagicProcess> clazz, short id)
-    {
-        if (clazz == null)
-            return;
-        if (processById.containsKey(id))
-            throw new RuntimeException(String.format("Duplicate assignment of magic process id %d", id));
-        processById.put(id, clazz);
-        idByProcess.put(clazz, id);
-        processByName.put(instantiate(clazz).getName(), clazz);
-    }
 
     public static void registerProcessItem(Class<? extends MagicProcess> clazz, ItemMagicProcess item)
     {
         itemByProcess.put(clazz, item);
     }
 
-    public static MagicProcess createByName(String name)
+    public static MagicProcess createFromStack(ItemStack stack)
     {
-        return instantiate(processByName.get(name));
-    }
-
-    public static MagicProcess createById(short id)
-    {
-        return instantiate(processById.get(id));
-    }
-
-    public static MagicProcess createFromNBT(NBTTagCompound tag)
-    {
-        Class<? extends MagicProcess> clazz = processById.get(tag.getShort("id"));
-        if (clazz == null)
-        {
-            // TODO: Print error
+        if (stack == null || !(stack.getItem() instanceof ItemMagicProcess))
             return null;
-        }
-        try
-        {
-            MagicProcess process = clazz.newInstance();
-            process.readFromNBT(tag);
-            return process;
-        }
-        catch (ReflectiveOperationException e)
-        {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    private static MagicProcess instantiate(Class<? extends MagicProcess> clazz)
-    {
-        try
-        {
-            return clazz.newInstance();
-        }
-        catch (ReflectiveOperationException e)
-        {
-            MahoukaMod.getLogger().log(Level.ERROR, "Error instantiating magic process", e);
-            return null;
-        }
+        ItemMagicProcess item = (ItemMagicProcess) stack.getItem();
+        MagicProcess process = item.getItemProcess().copy();
+        process.readFromNBT(stack.getTagCompound());
+        return process;
     }
 
     /* ------------------------------------------------------------ */
 
-    public NBTTagCompound writeToNBT()
+    protected String displayName;
+
+    /* ------------------------------------------------------------ */
+
+    public void writeToNBT(NBTTagCompound tag)
     {
-        NBTTagCompound tag = new NBTTagCompound();
-        tag.setShort("id", getId());
-        return tag;
+        if (displayName != null)
+        {
+            NBTTagCompound display = tag.getCompoundTag("display");
+            display.setString("Name", displayName);
+            tag.setTag("display", display);
+        }
     }
 
     public void readFromNBT(NBTTagCompound tag)
     {
-        /* do nothing */
-    }
-
-    public short getId()
-    {
-        Short id = idByProcess.get(getClass());
-        if (id == null)
-            throw new RuntimeException(String.format("Magic process class %s has not been registered", getClass().toString()));
-        return id;
+        displayName = null;
+        if (tag.hasKey("display"))
+        {
+            NBTTagCompound display = tag.getCompoundTag("display");
+            if (display.hasKey("Name"))
+                displayName = display.getString("Name");
+        }
     }
 
     public MagicProcess copy()
     {
         try
         {
-            return (MagicProcess) this.clone();
+            MagicProcess result = getClass().newInstance();
+            result.displayName = displayName;
+            return result;
         }
-        catch (CloneNotSupportedException e)
+        catch (ReflectiveOperationException e)
         {
             throw new RuntimeException("Unexpected error");
         }
@@ -199,6 +117,18 @@ public abstract class MagicProcess implements Cloneable
     }
 
     /* ------------------------------------------------------------ */
+
+    public String getDisplayName()
+    {
+        return displayName;
+    }
+
+    public void setDisplayName(String displayName)
+    {
+        this.displayName = displayName;
+    }
+
+    /* ------------------------------------------------------------ */
     /* Item functions */
 
     public String getItemName()
@@ -206,9 +136,25 @@ public abstract class MagicProcess implements Cloneable
         return "process_" + getName();
     }
 
+    public ItemMagicProcess createItem()
+    {
+        return new ItemMagicProcess(this);
+    }
+
     public Item getItem()
     {
         return itemByProcess.get(getClass());
+    }
+
+    public ItemStack getItemStack()
+    {
+        ItemStack stack = new ItemStack(getItem());
+        NBTTagCompound tag = new NBTTagCompound();
+        stack.setTagCompound(tag);
+        if (displayName != null)
+            stack.setStackDisplayName(displayName);
+        writeToNBT(tag);
+        return stack;
     }
 
     public String getTextureName()
@@ -216,15 +162,17 @@ public abstract class MagicProcess implements Cloneable
         return MahoukaMod.MODID + ":process_" + getName();
     }
 
-    public void registerIcons()
+    public void addInformation(List<String> info, boolean isRoot)
     {
-        ItemMagicSequence.registerIcon(getTextureName());
-    }
-
-    public void addInformation(List<String> info, boolean isSequence)
-    {
-        if (isSequence)
-            info.add(getLocalizedName());
+        if (isRoot)
+        {
+            info.add("Psion cost  : " + getPsionCost());
+            info.add("Channel time: " + getChannelingDuration());
+        }
+        else
+        {
+            info.add(getLocalizedName() + ": " + displayName);
+        }
     }
 
     /* ------------------------------------------------------------ */

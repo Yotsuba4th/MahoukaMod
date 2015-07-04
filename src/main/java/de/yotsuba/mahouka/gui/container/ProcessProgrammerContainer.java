@@ -7,11 +7,9 @@ import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 import de.yotsuba.mahouka.gui.ButtenClickListener;
 import de.yotsuba.mahouka.gui.slot.SlotProcess;
 import de.yotsuba.mahouka.item.ItemMagicProcess;
-import de.yotsuba.mahouka.magic.ActivationSequence;
 import de.yotsuba.mahouka.magic.MagicProcess;
 import de.yotsuba.mahouka.util.Utils;
 
@@ -55,9 +53,7 @@ public class ProcessProgrammerContainer extends Container implements ButtenClick
         if (stack != null)
         {
             NBTTagCompound tag = new NBTTagCompound();
-            NBTTagList list = new NBTTagList();
-            list.appendTag(process.writeToNBT());
-            tag.setTag(ActivationSequence.NBT_PROCESSES, list);
+            process.writeToNBT(tag);
             stack.setTagCompound(tag);
         }
     }

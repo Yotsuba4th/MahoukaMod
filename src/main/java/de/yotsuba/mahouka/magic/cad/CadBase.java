@@ -13,8 +13,8 @@ import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import de.yotsuba.mahouka.core.PlayerData;
-import de.yotsuba.mahouka.item.ItemMagicSequence;
-import de.yotsuba.mahouka.magic.ActivationSequence;
+import de.yotsuba.mahouka.item.ItemMagicProcess;
+import de.yotsuba.mahouka.magic.MagicProcess;
 import de.yotsuba.mahouka.magic.cast.CastingManager;
 import de.yotsuba.mahouka.network.S1StartChanneling;
 import de.yotsuba.mahouka.network.S4CancelCast;
@@ -33,7 +33,7 @@ public class CadBase extends InventoryBasic
 
     private UUID id;
 
-    private final ActivationSequence[] activationSequences;
+    private final MagicProcess[] activationSequences;
 
     private byte selectedSequence;
 
@@ -42,7 +42,7 @@ public class CadBase extends InventoryBasic
     public CadBase(int size)
     {
         super(null, false, size);
-        activationSequences = new ActivationSequence[size];
+        activationSequences = new MagicProcess[size];
         id = UUID.randomUUID();
     }
 
@@ -62,8 +62,10 @@ public class CadBase extends InventoryBasic
             ItemStack stack = getStackInSlot(i);
             if (stack != null)
             {
+                if (activationSequences[i] != null)
+                    activationSequences[i].writeToNBT(stack.getTagCompound());
                 NBTTagCompound tagSequence = new NBTTagCompound();
-                getStackInSlot(i).writeToNBT(tagSequence);
+                stack.writeToNBT(tagSequence);
                 tagSequence.setByte("idx", (byte) i);
                 tagSequences.appendTag(tagSequence);
             }
@@ -87,12 +89,19 @@ public class CadBase extends InventoryBasic
         for (int i = 0; i < tagSequences.tagCount(); i++)
         {
             NBTTagCompound tagSequence = tagSequences.getCompoundTagAt(i);
-            ItemStack stack = ItemStack.loadItemStackFromNBT(tagSequence);
-            if (!(stack.getItem() instanceof ItemMagicSequence))
+            if (!tagSequence.hasKey("idx"))
                 continue;
-            ItemMagicSequence item = (ItemMagicSequence) stack.getItem();
-            setInventorySlotContents(tagSequence.getByte("idx"), stack);
-            activationSequences[tagSequence.getByte("idx")] = new ActivationSequence(item.getStackData(stack));
+            int idx = tagSequence.getByte("idx");
+
+            ItemStack stack = ItemStack.loadItemStackFromNBT(tagSequence);
+            if (!(stack.getItem() instanceof ItemMagicProcess))
+                continue;
+            setInventorySlotContents(idx, stack);
+
+            ItemMagicProcess item = (ItemMagicProcess) stack.getItem();
+            MagicProcess process = item.getItemProcess().copy();
+            process.readFromNBT(item.getStackData(stack));
+            activationSequences[idx] = process;
         }
     }
 
@@ -111,7 +120,7 @@ public class CadBase extends InventoryBasic
         }
         else
         {
-            ActivationSequence sequence = getSelectedSequence();
+            MagicProcess sequence = getSelectedSequence();
             if (sequence == null)
             {
                 // TODO (4) Error sound
@@ -135,16 +144,10 @@ public class CadBase extends InventoryBasic
                 return;
             }
 
-            if (sequence.getProcesses().isEmpty())
-            {
-                // TODO (4) Error sound
-                player.addChatMessage(new ChatComponentText("Empty sequence in CAD!"));
-                return;
-            }
-            if (!sequence.getProcesses().get(0).isTargetValid(target))
+            if (!sequence.isTargetValid(target))
             {
                 target = new TargetEntity(player, true, false);
-                if (!sequence.getProcesses().get(0).isTargetValid(target))
+                if (!sequence.isTargetValid(target))
                 {
                     // TODO (4) Error sound
                     player.addChatMessage(new ChatComponentText("Invalid target!"));
@@ -182,7 +185,7 @@ public class CadBase extends InventoryBasic
         return id;
     }
 
-    public ActivationSequence[] getActivationSequences()
+    public MagicProcess[] getActivationSequences()
     {
         return activationSequences;
     }
@@ -204,7 +207,7 @@ public class CadBase extends InventoryBasic
             selectedSequence = index;
     }
 
-    public ActivationSequence getSelectedSequence()
+    public MagicProcess getSelectedSequence()
     {
         return activationSequences[selectedSequence];
     }

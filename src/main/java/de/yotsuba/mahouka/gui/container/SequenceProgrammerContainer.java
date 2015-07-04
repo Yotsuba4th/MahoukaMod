@@ -8,7 +8,7 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import de.yotsuba.mahouka.gui.slot.SlotSeqProgrammerResult;
-import de.yotsuba.mahouka.item.ItemMagicSequence;
+import de.yotsuba.mahouka.item.ItemMagicProcess;
 import de.yotsuba.mahouka.magic.ProcessAssembler;
 import de.yotsuba.mahouka.util.Utils;
 
@@ -52,7 +52,7 @@ public class SequenceProgrammerContainer extends Container implements IInventory
                 {
                     output1 = output1.copy();
                     ItemStack output2 = ProcessAssembler.split(output1);
-                    inventory[IN_1] = ProcessAssembler.convertToProcess(output1);
+                    inventory[IN_1] = ProcessAssembler.unwrapSequence(output1);
                     inventory[IN_2] = output2;
                     if (output2 == null)
                         inventory[OUT] = null;
@@ -265,7 +265,7 @@ public class SequenceProgrammerContainer extends Container implements IInventory
     @Override
     public boolean isItemValidForSlot(int slot, ItemStack stack)
     {
-        return stack.getItem() instanceof ItemMagicSequence;
+        return stack.getItem() instanceof ItemMagicProcess;
     }
 
     @Override

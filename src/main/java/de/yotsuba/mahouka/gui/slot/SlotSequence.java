@@ -7,7 +7,7 @@ import net.minecraft.util.IIcon;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import de.yotsuba.mahouka.gui.container.CadProgrammerContainer;
-import de.yotsuba.mahouka.item.ItemMagicSequence;
+import de.yotsuba.mahouka.item.ItemMagicProcess;
 import de.yotsuba.mahouka.magic.cad.CadBase;
 
 public class SlotSequence extends Slot
@@ -24,7 +24,7 @@ public class SlotSequence extends Slot
     @Override
     public boolean isItemValid(ItemStack stack)
     {
-        if (!(stack.getItem() instanceof ItemMagicSequence))
+        if (!(stack.getItem() instanceof ItemMagicProcess))
             return false;
         CadBase cad = container.getCad();
         if (cad == null)

@@ -5,49 +5,15 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import de.yotsuba.mahouka.MahoukaMod;
-import de.yotsuba.mahouka.magic.ActivationSequence;
 import de.yotsuba.mahouka.magic.MagicProcess;
-import de.yotsuba.mahouka.magic.cad.CadBase;
 import de.yotsuba.mahouka.magic.cast.CastingProcess;
 import de.yotsuba.mahouka.util.target.Target;
 import de.yotsuba.mahouka.util.target.TargetType;
 
-public class ProcessParallel extends MagicProcess
+public class ProcessParallel extends ProcessSequence
 {
 
-    public static final String NBT_SEQUENCES = "seq";
-
-    protected List<ActivationSequence> sequences = new ArrayList<ActivationSequence>();
-
     private List<CastingProcess> casts = new ArrayList<CastingProcess>();
-
-    /* ------------------------------------------------------------ */
-
-    @Override
-    public NBTTagCompound writeToNBT()
-    {
-        NBTTagCompound tag = super.writeToNBT();
-        NBTTagList tagProcesses = new NBTTagList();
-        tag.setTag(NBT_SEQUENCES, tagProcesses);
-        for (ActivationSequence seq : sequences)
-            tagProcesses.appendTag(seq.writeToNBT());
-        return tag;
-    }
-
-    @Override
-    public void readFromNBT(NBTTagCompound tag)
-    {
-        NBTTagList tagSequences = tag.getTagList(CadBase.NBT_SEQUENCES, 10);
-        sequences.clear();
-        for (int i = 0; i < tagSequences.tagCount(); i++)
-        {
-            NBTTagCompound tagSequence = tagSequences.getCompoundTagAt(i);
-            sequences.add(new ActivationSequence(tagSequence));
-        }
-    }
 
     /* ------------------------------------------------------------ */
 
@@ -58,27 +24,21 @@ public class ProcessParallel extends MagicProcess
     }
 
     @Override
-    public String getTextureName()
-    {
-        return MahoukaMod.MODID + ":process_parallel";
-    }
-
-    @Override
     public TargetType[] getValidTargets()
     {
+        // TODO (1) Valid targets
         return new TargetType[] { TargetType.POINT };
     }
 
     @Override
     public void addInformation(List<String> info, boolean isSequence)
     {
-        super.addInformation(info, isSequence);
-        for (ActivationSequence seq : sequences)
+        // super.addInformation(info, isSequence);
+        for (MagicProcess seq : processes)
         {
             int oldLength2 = info.size() + 1;
 
-            for (MagicProcess process : seq.getProcesses())
-                process.addInformation(info, true);
+            seq.addInformation(info, true);
 
             for (int i = oldLength2; i < info.size(); i++)
                 info.set(i, "   " + info.get(i));
@@ -88,19 +48,13 @@ public class ProcessParallel extends MagicProcess
     @Override
     public int getPsionCost()
     {
-        int psionCost = 0;
-        for (ActivationSequence sequence : sequences)
-            psionCost += sequence.getPsionCost();
-        return psionCost;
+        return super.getPsionCost();
     }
 
     @Override
     public int getChannelingDuration()
     {
-        int t = 0;
-        for (ActivationSequence sequence : sequences)
-            t += sequence.getChannelingDuration();
-        return t * 4 / (3 + sequences.size());
+        return super.getChannelingDuration();
     }
 
     @Override
@@ -139,7 +93,7 @@ public class ProcessParallel extends MagicProcess
     public Target castStart(CastingProcess cp, Target target)
     {
         casts.clear();
-        for (ActivationSequence sequence : sequences)
+        for (MagicProcess sequence : processes)
         {
             UUID id = UUID.randomUUID();
             CastingProcess cast = new CastingProcess(cp.getCaster(), sequence, target, id, 0, 0);

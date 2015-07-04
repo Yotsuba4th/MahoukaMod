@@ -24,16 +24,16 @@ public class ProcessAccelerate extends MagicProcess
     /* ------------------------------------------------------------ */
 
     @Override
-    public NBTTagCompound writeToNBT()
+    public void writeToNBT(NBTTagCompound tag)
     {
-        NBTTagCompound tag = super.writeToNBT();
+        super.writeToNBT(tag);
         tag.setFloat("speed", speed);
-        return tag;
     }
 
     @Override
     public void readFromNBT(NBTTagCompound tag)
     {
+        super.readFromNBT(tag);
         speed = tag.getFloat("speed");
         // TODO DEBUG
         speed = 1;

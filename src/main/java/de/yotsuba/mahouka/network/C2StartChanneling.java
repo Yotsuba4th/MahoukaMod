@@ -42,7 +42,8 @@ public class C2StartChanneling implements IMessage, IMessageHandler<C2StartChann
     @Override
     public IMessage onMessage(C2StartChanneling message, MessageContext ctx)
     {
-        message.cast.startClient();
+        if (message.cast != null)
+            message.cast.startClient();
         return null;
     }
 

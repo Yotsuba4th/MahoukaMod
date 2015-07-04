@@ -17,36 +17,28 @@ import de.yotsuba.mahouka.util.target.TargetType;
 public class ProcessOffset extends MagicProcess
 {
 
-    protected Vec3 offset;
+    protected Vec3 offset = Vec3.createVectorHelper(0, 0, 0);
 
-    protected Vec3 range;
-
-    /* ------------------------------------------------------------ */
-
-    public ProcessOffset()
-    {
-        offset = Vec3.createVectorHelper(0, 5, 0);
-        range = Vec3.createVectorHelper(0, 0, 0);
-    }
+    protected Vec3 range = Vec3.createVectorHelper(0, 0, 0);
 
     /* ------------------------------------------------------------ */
 
     @Override
-    public NBTTagCompound writeToNBT()
+    public void writeToNBT(NBTTagCompound tag)
     {
-        NBTTagCompound tag = super.writeToNBT();
+        super.writeToNBT(tag);
         tag.setDouble("ox", offset.xCoord);
         tag.setDouble("oy", offset.yCoord);
         tag.setDouble("oz", offset.zCoord);
         tag.setDouble("rx", range.xCoord);
         tag.setDouble("ry", range.yCoord);
         tag.setDouble("rz", range.zCoord);
-        return tag;
     }
 
     @Override
     public void readFromNBT(NBTTagCompound tag)
     {
+        super.readFromNBT(tag);
         offset.xCoord = tag.getDouble("ox");
         offset.yCoord = tag.getDouble("oy");
         offset.zCoord = tag.getDouble("oz");

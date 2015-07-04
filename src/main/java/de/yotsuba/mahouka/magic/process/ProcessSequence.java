@@ -1,17 +1,21 @@
-package de.yotsuba.mahouka.magic;
+package de.yotsuba.mahouka.magic.process;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import de.yotsuba.mahouka.MahoukaMod;
+import de.yotsuba.mahouka.magic.MagicProcess;
+import de.yotsuba.mahouka.util.target.Target;
+import de.yotsuba.mahouka.util.target.TargetType;
 
-public class ActivationSequence
+public class ProcessSequence extends MagicProcess
 {
 
-    public static final String NBT_PROCESSES = "proc";
+    public static final String NBT_SEQUENCES = "seq";
 
     /* ------------------------------------------------------------ */
 
@@ -19,34 +23,31 @@ public class ActivationSequence
 
     /* ------------------------------------------------------------ */
 
-    public ActivationSequence()
+    @Override
+    public void writeToNBT(NBTTagCompound tag)
     {
-    }
-
-    public ActivationSequence(NBTTagCompound tagSequence)
-    {
-        readFromNBT(tagSequence);
-    }
-
-    /* ------------------------------------------------------------ */
-
-    public NBTTagCompound writeToNBT()
-    {
-        NBTTagCompound tag = new NBTTagCompound();
+        super.writeToNBT(tag);
         NBTTagList tagProcesses = new NBTTagList();
-        tag.setTag(NBT_PROCESSES, tagProcesses);
-        for (MagicProcess process : processes)
-            tagProcesses.appendTag(process.writeToNBT());
-        return tag;
+        tag.setTag(NBT_SEQUENCES, tagProcesses);
+        for (MagicProcess sequence : processes)
+        {
+            NBTTagCompound tagSequence = new NBTTagCompound();
+            sequence.getItemStack().writeToNBT(tagSequence);
+            //sequence.writeToNBT(tagSequence);
+            tagProcesses.appendTag(tagSequence);
+        }
     }
 
+    @Override
     public void readFromNBT(NBTTagCompound tag)
     {
-        NBTTagList tagProcesses = tag.getTagList(NBT_PROCESSES, 10);
-        for (int i = 0; i < tagProcesses.tagCount(); i++)
+        super.readFromNBT(tag);
+        NBTTagList tagSequences = tag.getTagList(NBT_SEQUENCES, 10);
+        processes.clear();
+        for (int i = 0; i < tagSequences.tagCount(); i++)
         {
-            NBTTagCompound tagProcess = tagProcesses.getCompoundTagAt(i);
-            MagicProcess process = MagicProcess.createFromNBT(tagProcess);
+            NBTTagCompound tagSequence = tagSequences.getCompoundTagAt(i);
+            MagicProcess process = MagicProcess.createFromStack(ItemStack.loadItemStackFromNBT(tagSequence));
             if (process == null)
             {
                 MahoukaMod.getLogger().error("Could not load magic process!");
@@ -59,20 +60,26 @@ public class ActivationSequence
 
     /* ------------------------------------------------------------ */
 
-    public static void registerIcons()
+    @Override
+    public String getName()
     {
-        // TODO: Register additional icons for special sequences
-        // ItemMagicSequence.registerIcon("name");
+        return "sequence";
     }
 
-    public String getIcon()
+    @Override
+    public Item getItem()
     {
-        if (processes.size() == 1)
-            return processes.get(0).getTextureName();
-        return null;
+        return MahoukaMod.item_magic_sequence;
     }
 
-    public void addInformation(List<String> info)
+    @Override
+    public TargetType[] getValidTargets()
+    {
+        return processes.get(0).getValidTargets();
+    }
+
+    @Override
+    public void addInformation(List<String> info, boolean isRoot)
     {
         if (processes.isEmpty())
         {
@@ -91,14 +98,13 @@ public class ActivationSequence
         else
         {
             for (MagicProcess process : processes)
-                process.addInformation(info, true);
+                process.addInformation(info, false);
         }
         for (int i = oldLength1; i < info.size(); i++)
             info.set(i, "  " + info.get(i));
     }
 
-    /* ------------------------------------------------------------ */
-
+    @Override
     public int getPsionCost()
     {
         int psionCost = 0;
@@ -107,6 +113,7 @@ public class ActivationSequence
         return psionCost;
     }
 
+    @Override
     public int getChannelingDuration()
     {
         int t = 0;
@@ -115,20 +122,19 @@ public class ActivationSequence
         return t;
     }
 
+    @Override
+    public int getCastDuration(Target target)
+    {
+        return 0;
+        // cleanCasts();
+        // return casts.isEmpty() ? 0 : Integer.MAX_VALUE;
+    }
+
     public List<MagicProcess> getProcesses()
     {
         return processes;
     }
 
-    public ItemStack getItemStack()
-    {
-        if (processes.isEmpty())
-            return null;
-
-        NBTTagCompound tag = writeToNBT();
-        ItemStack stack = new ItemStack(processes.size() == 1 ? processes.get(0).getItem() : MahoukaMod.item_magic_sequence);
-        stack.setTagCompound(tag);
-        return stack;
-    }
+    /* ------------------------------------------------------------ */
 
 }

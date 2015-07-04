@@ -1,6 +1,8 @@
 package de.yotsuba.mahouka;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -34,10 +36,22 @@ import de.yotsuba.mahouka.entity.projectile.EntityMagicProjectileIce;
 import de.yotsuba.mahouka.gui.GuiHandler;
 import de.yotsuba.mahouka.item.ItemCad;
 import de.yotsuba.mahouka.item.ItemMagicProcess;
-import de.yotsuba.mahouka.item.ItemMagicSequence;
 import de.yotsuba.mahouka.magic.MagicProcess;
 import de.yotsuba.mahouka.magic.cad.CadManager;
 import de.yotsuba.mahouka.magic.cast.CastingManager;
+import de.yotsuba.mahouka.magic.process.ProcessAccelerate;
+import de.yotsuba.mahouka.magic.process.ProcessDecomposition;
+import de.yotsuba.mahouka.magic.process.ProcessExplosion;
+import de.yotsuba.mahouka.magic.process.ProcessFireShockwave;
+import de.yotsuba.mahouka.magic.process.ProcessFirebomb;
+import de.yotsuba.mahouka.magic.process.ProcessMovingOffset;
+import de.yotsuba.mahouka.magic.process.ProcessOffset;
+import de.yotsuba.mahouka.magic.process.ProcessParallel;
+import de.yotsuba.mahouka.magic.process.ProcessParticle;
+import de.yotsuba.mahouka.magic.process.ProcessProjectileFire;
+import de.yotsuba.mahouka.magic.process.ProcessProjectileIce;
+import de.yotsuba.mahouka.magic.process.ProcessSequence;
+import de.yotsuba.mahouka.magic.process.ProcessShockwave;
 import de.yotsuba.mahouka.network.C0PlayerData;
 import de.yotsuba.mahouka.network.C2StartChanneling;
 import de.yotsuba.mahouka.network.C3CancelCast;
@@ -73,7 +87,7 @@ public class MahoukaMod
 
     @SuppressWarnings("unused")
     private static CastingManager castingManager = new CastingManager();
-    
+
     @SuppressWarnings("unused")
     private static MahoukaEventHandler eventHandler = new MahoukaEventHandler();
 
@@ -97,7 +111,7 @@ public class MahoukaMod
 
     public static final ItemCad cad = new ItemCad();
 
-    public static final ItemMagicSequence item_magic_sequence = new ItemMagicSequence();
+    public static ItemMagicProcess item_magic_sequence;
 
     /* ------------------------------------------------------------ */
 
@@ -139,15 +153,30 @@ public class MahoukaMod
     private void registerItems()
     {
         GameRegistry.registerItem(cad, "cad");
-        GameRegistry.registerItem(item_magic_sequence, "magic_sequence");
-        for (Short id : MagicProcess.processById.keySet())
+
+        List<MagicProcess> processes = new ArrayList<MagicProcess>();
+        processes.add(new ProcessSequence());
+        processes.add(new ProcessParallel());
+        processes.add(new ProcessParticle());
+        processes.add(new ProcessExplosion());
+        processes.add(new ProcessShockwave());
+        processes.add(new ProcessFirebomb());
+        processes.add(new ProcessFireShockwave());
+        processes.add(new ProcessMovingOffset());
+        processes.add(new ProcessOffset());
+        processes.add(new ProcessProjectileFire());
+        processes.add(new ProcessAccelerate());
+        processes.add(new ProcessProjectileIce());
+        processes.add(new ProcessDecomposition());
+        for (MagicProcess process : processes)
         {
-            MagicProcess process = MagicProcess.createById(id);
-            ItemMagicProcess item = new ItemMagicProcess(process);
+            ItemMagicProcess item = process.createItem();
             GameRegistry.registerItem(item, process.getItemName());
             MagicProcess.registerProcessItem(process.getClass(), item);
-            process.registerIcons();
         }
+
+        item_magic_sequence = MagicProcess.itemByProcess.get(ProcessSequence.class);
+        item_magic_sequence.setCreativeTab(null);
     }
 
     private void registerBlocks()

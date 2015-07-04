@@ -13,7 +13,7 @@ import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import de.yotsuba.mahouka.MahoukaMod;
-import de.yotsuba.mahouka.magic.ActivationSequence;
+import de.yotsuba.mahouka.magic.MagicProcess;
 import de.yotsuba.mahouka.magic.cad.CadBase;
 import de.yotsuba.mahouka.magic.cad.CadManager;
 
@@ -97,10 +97,10 @@ public class ItemCad extends Item
         if (cad != null)
         {
             info.add("Cad instance: " + cad.getId().toString().substring(0, 6));
-            ActivationSequence sequence = cad.getSelectedSequence();
+            MagicProcess sequence = cad.getSelectedSequence();
             if (sequence != null)
             {
-                sequence.addInformation(info);
+                sequence.addInformation(info, true);
             }
         }
     }
