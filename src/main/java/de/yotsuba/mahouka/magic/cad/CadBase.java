@@ -92,9 +92,10 @@ public class CadBase
         }
         else
         {
-            if (getSelectedSequence() == null)
+            ActivationSequence sequence = getSelectedSequence();
+            if (sequence == null)
             {
-                // TODO: Error sound / message
+                // TODO (4) Error sound
                 player.addChatMessage(new ChatComponentText("No sequence selected!"));
                 return;
             }
@@ -102,22 +103,33 @@ public class CadBase
             PlayerData playerData = new PlayerData(player);
             if (playerData.getPsion() < 10)
             {
-                // TODO: Error sound / message
+                // TODO (4) Error sound
                 player.addChatMessage(new ChatComponentText("Not enough psion!"));
                 return;
             }
 
-            Target target = selectTarget(player);
+            Target target = player.isSneaking() ? new TargetEntity(player, true, false) : selectTarget(player);
             if (target == null)
             {
-                // TODO: Error sound / message
+                // TODO (4) Error sound
                 player.addChatMessage(new ChatComponentText("No target selected!"));
                 return;
             }
 
+            if (sequence.getProcesses().isEmpty())
+            {
+                // TODO (4) Error sound
+                player.addChatMessage(new ChatComponentText("Empty sequence in CAD!"));
+                return;
+            }
+            if (sequence.getProcesses().get(0).isTargetValid(target))
+            {
+                // TODO (4) Error sound
+                player.addChatMessage(new ChatComponentText("Invalid target!"));
+                return;
+            }
+
             S1StartChanneling.send(player, id, target);
-            // CastingProcess cast = new CastingProcess(player, getSelectedSequence(), target, id);
-            // CastingManager.startChanneling(cast);
         }
         updateItemStack(stack, player);
     }

@@ -62,23 +62,23 @@ public class S1StartChanneling implements IMessage, IMessageHandler<S1StartChann
         CadBase cad = CadManager.getCad(id);
         if (cad == null || cad.getSelectedSequence() == null)
         {
-            // TODO (3) Error
+            // TODO (5) Error handling
             return null;
         }
 
         CastingProcess cast = CastingProcess.create(caster, cad.getSelectedSequence(), target, cad.getId());
         if (cast == null)
         {
-            // TODO (3) Error
+            // TODO (5) Error handling
             return null;
         }
         cast.start();
         return null;
     }
 
-    public static void send(EntityPlayer caster, UUID cadId, Target target)
+    public static void send(EntityPlayer caster, UUID id, Target target)
     {
-        S1StartChanneling message = new S1StartChanneling(caster, cadId, target);
+        S1StartChanneling message = new S1StartChanneling(caster, id, target);
         MahoukaMod.getNetChannel().sendToServer(message);
     }
 

@@ -14,7 +14,6 @@ import net.minecraftforge.common.MinecraftForge;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -72,8 +71,8 @@ public class ClientProxy extends CommonProxy
 
     private void renderTargetCUI()
     {
-        EntityPlayer player = FMLClientHandler.instance().getClient().thePlayer;
-        if (player == null)
+        EntityPlayer player = Minecraft.getMinecraft().thePlayer;
+        if (player == null || player.isSneaking())
             return;
 
         ItemStack stack = player.getCurrentEquippedItem();

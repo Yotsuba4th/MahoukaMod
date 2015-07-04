@@ -16,7 +16,6 @@ public class ProcessProgrammerGui extends GuiContainerExt
 
     private final ProcessProgrammerContainer container;
 
-    // TODO: Design gui texture
     private static final ResourceLocation texture = new ResourceLocation(MahoukaMod.MODID + ":textures/gui/" + BlockProcessProgrammer.ID + ".png");
 
     /* ------------------------------------------------------------ */

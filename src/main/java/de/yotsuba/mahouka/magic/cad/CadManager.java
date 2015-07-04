@@ -18,7 +18,7 @@ public class CadManager
 
     public static void serverStoppedEvent(FMLServerStoppedEvent event)
     {
-        // TODO: Currently we cache CAD data until server shutdown - should be changed sometime
+        // TODO (6) Currently we cache CAD data until server shutdown - should be changed sometime
         cads.clear();
     }
 

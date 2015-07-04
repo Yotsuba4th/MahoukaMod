@@ -49,8 +49,8 @@ public class ActivationSequence
             MagicProcess process = MagicProcess.createFromNBT(tagProcess);
             if (process == null)
             {
-                // TODO: DEBUG! Print log error!
-                System.err.println("Could not load magic process!");
+                MahoukaMod.getLogger().error("Could not load magic process!");
+                new Exception().printStackTrace();
                 break;
             }
             processes.add(process);

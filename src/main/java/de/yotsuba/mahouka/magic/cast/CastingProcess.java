@@ -7,7 +7,6 @@ import java.util.UUID;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import cpw.mods.fml.common.network.ByteBufUtils;
 import de.yotsuba.mahouka.MahoukaMod;
@@ -68,7 +67,6 @@ public class CastingProcess
 
     public static CastingProcess create(EntityPlayer caster, ActivationSequence sequence, Target target, UUID id)
     {
-        // TODO (1) Check if magic sequence is valid for target!!
         int channelingDuration = sequence.getChannelingDuration();
         int psionCost = sequence.getPsionCost();
         CastingProcess cast = new CastingProcess(caster, sequence, target, id, psionCost, channelingDuration);
@@ -106,7 +104,7 @@ public class CastingProcess
     {
         if (CastingManager.isServerCasting(id))
         {
-            // TODO: Error sound / message
+            // TODO (6) Translation
             caster.addChatMessage(new ChatComponentText("Another magic is still active!"));
             return false;
         }
@@ -224,12 +222,7 @@ public class CastingProcess
 
     private void channelStartClient()
     {
-        // TODO: DEBUG
-        // Vec3 point = currentTarget.getCurrentPoint();
-        // EntityFxRune entityFx = new EntityFxRune(caster.worldObj, point.xCoord, point.yCoord + 0.01, point.zCoord, 0, 0, 0);
-        // entityFx.setFlat(true);
-        // entityFx.setRadius(2);
-        // Minecraft.getMinecraft().effectRenderer.addEffect(entityFx);
+        // TODO (2) Channel start effect
     }
 
     /* ------------------------------------------------------------ */
@@ -268,9 +261,7 @@ public class CastingProcess
 
     private void channelEndClient()
     {
-        // TODO: DEBUG
-        Vec3 point = currentTarget.getCurrentPoint();
-        caster.worldObj.spawnParticle("heart", point.xCoord, point.yCoord + 1, point.zCoord, 0, 0, 0);
+        // TODO (3) Channel end sound
     }
 
     /* ------------------------------------------------------------ */
@@ -318,11 +309,14 @@ public class CastingProcess
                 process = sequence.getProcesses().get(processIndex);
                 if (!currentTarget.matchesTypes(process.getValidTargets()))
                 {
-                    // TODO: Cancel cast with errors
+                    // TODO (5) Cast cancel error / sound
+                    caster.addChatMessage(new ChatComponentText("Cast failed!"));
                     cancel(true);
                     return;
                 }
                 currentTarget = process.castStart(this, currentTarget);
+                if (currentTarget == null)
+                    cancel(true);
             }
             else
             {

@@ -8,6 +8,7 @@ import de.yotsuba.mahouka.item.ItemMagicSequence;
 import de.yotsuba.mahouka.magic.cad.CadBase;
 import de.yotsuba.mahouka.magic.process.ProcessParallel;
 
+// TODO (4) Improve process assembler so it does not require exceptions any more
 public class ProcessAssembler
 {
 
@@ -46,8 +47,6 @@ public class ProcessAssembler
         catch (AssemblyException e)
         {
             setLastError(e.getMessage());
-
-            // TODO: DEBUG!
             e.printStackTrace();
             System.out.println("Could not combine magic sequences!");
             return null;
@@ -92,8 +91,6 @@ public class ProcessAssembler
         catch (AssemblyException e)
         {
             setLastError(e.getMessage());
-
-            // TODO: DEBUG!
             e.printStackTrace();
             System.out.println("Could not combine magic sequences!");
             return null;

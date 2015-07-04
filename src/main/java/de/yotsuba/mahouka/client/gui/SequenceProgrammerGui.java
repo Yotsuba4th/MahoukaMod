@@ -14,7 +14,6 @@ public class SequenceProgrammerGui extends GuiContainerExt
 
     public static final int GUIID = 1;
 
-    // TODO: Design gui texture
     private static final ResourceLocation texture = new ResourceLocation(MahoukaMod.MODID + ":textures/gui/" + BlockSequenceProgrammer.ID + ".png");
 
     public SequenceProgrammerGui(InventoryPlayer playerInventory)

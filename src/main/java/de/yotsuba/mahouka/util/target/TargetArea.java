@@ -33,7 +33,7 @@ public class TargetArea extends Target
     @Override
     public Vec3 getPoint()
     {
-        // TODO: Get random point!
+        // TODO (2) Get random point!
         return center;
     }
 
@@ -63,6 +63,5 @@ public class TargetArea extends Target
     {
         return shape;
     }
-
 
 }
