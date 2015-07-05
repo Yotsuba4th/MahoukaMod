@@ -20,6 +20,7 @@ import de.yotsuba.mahouka.network.C5CastUpdate;
 import de.yotsuba.mahouka.util.BufUtils;
 import de.yotsuba.mahouka.util.Utils;
 import de.yotsuba.mahouka.util.target.Target;
+import de.yotsuba.mahouka.util.target.TargetEntity;
 
 public class CastingProcess
 {
@@ -227,13 +228,19 @@ public class CastingProcess
 
     private void channelStartClient()
     {
-        // TODO (2) Channel start effect
-        EffectChanneling fx = new EffectChanneling(caster, 0, 0, 0);
-        fx.setIcon(MahoukaMod.icon_rune_default);
-        fx.maxAge = channelTime + 20;
-        fx.fadeIn = 5;
-        fx.fadeOut = 10;
-        EffectRenderer.addEffect(fx, id);
+        if (channelTime > 0)
+        {
+            EffectChanneling fx = new EffectChanneling(new TargetEntity(caster, true, false));
+            fx.fadeOut = 20;
+            fx.maxAge = channelTime + fx.fadeOut;
+            EffectRenderer.addEffect(fx, id);
+
+            // TODO (2) Start channeling effect on CAD
+            
+            fx = new EffectChanneling(target);
+            fx.maxAge = channelTime + fx.fadeOut;
+            EffectRenderer.addEffect(fx, id);
+        }
     }
 
     /* ------------------------------------------------------------ */

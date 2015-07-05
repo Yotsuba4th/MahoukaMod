@@ -72,7 +72,9 @@ public abstract class ProcessProjectile extends MagicProcess
             if (targetFx != null)
             {
                 targetFx.pitch = -90;
-                EffectRenderer.addEffect(targetFx, cp.getId());
+                targetFx.setPositionOnGround(cp.getWorld(), targetPoint.xCoord, targetPoint.yCoord + 0.1, targetPoint.zCoord);
+                if (!EffectRenderer.hasSimilarEffect(targetFx))
+                    EffectRenderer.addEffect(targetFx, cp.getId());
             }
         }
     }
@@ -80,8 +82,7 @@ public abstract class ProcessProjectile extends MagicProcess
     @SideOnly(Side.CLIENT)
     protected void createTargetEffect(CastingProcess cp, Vec3 point)
     {
-        // TODO (5) Allow detection of same effects at the same location and prevent it
-        targetFx = new EffectCast(point.xCoord, point.yCoord + 0.01, point.zCoord);
+        targetFx = new EffectCast(point.xCoord, point.yCoord, point.zCoord);
         targetFx.setIcon(MahoukaMod.icon_rune_default);
         targetFx.setScale(1);
         targetFx.setColor(0, 0, 0, 0.25f);

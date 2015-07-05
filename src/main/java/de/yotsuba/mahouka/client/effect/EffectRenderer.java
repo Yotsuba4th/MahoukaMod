@@ -134,12 +134,10 @@ public abstract class EffectRenderer
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glAlphaFunc(GL11.GL_GREATER, 1 / 255f);
 
-        for (Iterator<Entry<UUID, List<Effect>>> itList = fxMap.entrySet().iterator(); itList.hasNext();)
+        for (Entry<UUID, List<Effect>> effectList : fxMap.entrySet())
         {
-            Entry<UUID, List<Effect>> effectList = itList.next();
-            for (Iterator<Effect> itEffect = effectList.getValue().iterator(); itEffect.hasNext();)
+            for (Effect effect : effectList.getValue())
             {
-                Effect effect = itEffect.next();
                 try
                 {
                     effect.render(partialTickTime);
@@ -169,12 +167,22 @@ public abstract class EffectRenderer
     public static int getEffectsCount()
     {
         int effectsCount = 0;
-        for (Iterator<Entry<UUID, List<Effect>>> itList = fxMap.entrySet().iterator(); itList.hasNext();)
-        {
-            Entry<UUID, List<Effect>> effectList = itList.next();
+        for (Entry<UUID, List<Effect>> effectList : fxMap.entrySet())
             effectsCount += effectList.getValue().size();
-        }
         return effectsCount;
     }
 
+    public static boolean hasSimilarEffect(Effect fx)
+    {
+        // TODO (5) Allow detection of same effects at the same location and prevent it
+        for (Entry<UUID, List<Effect>> effectList : fxMap.entrySet())
+        {
+            for (Effect effect : effectList.getValue())
+            {
+                if (effect.getClass().equals(fx.getClass()) && effect.icon == fx.icon && effect.x == fx.x && effect.y == fx.y && effect.z == fx.z)
+                    return true;
+            }
+        }
+        return false;
+    }
 }

@@ -17,12 +17,12 @@ public class CadItemRenderer implements IItemRenderer
     {
         switch (type)
         {
-        case ENTITY:
         case EQUIPPED:
         case EQUIPPED_FIRST_PERSON:
-        case FIRST_PERSON_MAP:
+            return false;
+        case ENTITY:
         case INVENTORY:
-            return true;
+        case FIRST_PERSON_MAP:
         default:
             return false;
         }
