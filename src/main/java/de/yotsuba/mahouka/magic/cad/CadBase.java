@@ -157,14 +157,6 @@ public class CadBase extends InventoryBasic
 
             S1StartChanneling.send(target);
         }
-        updateItemStack(stack, player);
-    }
-
-    public void updateItemStack(ItemStack stack, EntityPlayer player)
-    {
-        PlayerData playerData = new PlayerData(player);
-        stack.setItemDamage(stack.getItem().getMaxDamage() - 1 - playerData.getPsion() * stack.getItem().getMaxDamage() / playerData.getMaxPsion());
-        writeToNBT(stack.getTagCompound());
     }
 
     @SideOnly(Side.CLIENT)

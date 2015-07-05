@@ -5,17 +5,13 @@ import io.netty.buffer.ByteBuf;
 import java.util.UUID;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
 import cpw.mods.fml.common.network.ByteBufUtils;
 import de.yotsuba.mahouka.MahoukaMod;
 import de.yotsuba.mahouka.client.effect.EffectRenderer;
 import de.yotsuba.mahouka.core.PlayerData;
-import de.yotsuba.mahouka.item.ItemCad;
 import de.yotsuba.mahouka.magic.MagicProcess;
-import de.yotsuba.mahouka.magic.cad.CadBase;
-import de.yotsuba.mahouka.magic.cad.CadManager;
 import de.yotsuba.mahouka.magic.process.ProcessSequence;
 import de.yotsuba.mahouka.network.C2StartChanneling;
 import de.yotsuba.mahouka.network.C3CancelCast;
@@ -60,7 +56,7 @@ public class CastingProcess
         this.target = target;
         this.psion = psion;
         this.channelTime = channelTime;
-        if (sequence instanceof ProcessSequence)
+        if (sequence.getClass().equals(ProcessSequence.class))
         {
             this.sequence = (ProcessSequence) sequence;
         }
@@ -257,13 +253,6 @@ public class CastingProcess
             PlayerData playerData = new PlayerData(caster);
             playerData.setPsion(playerData.getPsion() - psion);
             playerData.sendUpdate();
-
-            ItemStack stack = caster.getCurrentEquippedItem();
-            if (stack == null || !(stack.getItem() instanceof ItemCad))
-                return;
-            CadBase cad = CadManager.getCad(stack);
-            if (cad != null)
-                cad.updateItemStack(stack, caster);
         }
     }
 

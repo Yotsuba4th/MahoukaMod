@@ -33,7 +33,7 @@ public class ProcessSequence extends MagicProcess
         {
             NBTTagCompound tagSequence = new NBTTagCompound();
             sequence.getItemStack().writeToNBT(tagSequence);
-            //sequence.writeToNBT(tagSequence);
+            // sequence.writeToNBT(tagSequence);
             tagProcesses.appendTag(tagSequence);
         }
     }
@@ -81,14 +81,11 @@ public class ProcessSequence extends MagicProcess
     @Override
     public void addInformation(List<String> info, boolean isRoot)
     {
-        if (processes.isEmpty())
+        if (isRoot)
         {
-            info.add("Error! Emtpy sequence!");
-            return;
+            info.add("Psion cost  : " + getPsionCost());
+            info.add("Channel time: " + getChannelingDuration());
         }
-
-        info.add("Psion cost  : " + getPsionCost());
-        info.add("Channel time: " + getChannelingDuration());
 
         int oldLength1 = info.size();
         if (processes.size() == 1)

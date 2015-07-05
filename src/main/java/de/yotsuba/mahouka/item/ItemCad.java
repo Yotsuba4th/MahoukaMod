@@ -32,7 +32,7 @@ public class ItemCad extends Item
 
     public CadBase createNewCad()
     {
-        return new CadBase(1);
+        return new CadBase(6);
     }
 
     @Override

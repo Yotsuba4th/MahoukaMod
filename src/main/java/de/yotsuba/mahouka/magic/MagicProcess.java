@@ -20,10 +20,6 @@ import de.yotsuba.mahouka.util.target.TargetType;
 public abstract class MagicProcess
 {
 
-    public static final String DEFAULT_ICON = MahoukaMod.MODID + ":process_default_blue";
-
-    /* ------------------------------------------------------------ */
-
     public static Map<Class<? extends MagicProcess>, ItemMagicProcess> itemByProcess = new HashMap<Class<? extends MagicProcess>, ItemMagicProcess>();
 
     /* ------------------------------------------------------------ */
@@ -171,7 +167,7 @@ public abstract class MagicProcess
         }
         else
         {
-            info.add(getLocalizedName() + ": " + displayName);
+            info.add((displayName != null) ? displayName : getLocalizedName());
         }
     }
 

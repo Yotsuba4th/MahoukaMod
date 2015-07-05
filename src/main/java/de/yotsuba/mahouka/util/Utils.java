@@ -21,7 +21,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import de.yotsuba.mahouka.MahoukaMod;
 
-public class Utils
+public final class Utils
 {
 
     public static final int TICKS_PER_SECOND = 20;

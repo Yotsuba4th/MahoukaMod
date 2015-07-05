@@ -27,16 +27,9 @@ public class ProcessAssembler
             ProcessParallel process = new ProcessParallel();
 
             // Add all processes of input 1
-            if (item1.getItemProcess() instanceof ProcessSequence)
-                process.getProcesses().addAll(((ProcessSequence) item1.getProcess(input1)).getProcesses());
-            else
-                process.getProcesses().add(item1.getProcess(input1));
-
-            // Add all processes of input 2
-            if (item2.getItemProcess() instanceof ProcessSequence)
-                process.getProcesses().addAll(((ProcessSequence) item2.getProcess(input2)).getProcesses());
-            else
-                process.getProcesses().add(item2.getProcess(input2));
+            process.getProcesses().addAll(((ProcessSequence) item1.getProcess(input1)).getProcesses());
+            // Add process sequence of input 2
+            process.getProcesses().add(item2.getProcess(input2));
 
             process.writeToNBT(tag);
             output.setTagCompound(tag);

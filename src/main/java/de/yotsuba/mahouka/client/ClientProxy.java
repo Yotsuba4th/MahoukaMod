@@ -1,13 +1,13 @@
 package de.yotsuba.mahouka.client;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Vec3;
+import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -24,6 +24,7 @@ import de.yotsuba.mahouka.CommonProxy;
 import de.yotsuba.mahouka.client.effect.EffectRenderer;
 import de.yotsuba.mahouka.client.render.RenderCrystal;
 import de.yotsuba.mahouka.client.render.RenderFireball;
+import de.yotsuba.mahouka.core.PlayerData;
 import de.yotsuba.mahouka.entity.projectile.EntityMagicProjectileEarth;
 import de.yotsuba.mahouka.entity.projectile.EntityMagicProjectileFire;
 import de.yotsuba.mahouka.entity.projectile.EntityMagicProjectileIce;
@@ -31,6 +32,7 @@ import de.yotsuba.mahouka.item.ItemCad;
 import de.yotsuba.mahouka.magic.MagicProcess;
 import de.yotsuba.mahouka.magic.cad.CadBase;
 import de.yotsuba.mahouka.magic.cad.CadManager;
+import de.yotsuba.mahouka.util.RenderUtils;
 import de.yotsuba.mahouka.util.target.Target;
 import de.yotsuba.mahouka.util.target.TargetArea;
 import de.yotsuba.mahouka.util.target.TargetBlock;
@@ -65,12 +67,48 @@ public class ClientProxy extends CommonProxy
     @SubscribeEvent
     public void renderWorldLastEvent(RenderWorldLastEvent event)
     {
-        renderTargetCUI();
-
         EffectRenderer.renderParticles(Minecraft.getMinecraft().thePlayer, event.partialTicks);
+        renderTargetInfo();
     }
 
-    private void renderTargetCUI()
+    @SubscribeEvent
+    public void renderGameOverlayEvent(RenderGameOverlayEvent event)
+    {
+        PlayerData playerData = new PlayerData(Minecraft.getMinecraft().thePlayer);
+        renderPsionBar(event, playerData);
+    }
+
+    public static void renderPsionBar(RenderGameOverlayEvent event, PlayerData playerData)
+    {
+        ItemStack equipped = Minecraft.getMinecraft().thePlayer.getCurrentEquippedItem();
+        if (equipped == null || !(equipped.getItem() instanceof ItemCad))
+            return;
+
+        GL11.glDisable(GL11.GL_TEXTURE_2D);
+        GL11.glLineWidth(3);
+
+        float top = event.resolution.getScaledHeight() - 42;
+        float left = event.resolution.getScaledWidth() / 2 - 91;
+        float barWidth = 182;
+        float filled = (float) playerData.getPsion() / playerData.getMaxPsion() * barWidth;
+
+        GL11.glBegin(GL11.GL_LINES);
+        
+        GL11.glColor4f(1, 1, 1, 1);
+        GL11.glVertex2f(left, top);
+        GL11.glVertex2f(left + barWidth, top);
+        
+        GL11.glColor4f(0.0f, 0.1f, 0.9f, 1);
+        GL11.glVertex2f(left, top);
+        GL11.glVertex2f(left + filled, top);
+        
+        GL11.glEnd();
+
+        GL11.glEnable(GL11.GL_TEXTURE_2D);
+        GL11.glColor4f(1, 1, 1, 1);
+    }
+
+    public static void renderTargetInfo()
     {
         EntityPlayer player = Minecraft.getMinecraft().thePlayer;
         if (player == null || player.isSneaking())
@@ -135,57 +173,11 @@ public class ClientProxy extends CommonProxy
         {
             GL11.glScaled(0, 0, 0);
         }
-        renderBox();
+        RenderUtils.renderLineBox();
 
         GL11.glPopMatrix();
         GL11.glDisable(GL11.GL_BLEND);
         GL11.glEnable(GL11.GL_TEXTURE_2D);
-    }
-
-    private static void renderBox()
-    {
-        Tessellator.instance.startDrawing(GL11.GL_LINES);
-
-        // FRONT
-        Tessellator.instance.addVertex(-0.5, -0.5, -0.5);
-        Tessellator.instance.addVertex(-0.5, 0.5, -0.5);
-
-        Tessellator.instance.addVertex(-0.5, 0.5, -0.5);
-        Tessellator.instance.addVertex(0.5, 0.5, -0.5);
-
-        Tessellator.instance.addVertex(0.5, 0.5, -0.5);
-        Tessellator.instance.addVertex(0.5, -0.5, -0.5);
-
-        Tessellator.instance.addVertex(0.5, -0.5, -0.5);
-        Tessellator.instance.addVertex(-0.5, -0.5, -0.5);
-
-        // BACK
-        Tessellator.instance.addVertex(-0.5, -0.5, 0.5);
-        Tessellator.instance.addVertex(-0.5, 0.5, 0.5);
-
-        Tessellator.instance.addVertex(-0.5, 0.5, 0.5);
-        Tessellator.instance.addVertex(0.5, 0.5, 0.5);
-
-        Tessellator.instance.addVertex(0.5, 0.5, 0.5);
-        Tessellator.instance.addVertex(0.5, -0.5, 0.5);
-
-        Tessellator.instance.addVertex(0.5, -0.5, 0.5);
-        Tessellator.instance.addVertex(-0.5, -0.5, 0.5);
-
-        // betweens.
-        Tessellator.instance.addVertex(0.5, 0.5, -0.5);
-        Tessellator.instance.addVertex(0.5, 0.5, 0.5);
-
-        Tessellator.instance.addVertex(0.5, -0.5, -0.5);
-        Tessellator.instance.addVertex(0.5, -0.5, 0.5);
-
-        Tessellator.instance.addVertex(-0.5, -0.5, -0.5);
-        Tessellator.instance.addVertex(-0.5, -0.5, 0.5);
-
-        Tessellator.instance.addVertex(-0.5, 0.5, -0.5);
-        Tessellator.instance.addVertex(-0.5, 0.5, 0.5);
-
-        Tessellator.instance.draw();
     }
 
 }

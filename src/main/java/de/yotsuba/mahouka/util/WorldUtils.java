@@ -15,7 +15,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import de.yotsuba.mahouka.entity.projectile.EntityMagicProjectile;
 
-public class WorldUtils
+public final class WorldUtils
 {
 
     /* ------------------------------------------------------------ */

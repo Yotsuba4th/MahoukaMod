@@ -31,16 +31,19 @@ public class ProcessParallel extends ProcessSequence
     }
 
     @Override
-    public void addInformation(List<String> info, boolean isSequence)
+    public void addInformation(List<String> info, boolean isRoot)
     {
         // super.addInformation(info, isSequence);
+        if (isRoot)
+        {
+            info.add("Psion cost  : " + getPsionCost());
+            info.add("Channel time: " + getChannelingDuration());
+        }
         for (MagicProcess seq : processes)
         {
-            int oldLength2 = info.size() + 1;
-
-            seq.addInformation(info, true);
-
-            for (int i = oldLength2; i < info.size(); i++)
+            int oldSize = info.size();
+            seq.addInformation(info, false);
+            for (int i = oldSize + 1; i < info.size(); i++)
                 info.set(i, "   " + info.get(i));
         }
     }

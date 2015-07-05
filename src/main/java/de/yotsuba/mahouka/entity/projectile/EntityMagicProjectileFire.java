@@ -51,7 +51,6 @@ public class EntityMagicProjectileFire extends EntityMagicProjectile
     @Override
     public void onImpactBlock(int x, int y, int z)
     {
-        System.out.println(String.format("Set fire %d,%d,%d", x, y, z));
         worldObj.setBlock(x, y, z, Blocks.fire);
     }
 
