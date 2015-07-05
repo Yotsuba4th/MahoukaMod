@@ -7,6 +7,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Vec3;
+import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.common.MinecraftForge;
@@ -21,7 +22,9 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.ClientTickEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.Phase;
 import de.yotsuba.mahouka.CommonProxy;
+import de.yotsuba.mahouka.MahoukaMod;
 import de.yotsuba.mahouka.client.effect.EffectRenderer;
+import de.yotsuba.mahouka.client.render.CadItemRenderer;
 import de.yotsuba.mahouka.client.render.RenderCrystal;
 import de.yotsuba.mahouka.client.render.RenderFireball;
 import de.yotsuba.mahouka.core.PlayerData;
@@ -51,6 +54,7 @@ public class ClientProxy extends CommonProxy
         RenderingRegistry.registerEntityRenderingHandler(EntityMagicProjectileFire.class, new RenderFireball(0.5f));
         RenderingRegistry.registerEntityRenderingHandler(EntityMagicProjectileIce.class, new RenderCrystal(0.2f, 0.3f, 1f, 0.4f, 0.4f, 2));
         RenderingRegistry.registerEntityRenderingHandler(EntityMagicProjectileEarth.class, new RenderCrystal(0.5f, 0.36f, 0.05f, 1, 0.5f, 0.5f));
+        MinecraftForgeClient.registerItemRenderer(MahoukaMod.cad, new CadItemRenderer());
     }
 
     /* ------------------------------------------------------------ */
