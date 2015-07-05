@@ -16,9 +16,12 @@ public class SequenceProgrammerGui extends GuiContainerExt
 
     private static final ResourceLocation texture = new ResourceLocation(MahoukaMod.MODID + ":textures/gui/" + BlockSequenceProgrammer.ID + ".png");
 
+    private final SequenceProgrammerContainer container;
+
     public SequenceProgrammerGui(InventoryPlayer playerInventory)
     {
         super(new SequenceProgrammerContainer(playerInventory));
+        container = (SequenceProgrammerContainer) inventorySlots;
     }
 
     @Override
@@ -29,6 +32,27 @@ public class SequenceProgrammerGui extends GuiContainerExt
 
         String header = BlockSequenceProgrammer.BLOCK.getLocalizedName();
         fontRendererObj.drawString(header, (xSize - fontRendererObj.getStringWidth(header)) / 2, 6, 4210752);
+
+        String text = "";
+        switch (container.state)
+        {
+        case COMPOSING:
+            text = "> Composing";
+            break;
+        case DECOMPOSE_PENDING:
+            text = "< Decomposing +";
+            break;
+        case DECOMPOSING:
+            text = "< Decomposing";
+            break;
+        case ERROR:
+            text = "x ERROR";
+            break;
+        case IDLE:
+            text = "- Idle";
+            break;
+        }
+        fontRendererObj.drawString(text, xSize / 2, 65, 4210752);
     }
 
     @Override
