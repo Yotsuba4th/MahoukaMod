@@ -1,10 +1,7 @@
 package de.yotsuba.mahouka.gui.container;
 
-import java.util.List;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
 import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
@@ -12,7 +9,7 @@ import de.yotsuba.mahouka.gui.slot.SlotSeqProgrammerResult;
 import de.yotsuba.mahouka.magic.ProcessAssembler;
 import de.yotsuba.mahouka.util.Utils;
 
-public class SequenceProgrammerContainer extends Container
+public class SequenceProgrammerContainer extends ContainerExt
 {
 
     public static final int IN1 = 0;
@@ -183,23 +180,17 @@ public class SequenceProgrammerContainer extends Container
         int end = start + player.inventory.mainInventory.length;
         if (slotIndex < OUT) // inputSlot clicked -> merge to player
         {
-            @SuppressWarnings("unchecked")
-            List<Slot> slots = this.inventorySlots;
-            if (!Utils.mergeItemStack(slots, stack, start, end, true))
+            if (!mergeItemStack(stack, start, end, true))
                 return null;
         }
         else if (slotIndex == OUT) // outputSlot clicked -> merge to player TODO: Merge into inputSlot first
         {
-            @SuppressWarnings("unchecked")
-            List<Slot> slots = this.inventorySlots;
-            if (!Utils.mergeItemStack(slots, stack, start, end, true))
+            if (!mergeItemStack(stack, start, end, true))
                 return null;
         }
         else if (slotIndex > OUT) // item from player inventory -> merge to first fitting Slot
         {
-            @SuppressWarnings("unchecked")
-            List<Slot> slots = this.inventorySlots;
-            if (!Utils.mergeItemStack(slots, stack, 0, 3, false))
+            if (!mergeItemStack(stack, 0, 3, false))
                 return null;
         }
 

@@ -1,7 +1,6 @@
 package de.yotsuba.mahouka.magic.process;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.util.Vec3;
 import de.yotsuba.mahouka.entity.projectile.EntityMagicProjectileIce;
 import de.yotsuba.mahouka.magic.cast.CastingProcess;
 import de.yotsuba.mahouka.util.Utils;
@@ -41,10 +40,11 @@ public class ProcessProjectileIce extends ProcessProjectile
     }
 
     @Override
-    public void createSpawnEffect(CastingProcess cp, Vec3 point)
+    public void castStartClient(CastingProcess cp, Target target)
     {
-        super.createSpawnEffect(cp, point);
+        super.castStartClient(cp, target);
         spawnFx.setColor(0.2f, 0.3f, 1, 1);
+
     }
 
 }

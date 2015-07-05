@@ -141,7 +141,10 @@ public class TargetEntity extends TargetPoint
 
     public EntityPlayer getPlayer()
     {
-        return (EntityPlayer) entity;
+        if (entity instanceof EntityPlayer)
+            return (EntityPlayer) entity;
+        else
+            return null;
     }
 
     /**

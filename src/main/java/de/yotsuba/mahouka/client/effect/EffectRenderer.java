@@ -174,12 +174,12 @@ public abstract class EffectRenderer
 
     public static boolean hasSimilarEffect(Effect fx)
     {
-        // TODO (5) Allow detection of same effects at the same location and prevent it
         for (Entry<UUID, List<Effect>> effectList : fxMap.entrySet())
         {
             for (Effect effect : effectList.getValue())
             {
-                if (effect.getClass().equals(fx.getClass()) && effect.icon == fx.icon && effect.x == fx.x && effect.y == fx.y && effect.z == fx.z)
+                if (effect.getClass().equals(fx.getClass()) && Math.abs(effect.age - fx.age) < 2 && effect.icon == fx.icon && effect.x == fx.x
+                        && effect.y == fx.y && effect.z == fx.z)
                     return true;
             }
         }

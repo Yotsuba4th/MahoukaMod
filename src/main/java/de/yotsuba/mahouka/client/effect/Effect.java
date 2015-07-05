@@ -53,7 +53,7 @@ public class Effect
     public int fadeIn;
     public int fadeOut;
 
-    protected float scale;
+    public float scale;
 
     public Effect(double x, double y, double z)
     {

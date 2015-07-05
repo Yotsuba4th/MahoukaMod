@@ -57,7 +57,7 @@ public class ProcessParallel extends ProcessSequence
     @Override
     public int getChannelingDuration()
     {
-        return super.getChannelingDuration();
+        return super.getChannelingDuration() / 2;
     }
 
     @Override

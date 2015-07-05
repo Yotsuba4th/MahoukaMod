@@ -2,7 +2,6 @@ package de.yotsuba.mahouka.gui.container;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
 import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
@@ -13,7 +12,7 @@ import de.yotsuba.mahouka.magic.cad.CadBase;
 import de.yotsuba.mahouka.magic.cad.CadManager;
 import de.yotsuba.mahouka.util.Utils;
 
-public class CadProgrammerContainer extends Container
+public class CadProgrammerContainer extends ContainerExt
 {
 
     public static final int SEQ_SLOT_WIDTH = 9;
@@ -119,13 +118,6 @@ public class CadProgrammerContainer extends Container
         slot.onPickupFromSlot(player, slotStack);
 
         return resultStack;
-    }
-
-    @Override
-    @SuppressWarnings("unchecked")
-    protected boolean mergeItemStack(ItemStack stack, int fromSlot, int toSlot, boolean backward)
-    {
-        return Utils.mergeItemStack(inventorySlots, stack, fromSlot, toSlot, backward);
     }
 
     @Override

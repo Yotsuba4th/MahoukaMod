@@ -2,7 +2,6 @@ package de.yotsuba.mahouka.gui.container;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
 import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
@@ -13,7 +12,7 @@ import de.yotsuba.mahouka.item.ItemMagicProcess;
 import de.yotsuba.mahouka.magic.MagicProcess;
 import de.yotsuba.mahouka.util.Utils;
 
-public class ProcessProgrammerContainer extends Container implements ButtenClickListener
+public class ProcessProgrammerContainer extends ContainerExt implements ButtenClickListener
 {
 
     private InventoryBasic invProcess;
@@ -86,17 +85,8 @@ public class ProcessProgrammerContainer extends Container implements ButtenClick
         }
         else
         {
-            if (((Slot) inventorySlots.get(0)).isItemValid(slotStack))
-            {
-                if (getSlot(0).getHasStack())
-                    return null;
-                ItemStack itemToMerge = slotStack.splitStack(1);
-                if (!mergeItemStack(itemToMerge, 0, 1, false))
-                {
-                    slotStack.stackSize++;
-                    return null;
-                }
-            }
+            if (!mergeItemStack(slotStack, 0, 1, false))
+                return null;
         }
 
         if (slotStack.stackSize == 0)

@@ -9,8 +9,9 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
 import cpw.mods.fml.common.network.ByteBufUtils;
 import de.yotsuba.mahouka.MahoukaMod;
-import de.yotsuba.mahouka.client.effect.EffectChanneling;
+import de.yotsuba.mahouka.client.effect.EffectCast;
 import de.yotsuba.mahouka.client.effect.EffectRenderer;
+import de.yotsuba.mahouka.client.effect.EffectTarget;
 import de.yotsuba.mahouka.core.PlayerData;
 import de.yotsuba.mahouka.magic.MagicProcess;
 import de.yotsuba.mahouka.magic.process.ProcessSequence;
@@ -230,14 +231,15 @@ public class CastingProcess
     {
         if (channelTime > 0)
         {
-            EffectChanneling fx = new EffectChanneling(new TargetEntity(caster, true, false));
+            EffectTarget fx = new EffectCast(new TargetEntity(caster, true, false), false);
             fx.fadeOut = 20;
+            fx.scale = 0.75f;
             fx.maxAge = channelTime + fx.fadeOut;
             EffectRenderer.addEffect(fx, id);
 
             // TODO (2) Start channeling effect on CAD
-            
-            fx = new EffectChanneling(target);
+
+            fx = new EffectCast(target, false);
             fx.maxAge = channelTime + fx.fadeOut;
             EffectRenderer.addEffect(fx, id);
         }

@@ -1,6 +1,5 @@
 package de.yotsuba.mahouka.gui.slot;
 
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
@@ -23,18 +22,6 @@ public class SlotProcess extends Slot
     {
         super.onSlotChanged();
         container.processChanged();
-    }
-
-    @Override
-    public void onPickupFromSlot(EntityPlayer player, ItemStack stack)
-    {
-        super.onPickupFromSlot(player, stack);
-    }
-
-    @Override
-    public int getSlotStackLimit()
-    {
-        return 1;
     }
 
     @Override
