@@ -158,6 +158,7 @@ public class Effect
     public void cancel()
     {
         /* do nothing */
+        age = maxAge - fadeOut;
     }
 
     public void render(float partialTickTime)

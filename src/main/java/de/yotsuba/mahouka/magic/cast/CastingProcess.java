@@ -9,6 +9,7 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
 import cpw.mods.fml.common.network.ByteBufUtils;
 import de.yotsuba.mahouka.MahoukaMod;
+import de.yotsuba.mahouka.client.effect.EffectChanneling;
 import de.yotsuba.mahouka.client.effect.EffectRenderer;
 import de.yotsuba.mahouka.core.PlayerData;
 import de.yotsuba.mahouka.magic.MagicProcess;
@@ -227,6 +228,12 @@ public class CastingProcess
     private void channelStartClient()
     {
         // TODO (2) Channel start effect
+        EffectChanneling fx = new EffectChanneling(caster, 0, 0, 0);
+        fx.setIcon(MahoukaMod.icon_rune_default);
+        fx.maxAge = channelTime + 20;
+        fx.fadeIn = 5;
+        fx.fadeOut = 10;
+        EffectRenderer.addEffect(fx, id);
     }
 
     /* ------------------------------------------------------------ */
