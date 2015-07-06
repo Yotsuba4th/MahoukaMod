@@ -33,7 +33,7 @@ public class CadBase extends InventoryBasic
 
     private UUID id;
 
-    private final MagicProcess[] activationSequences;
+    private MagicProcess[] activationSequences;
 
     private byte selectedSequence;
 
@@ -42,7 +42,6 @@ public class CadBase extends InventoryBasic
     public CadBase(int size)
     {
         super(null, false, size);
-        activationSequences = new MagicProcess[size];
         id = UUID.randomUUID();
     }
 
@@ -91,17 +90,21 @@ public class CadBase extends InventoryBasic
             NBTTagCompound tagSequence = tagSequences.getCompoundTagAt(i);
             if (!tagSequence.hasKey("idx"))
                 continue;
-            int idx = tagSequence.getByte("idx");
-
+            byte slot = tagSequence.getByte("idx");
             ItemStack stack = ItemStack.loadItemStackFromNBT(tagSequence);
-            if (!(stack.getItem() instanceof ItemMagicProcess))
-                continue;
-            setInventorySlotContents(idx, stack);
+            setInventorySlotContents(slot, stack);
+            loadProcess(slot, stack);
+        }
+    }
 
+    private void loadProcess(int index, ItemStack stack)
+    {
+        if (stack != null && stack.getItem() instanceof ItemMagicProcess)
+        {
             ItemMagicProcess item = (ItemMagicProcess) stack.getItem();
             MagicProcess process = item.getItemProcess().copy();
             process.readFromNBT(item.getStackData(stack));
-            activationSequences[idx] = process;
+            activationSequences[index] = process;
         }
     }
 
@@ -212,6 +215,7 @@ public class CadBase extends InventoryBasic
         if (index >= getSizeInventory())
             return;
         super.setInventorySlotContents(index, stack);
+        loadProcess(index, stack);
     }
 
 }
