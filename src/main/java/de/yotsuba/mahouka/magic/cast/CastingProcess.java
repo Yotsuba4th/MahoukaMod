@@ -8,6 +8,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
 import cpw.mods.fml.common.network.ByteBufUtils;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import de.yotsuba.mahouka.MahoukaMod;
 import de.yotsuba.mahouka.client.effect.EffectCast;
 import de.yotsuba.mahouka.client.effect.EffectRenderer;
@@ -120,6 +122,7 @@ public class CastingProcess
         return true;
     }
 
+    @SideOnly(Side.CLIENT)
     public void startClient()
     {
         CastingManager.clientCasts.put(id, this);
@@ -145,6 +148,7 @@ public class CastingProcess
         return true;
     }
 
+    @SideOnly(Side.CLIENT)
     public void cancelClient()
     {
         EffectRenderer.cancelEffects(id);
@@ -179,6 +183,7 @@ public class CastingProcess
         t++;
     }
 
+    @SideOnly(Side.CLIENT)
     public void clientTick()
     {
         if (processIndex < 0)
@@ -194,6 +199,7 @@ public class CastingProcess
         t++;
     }
 
+    @SideOnly(Side.CLIENT)
     public void updateClient(int newProcess, Target target)
     {
         if (processIndex < 0)
@@ -227,6 +233,7 @@ public class CastingProcess
         /* do nothing */
     }
 
+    @SideOnly(Side.CLIENT)
     private void channelStartClient()
     {
         if (channelTime > 0)
@@ -252,6 +259,7 @@ public class CastingProcess
         /* do nothing */
     }
 
+    @SideOnly(Side.CLIENT)
     private void channelTickClient()
     {
         // Vec3 point = currentTarget.getCurrentPoint();
@@ -272,6 +280,7 @@ public class CastingProcess
         }
     }
 
+    @SideOnly(Side.CLIENT)
     private void channelEndClient()
     {
         // TODO (3) Channel end sound
@@ -284,6 +293,7 @@ public class CastingProcess
         /* do nothing */
     }
 
+    @SideOnly(Side.CLIENT)
     private void castStartClient()
     {
         /* do nothing */
@@ -338,6 +348,7 @@ public class CastingProcess
         }
     }
 
+    @SideOnly(Side.CLIENT)
     private void castTickClient()
     {
         MagicProcess process = sequence.getProcesses().get(processIndex);
@@ -352,6 +363,7 @@ public class CastingProcess
         active = false;
     }
 
+    @SideOnly(Side.CLIENT)
     private void castEndClient()
     {
         active = false;
