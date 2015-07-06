@@ -1,6 +1,7 @@
 package de.yotsuba.mahouka.client;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -84,28 +85,37 @@ public class ClientProxy extends CommonProxy
 
     public static void renderPsionBar(RenderGameOverlayEvent event, PlayerData playerData)
     {
-        ItemStack equipped = Minecraft.getMinecraft().thePlayer.getCurrentEquippedItem();
+        EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
+        ItemStack equipped = player.getCurrentEquippedItem();
         if (equipped == null || !(equipped.getItem() instanceof ItemCad))
             return;
+        CadBase cad = CadManager.getCad(equipped);
+        int castCost = (cad != null && cad.getSelectedSequence() != null) ? cad.getSelectedSequence().getPsionCost() : 0;
+        int maxPsion = playerData.getMaxPsion();
+        int psion = playerData.getPsion();
 
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         GL11.glLineWidth(3);
 
-        float top = event.resolution.getScaledHeight() - 42;
+        float top = event.resolution.getScaledHeight() - (player.capabilities.isCreativeMode ? 24 : 42);
         float left = event.resolution.getScaledWidth() / 2 - 91;
         float barWidth = 182;
-        float filled = (float) playerData.getPsion() / playerData.getMaxPsion() * barWidth;
+        float ptsPerPsion = barWidth / maxPsion;
 
         GL11.glBegin(GL11.GL_LINES);
-        
+
         GL11.glColor4f(1, 1, 1, 1);
-        GL11.glVertex2f(left, top);
-        GL11.glVertex2f(left + barWidth, top);
-        
+        GL11.glVertex2f(left + ptsPerPsion * 0, top);
+        GL11.glVertex2f(left + ptsPerPsion * maxPsion, top);
+
         GL11.glColor4f(0.0f, 0.1f, 0.9f, 1);
-        GL11.glVertex2f(left, top);
-        GL11.glVertex2f(left + filled, top);
-        
+        GL11.glVertex2f(left + ptsPerPsion * 0, top);
+        GL11.glVertex2f(left + ptsPerPsion * psion, top);
+
+        GL11.glColor4f(1, 0, 0, 1);
+        GL11.glVertex2f(left + Math.max(0, ptsPerPsion * (psion - castCost)), top);
+        GL11.glVertex2f(left + ptsPerPsion * psion, top);
+
         GL11.glEnd();
 
         GL11.glEnable(GL11.GL_TEXTURE_2D);

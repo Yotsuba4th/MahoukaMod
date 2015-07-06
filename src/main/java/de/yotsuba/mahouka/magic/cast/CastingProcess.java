@@ -117,6 +117,12 @@ public class CastingProcess
             caster.addChatMessage(new ChatComponentText("Another magic is still active!"));
             return false;
         }
+        if (!caster.capabilities.isCreativeMode && new PlayerData(caster).getPsion() < sequence.getPsionCost())
+        {
+            // TODO (6) Translation
+            caster.addChatMessage(new ChatComponentText("Not enough psion!"));
+            return false;
+        }
         C2StartChanneling.send(this);
         CastingManager.serverCasts.put(id, this);
         return true;

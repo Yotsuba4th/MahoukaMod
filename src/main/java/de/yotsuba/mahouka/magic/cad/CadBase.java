@@ -111,7 +111,7 @@ public class CadBase extends InventoryBasic
     {
         if (!player.worldObj.isRemote)
             return;
-        if (CastingManager.isServerCasting(id))
+        if (CastingManager.isClientCasting(id))
         {
             if (player.isSneaking())
                 S4CancelCast.send(id);
@@ -129,7 +129,7 @@ public class CadBase extends InventoryBasic
             }
 
             PlayerData playerData = new PlayerData(player);
-            if (playerData.getPsion() < 10)
+            if (playerData.getPsion() < sequence.getPsionCost())
             {
                 // TODO (4) Error sound
                 player.addChatMessage(new ChatComponentText("Not enough psion!"));
@@ -189,7 +189,7 @@ public class CadBase extends InventoryBasic
 
     public void setSelectedSequenceIndex(byte index)
     {
-        if (CastingManager.isServerCasting(id))
+        if (CastingManager.isClientCasting(id))
             return;
         if (index < 0)
             selectedSequence = (byte) (activationSequences.length - 1);
