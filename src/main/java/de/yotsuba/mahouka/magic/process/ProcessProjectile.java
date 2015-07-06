@@ -49,6 +49,7 @@ public abstract class ProcessProjectile extends MagicProcess
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public void castStartClient(CastingProcess cp, Target target)
     {
         spawnPoint = target.getCurrentPoint();
