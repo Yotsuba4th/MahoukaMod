@@ -75,7 +75,15 @@ public class ProcessSequence extends MagicProcess
     @Override
     public TargetType[] getValidTargets()
     {
-        return processes.get(0).getValidTargets();
+        return new TargetType[0];
+    }
+
+    @Override
+    public boolean isTargetValid(Target target)
+    {
+        if (processes.isEmpty())
+            return false;
+        return processes.get(0).isTargetValid(target);
     }
 
     @Override

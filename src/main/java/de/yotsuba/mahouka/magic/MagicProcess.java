@@ -83,8 +83,7 @@ public abstract class MagicProcess
     /* ------------------------------------------------------------ */
     /* Magic process information */
 
-    // TODO (2) This does not cover cases where e.g. ENTITY is allowed, but not SELF
-    public abstract TargetType[] getValidTargets();
+    protected abstract TargetType[] getValidTargets();
 
     public boolean isTargetValid(Target target)
     {

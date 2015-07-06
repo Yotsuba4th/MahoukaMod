@@ -336,7 +336,7 @@ public class CastingProcess
             if (processIndex < sequence.getProcesses().size())
             {
                 process = sequence.getProcesses().get(processIndex);
-                if (!currentTarget.matchesTypes(process.getValidTargets()))
+                if (!process.isTargetValid(currentTarget))
                 {
                     // TODO (5) Cast cancel error / sound
                     caster.addChatMessage(new ChatComponentText("Cast failed!"));

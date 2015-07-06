@@ -8,7 +8,6 @@ import java.util.UUID;
 import de.yotsuba.mahouka.magic.MagicProcess;
 import de.yotsuba.mahouka.magic.cast.CastingProcess;
 import de.yotsuba.mahouka.util.target.Target;
-import de.yotsuba.mahouka.util.target.TargetType;
 
 public class ProcessParallel extends ProcessSequence
 {
@@ -24,10 +23,12 @@ public class ProcessParallel extends ProcessSequence
     }
 
     @Override
-    public TargetType[] getValidTargets()
+    public boolean isTargetValid(Target target)
     {
-        // TODO (1) Valid targets
-        return new TargetType[] { TargetType.POINT };
+        for (MagicProcess process : processes)
+            if (!process.isTargetValid(target))
+                return false;
+        return true;
     }
 
     @Override
