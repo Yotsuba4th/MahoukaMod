@@ -8,9 +8,9 @@ tile.cad_programmer.name=CAD Programmer
 
 # Items
 item.cad.name=CAD
-item.magic_sequence.name=Magic Sequence
 
 # Magic processes
+mahouka.process.sequence=Magic Sequence
 mahouka.process.parallel=Parallel Sequence
 mahouka.process.particle=Heart Particles
 mahouka.process.explosion=Explosion
@@ -20,7 +20,9 @@ mahouka.process.fire_shockwave=Fire Shockwave
 mahouka.process.offset=Offset
 mahouka.process.offset_moving=Offset (following)
 mahouka.process.fireball=Fireball
+mahouka.process.icecrystal=Ice Crystal
 mahouka.process.accelerate=Accelerate
+mahouka.process.decomposition=Decomposition
 
 # Gui related strings
-gui.process.no_settings=No settings available
+mahouka.gui.no_settings=No settings available
