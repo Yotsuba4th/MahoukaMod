@@ -11,7 +11,6 @@ import de.yotsuba.mahouka.magic.MagicProcess;
 import de.yotsuba.mahouka.magic.cast.CastingProcess;
 import de.yotsuba.mahouka.util.Utils;
 import de.yotsuba.mahouka.util.target.Target;
-import de.yotsuba.mahouka.util.target.TargetType;
 
 public class ProcessParticle extends MagicProcess
 {
@@ -26,12 +25,6 @@ public class ProcessParticle extends MagicProcess
     public String getTextureName()
     {
         return MahoukaMod.MODID + ":process_particles";
-    }
-
-    @Override
-    public TargetType[] getValidTargets()
-    {
-        return new TargetType[] { TargetType.POINT };
     }
 
     @Override

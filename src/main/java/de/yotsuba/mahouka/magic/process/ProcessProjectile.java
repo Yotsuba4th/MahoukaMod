@@ -10,11 +10,10 @@ import de.yotsuba.mahouka.client.effect.EffectCast;
 import de.yotsuba.mahouka.client.effect.EffectRenderer;
 import de.yotsuba.mahouka.magic.MagicProcess;
 import de.yotsuba.mahouka.magic.cast.CastingProcess;
-import de.yotsuba.mahouka.util.Utils;
+import de.yotsuba.mahouka.util.MathUtils;
 import de.yotsuba.mahouka.util.target.Target;
 import de.yotsuba.mahouka.util.target.TargetEntity;
 import de.yotsuba.mahouka.util.target.TargetOffset;
-import de.yotsuba.mahouka.util.target.TargetType;
 import de.yotsuba.mahouka.util.target.Targeting;
 
 public abstract class ProcessProjectile extends MagicProcess
@@ -29,12 +28,6 @@ public abstract class ProcessProjectile extends MagicProcess
     protected Vec3 spawnPoint;
 
     protected Target sourceTarget;
-
-    @Override
-    public TargetType[] getValidTargets()
-    {
-        return new TargetType[] { TargetType.POINT };
-    }
 
     /* ------------------------------------------------------------ */
 
@@ -91,7 +84,7 @@ public abstract class ProcessProjectile extends MagicProcess
         Entity entity = createProjectile(cp, target);
         entity.setLocationAndAngles(spawnPoint.xCoord, spawnPoint.yCoord, spawnPoint.zCoord, cp.getCaster().rotationYaw, cp.getCaster().rotationPitch);
         if (targetPoint != null)
-            Utils.setEntityHeading(entity, targetPoint);
+            MathUtils.setEntityHeading(entity, targetPoint);
 
         if (entity instanceof Targeting)
             ((Targeting) entity).setTarget(target);

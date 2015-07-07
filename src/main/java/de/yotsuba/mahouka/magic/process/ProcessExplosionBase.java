@@ -6,7 +6,6 @@ import de.yotsuba.mahouka.magic.MagicProcess;
 import de.yotsuba.mahouka.magic.cast.CastingProcess;
 import de.yotsuba.mahouka.util.Utils;
 import de.yotsuba.mahouka.util.target.Target;
-import de.yotsuba.mahouka.util.target.TargetType;
 
 public abstract class ProcessExplosionBase extends MagicProcess
 {
@@ -24,12 +23,6 @@ public abstract class ProcessExplosionBase extends MagicProcess
     }
 
     /* ------------------------------------------------------------ */
-
-    @Override
-    public TargetType[] getValidTargets()
-    {
-        return new TargetType[] { TargetType.POINT };
-    }
 
     @Override
     public int getChannelingDuration()

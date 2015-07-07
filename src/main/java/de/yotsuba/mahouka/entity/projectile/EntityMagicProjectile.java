@@ -14,7 +14,7 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import de.yotsuba.mahouka.util.Utils;
+import de.yotsuba.mahouka.util.MathUtils;
 import de.yotsuba.mahouka.util.target.Target;
 import de.yotsuba.mahouka.util.target.Targeting;
 
@@ -164,7 +164,7 @@ public abstract class EntityMagicProjectile extends Entity implements Targeting
         if (collision != null)
             onImpact(collision);
 
-        Utils.setEntityHeading(this);
+        MathUtils.setEntityHeading(this);
 
         float motionFactor = getMotionFactor();
         if (isInWater())

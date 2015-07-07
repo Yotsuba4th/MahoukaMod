@@ -4,7 +4,6 @@ import de.yotsuba.mahouka.MahoukaMod;
 import de.yotsuba.mahouka.magic.cast.CastingProcess;
 import de.yotsuba.mahouka.util.target.Target;
 import de.yotsuba.mahouka.util.target.TargetMovingOffset;
-import de.yotsuba.mahouka.util.target.TargetType;
 
 public class ProcessMovingOffset extends ProcessOffset
 {
@@ -19,12 +18,6 @@ public class ProcessMovingOffset extends ProcessOffset
     public String getTextureName()
     {
         return MahoukaMod.MODID + ":process_offset_moving";
-    }
-
-    @Override
-    public TargetType[] getValidTargets()
-    {
-        return new TargetType[] { TargetType.POINT };
     }
 
     @Override

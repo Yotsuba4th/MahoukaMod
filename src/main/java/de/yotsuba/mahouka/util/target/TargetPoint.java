@@ -3,6 +3,7 @@ package de.yotsuba.mahouka.util.target;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.util.Vec3;
 import de.yotsuba.mahouka.util.BufUtils;
+import de.yotsuba.mahouka.util.MathUtils;
 
 public class TargetPoint extends Target
 {
@@ -41,7 +42,7 @@ public class TargetPoint extends Target
     @Override
     public Vec3 getPoint()
     {
-        return point;
+        return MathUtils.copyVector(point);
     }
 
 }

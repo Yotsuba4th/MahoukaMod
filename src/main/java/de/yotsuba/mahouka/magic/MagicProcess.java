@@ -15,7 +15,6 @@ import de.yotsuba.mahouka.client.gui.GuiContainerExt;
 import de.yotsuba.mahouka.item.ItemMagicProcess;
 import de.yotsuba.mahouka.magic.cast.CastingProcess;
 import de.yotsuba.mahouka.util.target.Target;
-import de.yotsuba.mahouka.util.target.TargetType;
 
 public abstract class MagicProcess
 {
@@ -26,6 +25,8 @@ public abstract class MagicProcess
 
     public static void registerProcessItem(Class<? extends MagicProcess> clazz, ItemMagicProcess item)
     {
+        if (itemByProcess.containsKey(clazz))
+            throw new RuntimeException(String.format("Magic process class %s registered twice!", clazz.getName()));
         itemByProcess.put(clazz, item);
     }
 
@@ -83,14 +84,9 @@ public abstract class MagicProcess
     /* ------------------------------------------------------------ */
     /* Magic process information */
 
-    protected abstract TargetType[] getValidTargets();
-
     public boolean isTargetValid(Target target)
     {
-        for (TargetType type : getValidTargets())
-            if (target.matchesType(type))
-                return true;
-        return false;
+        return true;
     }
 
     public abstract int getPsionCost();

@@ -3,6 +3,7 @@ package de.yotsuba.mahouka.util.target;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.util.Vec3;
 import de.yotsuba.mahouka.util.BufUtils;
+import de.yotsuba.mahouka.util.MathUtils;
 import de.yotsuba.mahouka.util.Shape;
 
 public class TargetArea extends Target
@@ -34,7 +35,7 @@ public class TargetArea extends Target
     public Vec3 getPoint()
     {
         // TODO (2) Get random point!
-        return center;
+        return MathUtils.copyVector(center);
     }
 
     @Override

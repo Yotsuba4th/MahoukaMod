@@ -10,7 +10,6 @@ import net.minecraft.nbt.NBTTagList;
 import de.yotsuba.mahouka.MahoukaMod;
 import de.yotsuba.mahouka.magic.MagicProcess;
 import de.yotsuba.mahouka.util.target.Target;
-import de.yotsuba.mahouka.util.target.TargetType;
 
 public class ProcessSequence extends MagicProcess
 {
@@ -70,12 +69,6 @@ public class ProcessSequence extends MagicProcess
     public Item getItem()
     {
         return MahoukaMod.item_magic_sequence;
-    }
-
-    @Override
-    public TargetType[] getValidTargets()
-    {
-        return new TargetType[0];
     }
 
     @Override

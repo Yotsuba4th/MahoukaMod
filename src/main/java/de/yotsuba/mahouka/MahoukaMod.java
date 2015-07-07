@@ -30,6 +30,7 @@ import de.yotsuba.mahouka.block.BlockCadProgrammer;
 import de.yotsuba.mahouka.block.BlockProcessProgrammer;
 import de.yotsuba.mahouka.block.BlockSequenceProgrammer;
 import de.yotsuba.mahouka.core.MahoukaEventHandler;
+import de.yotsuba.mahouka.core.PlayerMotionTracker;
 import de.yotsuba.mahouka.entity.projectile.EntityMagicProjectileEarth;
 import de.yotsuba.mahouka.entity.projectile.EntityMagicProjectileFire;
 import de.yotsuba.mahouka.entity.projectile.EntityMagicProjectileIce;
@@ -46,6 +47,7 @@ import de.yotsuba.mahouka.magic.process.ProcessFireShockwave;
 import de.yotsuba.mahouka.magic.process.ProcessFirebomb;
 import de.yotsuba.mahouka.magic.process.ProcessMovingOffset;
 import de.yotsuba.mahouka.magic.process.ProcessOffset;
+import de.yotsuba.mahouka.magic.process.ProcessOffsetAhead;
 import de.yotsuba.mahouka.magic.process.ProcessParallel;
 import de.yotsuba.mahouka.magic.process.ProcessParticle;
 import de.yotsuba.mahouka.magic.process.ProcessProjectileFire;
@@ -90,6 +92,9 @@ public class MahoukaMod
 
     @SuppressWarnings("unused")
     private static MahoukaEventHandler eventHandler = new MahoukaEventHandler();
+
+    @SuppressWarnings("unused")
+    private static PlayerMotionTracker motionTracker = new PlayerMotionTracker();
 
     private static Logger logger;
 
@@ -157,17 +162,23 @@ public class MahoukaMod
         List<MagicProcess> processes = new ArrayList<MagicProcess>();
         processes.add(new ProcessSequence());
         processes.add(new ProcessParallel());
+        
+        processes.add(new ProcessOffset());
+        processes.add(new ProcessOffsetAhead());
+        processes.add(new ProcessMovingOffset());
+
+        processes.add(new ProcessAccelerate());
         processes.add(new ProcessParticle());
+        processes.add(new ProcessDecomposition());
+        
+        processes.add(new ProcessProjectileFire());
+        processes.add(new ProcessProjectileIce());
+        
         processes.add(new ProcessExplosion());
         processes.add(new ProcessShockwave());
         processes.add(new ProcessFirebomb());
         processes.add(new ProcessFireShockwave());
-        processes.add(new ProcessMovingOffset());
-        processes.add(new ProcessOffset());
-        processes.add(new ProcessProjectileFire());
-        processes.add(new ProcessAccelerate());
-        processes.add(new ProcessProjectileIce());
-        processes.add(new ProcessDecomposition());
+        
         for (MagicProcess process : processes)
         {
             ItemMagicProcess item = process.createItem();

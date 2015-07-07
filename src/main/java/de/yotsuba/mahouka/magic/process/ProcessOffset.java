@@ -12,7 +12,6 @@ import de.yotsuba.mahouka.magic.MagicProcess;
 import de.yotsuba.mahouka.magic.cast.CastingProcess;
 import de.yotsuba.mahouka.util.target.Target;
 import de.yotsuba.mahouka.util.target.TargetOffset;
-import de.yotsuba.mahouka.util.target.TargetType;
 
 public class ProcessOffset extends MagicProcess
 {
@@ -53,12 +52,6 @@ public class ProcessOffset extends MagicProcess
     public String getName()
     {
         return "offset";
-    }
-
-    @Override
-    public TargetType[] getValidTargets()
-    {
-        return new TargetType[] { TargetType.POINT };
     }
 
     @Override

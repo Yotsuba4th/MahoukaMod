@@ -54,9 +54,9 @@ public class ProcessAccelerate extends MagicProcess
     }
 
     @Override
-    public TargetType[] getValidTargets()
+    public boolean isTargetValid(Target target)
     {
-        return new TargetType[] { TargetType.ENTITY };
+        return target.matchesType(TargetType.ENTITY);
     }
 
     @Override

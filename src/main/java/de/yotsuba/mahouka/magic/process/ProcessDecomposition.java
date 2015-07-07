@@ -28,9 +28,9 @@ public class ProcessDecomposition extends MagicProcess
     }
 
     @Override
-    public TargetType[] getValidTargets()
+    public boolean isTargetValid(Target target)
     {
-        return new TargetType[] { TargetType.ENTITY, TargetType.BLOCK };
+        return target.matchesType(TargetType.ENTITY) || target.matchesType(TargetType.BLOCK);
     }
 
     @Override
