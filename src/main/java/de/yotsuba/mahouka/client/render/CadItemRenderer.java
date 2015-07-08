@@ -80,6 +80,10 @@ public class CadItemRenderer implements IItemRenderer
         {
             GL11.glRotatef(35, 0, 0, 1);
             GL11.glTranslatef(1.2f, 0.0f, -0.2f);
+            // TODO (3) For some damn reason, the model gets flipped in 1st person!
+            // Because of that we need to flip it again and reverse the cull face
+            GL11.glScalef(1, 1, -1);
+            GL11.glCullFace(GL11.GL_FRONT);
         }
         else if (type == ItemRenderType.INVENTORY)
         {
@@ -128,6 +132,7 @@ public class CadItemRenderer implements IItemRenderer
             }
         }
 
+        GL11.glCullFace(GL11.GL_BACK);
         GL11.glPopMatrix();
     }
 
