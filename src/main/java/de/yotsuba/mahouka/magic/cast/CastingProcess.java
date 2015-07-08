@@ -42,9 +42,9 @@ public class CastingProcess
 
     /* ------------------------------------------------------------ */
 
-    private int t;
+    private int time;
 
-    private int ct;
+    private int totalTime;
 
     private boolean active = true;
 
@@ -70,7 +70,7 @@ public class CastingProcess
             this.sequence = new ProcessSequence();
             this.sequence.getProcesses().add(sequence);
         }
-        t = 0;
+        time = 0;
         currentTarget = target;
     }
 
@@ -168,25 +168,29 @@ public class CastingProcess
 
     public void serverTick()
     {
-        if (t == 0)
+        if (processIndex < 0)
         {
-            channelStart();
-        }
-        if (t < channelTime)
-        {
-            channelTick();
-        }
-        else if (t == channelTime)
-        {
-            channelEnd();
-            castStart();
-            castTick();
+            if (time == 0)
+            {
+                channelStart();
+            }
+            if (time < channelTime)
+            {
+                channelTick();
+            }
+            else if (time == channelTime)
+            {
+                channelEnd();
+                castStart();
+                castTick();
+            }
         }
         else
         {
             castTick();
         }
-        t++;
+        time++;
+        totalTime++;
     }
 
     @SideOnly(Side.CLIENT)
@@ -194,7 +198,7 @@ public class CastingProcess
     {
         if (processIndex < 0)
         {
-            if (t == 0)
+            if (time == 0)
                 channelStartClient();
             channelTickClient();
         }
@@ -202,7 +206,8 @@ public class CastingProcess
         {
             castTickClient();
         }
-        t++;
+        time++;
+        totalTime++;
     }
 
     @SideOnly(Side.CLIENT)
@@ -296,7 +301,7 @@ public class CastingProcess
 
     private void castStart()
     {
-        /* do nothing */
+        time = 0;
     }
 
     @SideOnly(Side.CLIENT)
@@ -317,9 +322,9 @@ public class CastingProcess
             process.castTick(this, currentTarget);
 
         // Check if next process should be started
-        if (process == null || ct++ >= process.getCastDuration(currentTarget))
+        if (process == null || time++ >= process.getCastDuration(currentTarget))
         {
-            ct = 0;
+            time = 0;
             processIndex++;
 
             // End last process
@@ -380,6 +385,16 @@ public class CastingProcess
     public UUID getId()
     {
         return id;
+    }
+
+    public int getTotalTime()
+    {
+        return totalTime;
+    }
+
+    public int getChannelTime()
+    {
+        return channelTime;
     }
 
     public ProcessSequence getSequence()
