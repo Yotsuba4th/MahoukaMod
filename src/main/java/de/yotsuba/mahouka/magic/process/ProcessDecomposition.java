@@ -3,6 +3,7 @@ package de.yotsuba.mahouka.magic.process;
 import java.util.Random;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.Vec3;
 import cpw.mods.fml.relauncher.Side;
@@ -29,7 +30,19 @@ public class ProcessDecomposition extends MagicProcess
     @Override
     public boolean isTargetValid(Target target)
     {
-        return target instanceof TargetEntity || target instanceof TargetBlock;
+        if (target instanceof TargetBlock)
+        {
+            // TODO (5) Check if block breakable
+            return true;
+        }
+        if (target instanceof TargetEntity)
+        {
+            Entity entity = ((TargetEntity) target).getEntity();
+            if (entity instanceof EntityPlayer)
+                return false;
+            return !entity.isEntityInvulnerable();
+        }
+        return false;
     }
 
     @Override
@@ -91,14 +104,12 @@ public class ProcessDecomposition extends MagicProcess
         if (target instanceof TargetEntity)
         {
             Entity entity = ((TargetEntity) target).getEntity();
-            if (!entity.isEntityInvulnerable())
-            {
-                entity.setDead();
-            }
+            entity.setDead();
         }
         else if (target instanceof TargetBlock)
         {
             TargetBlock block = (TargetBlock) target;
+            // TODO (5) Trigger BlockBreak event and check if block breakable
             if (block.getBlock().getBlockHardness(null, 0, 0, 0) >= 0)
             {
                 cp.getWorld().setBlock(block.getX(), block.getY(), block.getZ(), Blocks.air);
