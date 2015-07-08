@@ -45,15 +45,15 @@ import de.yotsuba.mahouka.magic.process.ProcessDecomposition;
 import de.yotsuba.mahouka.magic.process.ProcessExplosion;
 import de.yotsuba.mahouka.magic.process.ProcessFireShockwave;
 import de.yotsuba.mahouka.magic.process.ProcessFirebomb;
-import de.yotsuba.mahouka.magic.process.ProcessMovingOffset;
-import de.yotsuba.mahouka.magic.process.ProcessOffset;
-import de.yotsuba.mahouka.magic.process.ProcessOffsetAhead;
+import de.yotsuba.mahouka.magic.process.ProcessTargetOffset;
+import de.yotsuba.mahouka.magic.process.ProcessTargetAhead;
 import de.yotsuba.mahouka.magic.process.ProcessParallel;
 import de.yotsuba.mahouka.magic.process.ProcessParticle;
 import de.yotsuba.mahouka.magic.process.ProcessProjectileFire;
 import de.yotsuba.mahouka.magic.process.ProcessProjectileIce;
 import de.yotsuba.mahouka.magic.process.ProcessSequence;
 import de.yotsuba.mahouka.magic.process.ProcessShockwave;
+import de.yotsuba.mahouka.magic.process.ProcessTargetTracking;
 import de.yotsuba.mahouka.network.C0PlayerData;
 import de.yotsuba.mahouka.network.C2StartChanneling;
 import de.yotsuba.mahouka.network.C3CancelCast;
@@ -163,9 +163,9 @@ public class MahoukaMod
         processes.add(new ProcessSequence());
         processes.add(new ProcessParallel());
         
-        processes.add(new ProcessOffset());
-        processes.add(new ProcessOffsetAhead());
-        processes.add(new ProcessMovingOffset());
+        processes.add(new ProcessTargetOffset());
+        processes.add(new ProcessTargetAhead());
+        processes.add(new ProcessTargetTracking());
 
         processes.add(new ProcessAccelerate());
         processes.add(new ProcessParticle());

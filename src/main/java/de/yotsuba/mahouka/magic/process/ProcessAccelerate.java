@@ -110,7 +110,7 @@ public class ProcessAccelerate extends MagicProcess
             Target entityTarget = ((Targeting) entity).getTarget();
             if (entityTarget instanceof TargetOffset)
                 entityTarget = ((TargetOffset) entityTarget).getSource();
-            Vec3 delta = Vec3.createVectorHelper(entity.posX, entity.posY, entity.posZ).subtract(entityTarget.getCurrentPoint()).normalize();
+            Vec3 delta = Vec3.createVectorHelper(entity.posX, entity.posY, entity.posZ).subtract(entityTarget.getPoint()).normalize();
             entity.motionX += delta.xCoord * speed;
             entity.motionY += delta.yCoord * speed;
             entity.motionZ += delta.zCoord * speed;

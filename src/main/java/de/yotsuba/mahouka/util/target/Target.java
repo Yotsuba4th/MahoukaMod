@@ -54,8 +54,11 @@ public abstract class Target
         case OFFSET:
             target = new TargetOffset(world, buf);
             break;
-        case MOVING_OFFSET:
-            target = new TargetMovingOffset(world, buf);
+        case TRACKING:
+            target = new TargetTracking(world, buf);
+            break;
+        case AHEAD:
+            target = new TargetAhead(world, buf);
             break;
         case AREA:
             target = new TargetArea(buf);

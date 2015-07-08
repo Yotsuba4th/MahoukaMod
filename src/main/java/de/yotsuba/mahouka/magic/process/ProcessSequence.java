@@ -49,8 +49,8 @@ public class ProcessSequence extends MagicProcess
             MagicProcess process = MagicProcess.createFromStack(ItemStack.loadItemStackFromNBT(tagSequence));
             if (process == null)
             {
-                MahoukaMod.getLogger().error("Could not load magic process!");
-                new Exception().printStackTrace();
+                // MahoukaMod.getLogger().error("Could not load magic process!");
+                new RuntimeException("Could not load magic process!").printStackTrace();
                 break;
             }
             processes.add(process);

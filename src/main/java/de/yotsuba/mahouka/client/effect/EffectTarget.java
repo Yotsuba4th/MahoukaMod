@@ -40,7 +40,7 @@ public class EffectTarget extends Effect
     {
         if (target == null)
             return;
-        Vec3 targetPoint = target.getCurrentPoint();
+        Vec3 targetPoint = target.getPoint();
         if (isAiming)
         {
             lookAt(targetPoint);

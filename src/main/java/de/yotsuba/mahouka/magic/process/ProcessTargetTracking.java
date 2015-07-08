@@ -1,23 +1,23 @@
 package de.yotsuba.mahouka.magic.process;
 
-import de.yotsuba.mahouka.MahoukaMod;
+import de.yotsuba.mahouka.magic.MagicProcess;
 import de.yotsuba.mahouka.magic.cast.CastingProcess;
 import de.yotsuba.mahouka.util.target.Target;
-import de.yotsuba.mahouka.util.target.TargetMovingOffset;
+import de.yotsuba.mahouka.util.target.TargetTracking;
 
-public class ProcessMovingOffset extends ProcessOffset
+public class ProcessTargetTracking extends MagicProcess
 {
 
     @Override
     public String getName()
     {
-        return "offset_moving";
+        return "tracking";
     }
 
     @Override
-    public String getTextureName()
+    public int getPsionCost()
     {
-        return MahoukaMod.MODID + ":process_offset_moving";
+        return 0;
     }
 
     @Override
@@ -35,7 +35,7 @@ public class ProcessMovingOffset extends ProcessOffset
     @Override
     public Target castStart(CastingProcess cp, Target target)
     {
-        return new TargetMovingOffset(target, getRandomOffset());
+        return new TargetTracking(target);
     }
 
 }

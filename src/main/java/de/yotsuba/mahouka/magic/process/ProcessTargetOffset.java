@@ -13,7 +13,7 @@ import de.yotsuba.mahouka.magic.cast.CastingProcess;
 import de.yotsuba.mahouka.util.target.Target;
 import de.yotsuba.mahouka.util.target.TargetOffset;
 
-public class ProcessOffset extends MagicProcess
+public class ProcessTargetOffset extends MagicProcess
 {
 
     protected Vec3 offset = Vec3.createVectorHelper(0, 0, 0);
