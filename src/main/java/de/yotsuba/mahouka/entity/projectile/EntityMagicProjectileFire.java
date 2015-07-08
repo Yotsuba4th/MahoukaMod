@@ -35,7 +35,7 @@ public class EntityMagicProjectileFire extends EntityMagicProjectile
     @Override
     public float getDamage()
     {
-        return 1.0f;
+        return 2;
     }
 
     @Override

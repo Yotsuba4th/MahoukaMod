@@ -40,19 +40,6 @@ public class TargetAhead extends Target
         return TargetType.AHEAD;
     }
 
-    @Override
-    public boolean matchesType(TargetType matchingType)
-    {
-        switch (matchingType)
-        {
-        case POINT:
-        case OFFSET:
-            return true;
-        default:
-            return false;
-        }
-    }
-
     public Vec3 getPoint(Vec3 sourcePoint)
     {
         Entity entity = source.getEntity();

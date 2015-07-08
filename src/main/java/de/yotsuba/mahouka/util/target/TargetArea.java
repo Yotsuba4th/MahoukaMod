@@ -44,12 +44,6 @@ public class TargetArea extends Target
         return TargetType.AREA;
     }
 
-    @Override
-    public boolean matchesType(TargetType matchingType)
-    {
-        return matchingType == TargetType.AREA || matchingType == TargetType.POINT;
-    }
-
     public Vec3 getCenter()
     {
         return center;

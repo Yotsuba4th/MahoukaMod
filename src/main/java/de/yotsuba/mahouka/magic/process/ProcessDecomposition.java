@@ -14,7 +14,6 @@ import de.yotsuba.mahouka.util.target.Target;
 import de.yotsuba.mahouka.util.target.TargetBlock;
 import de.yotsuba.mahouka.util.target.TargetEntity;
 import de.yotsuba.mahouka.util.target.TargetPoint;
-import de.yotsuba.mahouka.util.target.TargetType;
 
 public class ProcessDecomposition extends MagicProcess
 {
@@ -30,7 +29,7 @@ public class ProcessDecomposition extends MagicProcess
     @Override
     public boolean isTargetValid(Target target)
     {
-        return target.matchesType(TargetType.ENTITY) || target.matchesType(TargetType.BLOCK);
+        return target instanceof TargetEntity || target instanceof TargetBlock;
     }
 
     @Override

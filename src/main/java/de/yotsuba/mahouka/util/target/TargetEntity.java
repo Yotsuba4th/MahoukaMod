@@ -80,50 +80,6 @@ public class TargetEntity extends TargetPoint
     }
 
     @Override
-    public boolean matchesType(TargetType matchingType)
-    {
-        // Early check of equal cases - these will not be handled below
-        if (type == matchingType)
-            return true;
-        switch (matchingType)
-        {
-        case ENTITY:
-        case POINT:
-        case OFFSET:
-            return true;
-        case LIVING:
-            switch (type)
-            {
-            case ANIMAL:
-            case LIVING:
-            case MOB:
-            case PLAYER:
-            case SELF:
-                return true;
-            default:
-                return false;
-            }
-        case PLAYER:
-            switch (type)
-            {
-            case PLAYER:
-            case SELF:
-                return true;
-            default:
-                return false;
-            }
-        case SELF:
-        case AREA:
-        case ITEM:
-        case BLOCK:
-        case ANIMAL:
-        case MOB:
-        default:
-            return false;
-        }
-    }
-
-    @Override
     public Vec3 getCurrentPoint()
     {
         if (entity == null)

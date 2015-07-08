@@ -49,19 +49,6 @@ public class TargetBlock extends TargetPoint
         return TargetType.BLOCK;
     }
 
-    @Override
-    public boolean matchesType(TargetType matchingType)
-    {
-        switch (matchingType)
-        {
-        case POINT:
-        case BLOCK:
-            return true;
-        default:
-            return false;
-        }
-    }
-
     public int getX()
     {
         return x;

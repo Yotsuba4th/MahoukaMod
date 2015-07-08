@@ -13,7 +13,6 @@ import de.yotsuba.mahouka.util.Utils;
 import de.yotsuba.mahouka.util.target.Target;
 import de.yotsuba.mahouka.util.target.TargetEntity;
 import de.yotsuba.mahouka.util.target.TargetOffset;
-import de.yotsuba.mahouka.util.target.TargetType;
 import de.yotsuba.mahouka.util.target.Targeting;
 
 public class ProcessAccelerate extends MagicProcess
@@ -56,7 +55,7 @@ public class ProcessAccelerate extends MagicProcess
     @Override
     public boolean isTargetValid(Target target)
     {
-        return target.matchesType(TargetType.ENTITY);
+        return target instanceof TargetEntity;
     }
 
     @Override

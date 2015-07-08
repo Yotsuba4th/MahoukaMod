@@ -34,12 +34,6 @@ public class TargetPoint extends Target
     }
 
     @Override
-    public boolean matchesType(TargetType matchingType)
-    {
-        return matchingType == TargetType.POINT;
-    }
-
-    @Override
     public Vec3 getPoint()
     {
         return MathUtils.copyVector(point);

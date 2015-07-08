@@ -33,20 +33,6 @@ public class TargetTracking extends Target
     }
 
     @Override
-    public boolean matchesType(TargetType matchingType)
-    {
-        switch (matchingType)
-        {
-        case POINT:
-        case OFFSET:
-        case TRACKING:
-            return true;
-        default:
-            return false;
-        }
-    }
-
-    @Override
     public Vec3 getPoint()
     {
         return getCurrentPoint();

@@ -17,13 +17,13 @@ public class ProcessTargetTracking extends MagicProcess
     @Override
     public int getPsionCost()
     {
-        return 0;
+        return 1;
     }
 
     @Override
     public int getChannelingDuration()
     {
-        return 0;
+        return 1;
     }
 
     @Override
