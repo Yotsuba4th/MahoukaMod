@@ -23,7 +23,6 @@ import de.yotsuba.mahouka.network.C5CastUpdate;
 import de.yotsuba.mahouka.util.BufUtils;
 import de.yotsuba.mahouka.util.Utils;
 import de.yotsuba.mahouka.util.target.Target;
-import de.yotsuba.mahouka.util.target.TargetEntity;
 
 public class CastingProcess
 {
@@ -249,13 +248,12 @@ public class CastingProcess
     {
         if (channelTime > 0)
         {
-            EffectTarget fx = new EffectCast(new TargetEntity(caster, true, false), false);
-            fx.fadeOut = 20;
-            fx.scale = 0.75f;
-            fx.maxAge = channelTime + fx.fadeOut;
-            EffectRenderer.addEffect(fx, id);
-
-            // TODO (2) Start channeling effect on CAD
+            EffectTarget fx;
+            // fx = new EffectCast(new TargetEntity(caster, true, false), false);
+            // fx.fadeOut = 20;
+            // fx.scale = 0.75f;
+            // fx.maxAge = channelTime + fx.fadeOut;
+            // EffectRenderer.addEffect(fx, id);
 
             fx = new EffectCast(target, false);
             fx.maxAge = channelTime + fx.fadeOut;
