@@ -48,7 +48,7 @@ public class ProcessAssembler
                 process.getProcesses().add(item1.getProcess(input1));
 
             // Add all processes of input 2
-            if (item2.getItemProcess() instanceof ProcessSequence)
+            if (item2.getItemProcess().getClass().equals(ProcessSequence.class))
                 process.getProcesses().addAll(((ProcessSequence) item2.getProcess(input2)).getProcesses());
             else
                 process.getProcesses().add(item2.getProcess(input2));

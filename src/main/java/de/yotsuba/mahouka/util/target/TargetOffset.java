@@ -60,7 +60,6 @@ public class TargetOffset extends Target
         return offset;
     }
 
-    
     public Vec3 getSourcePoint()
     {
         return source.getPoint();

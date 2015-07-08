@@ -3,11 +3,9 @@ package de.yotsuba.mahouka.magic.process;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import de.yotsuba.mahouka.MahoukaMod;
 import de.yotsuba.mahouka.magic.MagicProcess;
 import de.yotsuba.mahouka.util.target.Target;
 
@@ -63,12 +61,6 @@ public class ProcessSequence extends MagicProcess
     public String getName()
     {
         return "sequence";
-    }
-
-    @Override
-    public Item getItem()
-    {
-        return MahoukaMod.item_magic_sequence;
     }
 
     @Override
