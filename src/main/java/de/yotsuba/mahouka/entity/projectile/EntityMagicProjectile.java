@@ -41,7 +41,6 @@ public abstract class EntityMagicProjectile extends Entity implements Targeting
     public EntityMagicProjectile(World world)
     {
         super(world);
-        ySize = 0.5f;
         setSize(1.0F, 1.0F);
     }
 
@@ -79,9 +78,9 @@ public abstract class EntityMagicProjectile extends Entity implements Targeting
         if (tag.hasKey("direction", 9))
         {
             NBTTagList tagList = tag.getTagList("direction", 6);
-            this.motionX = tagList.func_150309_d(0);
-            this.motionY = tagList.func_150309_d(1);
-            this.motionZ = tagList.func_150309_d(2);
+            this.motionX = tagList.getDoubleAt(0);
+            this.motionY = tagList.getDoubleAt(1);
+            this.motionZ = tagList.getDoubleAt(2);
         }
         else
         {
@@ -92,7 +91,7 @@ public abstract class EntityMagicProjectile extends Entity implements Targeting
     @Override
     protected void writeEntityToNBT(NBTTagCompound tag)
     {
-        tag.setTag("direction", this.newDoubleNBTList(new double[] { this.motionX, this.motionY, this.motionZ }));
+        tag.setTag("direction", newDoubleNBTList(new double[] { this.motionX, this.motionY, this.motionZ }));
     }
 
     /* ------------------------------------------------------------ */

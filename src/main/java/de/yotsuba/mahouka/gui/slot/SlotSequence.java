@@ -80,7 +80,7 @@ public class SlotSequence extends Slot
      * returns true if this slot is in par2 of par1
      */
     @Override
-    public boolean isSlotInInventory(IInventory inv, int index)
+    public boolean isHere(IInventory inv, int index)
     {
         CadBase cad = container.getCad();
         if (cad == null)

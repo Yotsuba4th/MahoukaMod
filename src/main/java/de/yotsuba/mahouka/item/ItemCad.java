@@ -36,7 +36,7 @@ public class ItemCad extends Item
     }
 
     @Override
-    public int getMaxDamage()
+    public int getMaxDurability()
     {
         // Constant 100 max damage - stack damage will be set individually based on CAD data
         return 100;
