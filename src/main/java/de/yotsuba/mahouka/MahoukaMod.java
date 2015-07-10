@@ -7,6 +7,7 @@ import java.util.List;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
@@ -68,7 +69,7 @@ import de.yotsuba.mahouka.util.Utils;
 public class MahoukaMod
 {
 
-    public static final String MODID = "Mahouka";
+    public static final String MODID = "mahouka";
     public static final String VERSION = "0.1";
 
     private static final String CONFIG_GENERAL = "General";
@@ -76,7 +77,7 @@ public class MahoukaMod
 
     /* ------------------------------------------------------------ */
 
-    @Instance(MODID)
+    @Instance
     public static MahoukaMod instance;
 
     public static boolean DEBUG = false;
@@ -84,7 +85,7 @@ public class MahoukaMod
     @SidedProxy(clientSide = "de.yotsuba.mahouka.client.ClientProxy", serverSide = "de.yotsuba.mahouka.CommonProxy")
     private static CommonProxy proxy;
 
-    private static SimpleNetworkWrapper netChannel = NetworkRegistry.INSTANCE.newSimpleChannel("mahouka");
+    private static SimpleNetworkWrapper netChannel = NetworkRegistry.INSTANCE.newSimpleChannel(MODID);
 
     private static CadManager cadManager = new CadManager();
 
@@ -101,7 +102,7 @@ public class MahoukaMod
 
     /* ------------------------------------------------------------ */
 
-    public static final CreativeTabs creativeTab = new CreativeTabs("Mahouka") {
+    public static final CreativeTabs creativeTab = new CreativeTabs(MODID) {
         @Override
         public Item getTabIconItem()
         {
@@ -255,6 +256,11 @@ public class MahoukaMod
     public static SimpleNetworkWrapper getNetChannel()
     {
         return netChannel;
+    }
+
+    public static ResourceLocation getResource(String name)
+    {
+        return new ResourceLocation(MahoukaMod.MODID, name);
     }
 
 }

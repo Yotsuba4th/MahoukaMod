@@ -3,13 +3,14 @@ package de.yotsuba.mahouka.core;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
+import de.yotsuba.mahouka.MahoukaMod;
 import de.yotsuba.mahouka.network.C0PlayerData;
 import de.yotsuba.mahouka.util.Utils;
 
 public class PlayerData
 {
 
-    public static final String TAG_NAME = "mahouka";
+    public static final String TAG_NAME = MahoukaMod.MODID;
 
     private EntityPlayer player;
 
