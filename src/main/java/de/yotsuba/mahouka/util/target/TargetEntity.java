@@ -23,6 +23,7 @@ public class TargetEntity extends TargetPoint
 
     protected TargetType type;
 
+    // TODO (2) Respect isConstructed flag and destroy created entities if magic is cancelled!
     protected boolean isConstructed;
 
     public TargetEntity(Entity entity, boolean isSelf, boolean isConstructed, Vec3 point)

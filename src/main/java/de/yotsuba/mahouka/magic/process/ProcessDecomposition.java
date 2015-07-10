@@ -1,7 +1,5 @@
 package de.yotsuba.mahouka.magic.process;
 
-import java.util.Random;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -10,6 +8,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import de.yotsuba.mahouka.magic.MagicProcess;
 import de.yotsuba.mahouka.magic.cast.CastingProcess;
+import de.yotsuba.mahouka.util.MathUtils;
 import de.yotsuba.mahouka.util.Utils;
 import de.yotsuba.mahouka.util.target.Target;
 import de.yotsuba.mahouka.util.target.TargetBlock;
@@ -70,7 +69,6 @@ public class ProcessDecomposition extends MagicProcess
     @SideOnly(Side.CLIENT)
     public void castTickClient(CastingProcess cp, Target target)
     {
-        Random rand = new Random();
         Vec3 point = target.getCurrentPoint();
         String fx = "cloud";
 
@@ -81,18 +79,18 @@ public class ProcessDecomposition extends MagicProcess
             for (int i = 0; i < volume; i++)
             {
                 double scale = 0.5;
-                double x = point.xCoord + rand.nextGaussian() * entity.width * scale;
-                double y = point.yCoord + rand.nextDouble() * entity.height;
-                double z = point.zCoord + rand.nextGaussian() * entity.width * scale;
+                double x = point.xCoord + MathUtils.rand.nextGaussian() * entity.width * scale;
+                double y = point.yCoord + MathUtils.rand.nextDouble() * entity.height;
+                double z = point.zCoord + MathUtils.rand.nextGaussian() * entity.width * scale;
                 cp.getWorld().spawnParticle(fx, x, y, z, 0, 0, 0);
             }
         }
         else
         {
             double scale = 0.5;
-            double x = point.xCoord + rand.nextGaussian() * scale;
-            double y = point.yCoord + rand.nextGaussian() * scale;
-            double z = point.zCoord + rand.nextGaussian() * scale;
+            double x = point.xCoord + MathUtils.rand.nextGaussian() * scale;
+            double y = point.yCoord + MathUtils.rand.nextGaussian() * scale;
+            double z = point.zCoord + MathUtils.rand.nextGaussian() * scale;
             cp.getWorld().spawnParticle(fx, x, y, z, 0, 0, 0);
         }
     }

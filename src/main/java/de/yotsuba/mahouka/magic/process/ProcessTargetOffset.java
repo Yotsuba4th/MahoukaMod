@@ -51,7 +51,7 @@ public class ProcessTargetOffset extends MagicProcess
     @Override
     public String getName()
     {
-        return "offset";
+        return "target_offset";
     }
 
     @Override

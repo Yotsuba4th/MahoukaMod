@@ -42,17 +42,18 @@ import de.yotsuba.mahouka.magic.cad.CadManager;
 import de.yotsuba.mahouka.magic.cast.CastingManager;
 import de.yotsuba.mahouka.magic.process.ProcessAccelerate;
 import de.yotsuba.mahouka.magic.process.ProcessDecomposition;
+import de.yotsuba.mahouka.magic.process.ProcessDestabilize;
 import de.yotsuba.mahouka.magic.process.ProcessExplosion;
 import de.yotsuba.mahouka.magic.process.ProcessFireShockwave;
 import de.yotsuba.mahouka.magic.process.ProcessFirebomb;
-import de.yotsuba.mahouka.magic.process.ProcessTargetOffset;
-import de.yotsuba.mahouka.magic.process.ProcessTargetAhead;
 import de.yotsuba.mahouka.magic.process.ProcessParallel;
 import de.yotsuba.mahouka.magic.process.ProcessParticle;
 import de.yotsuba.mahouka.magic.process.ProcessProjectileFire;
 import de.yotsuba.mahouka.magic.process.ProcessProjectileIce;
 import de.yotsuba.mahouka.magic.process.ProcessSequence;
 import de.yotsuba.mahouka.magic.process.ProcessShockwave;
+import de.yotsuba.mahouka.magic.process.ProcessTargetAhead;
+import de.yotsuba.mahouka.magic.process.ProcessTargetOffset;
 import de.yotsuba.mahouka.magic.process.ProcessTargetTracking;
 import de.yotsuba.mahouka.network.C0PlayerData;
 import de.yotsuba.mahouka.network.C2StartChanneling;
@@ -166,18 +167,21 @@ public class MahoukaMod
         processes.add(new ProcessTargetOffset());
         processes.add(new ProcessTargetAhead());
         processes.add(new ProcessTargetTracking());
-
-        processes.add(new ProcessAccelerate());
-        processes.add(new ProcessParticle());
-        processes.add(new ProcessDecomposition());
         
         processes.add(new ProcessProjectileFire());
         processes.add(new ProcessProjectileIce());
+
+        processes.add(new ProcessDestabilize());
+
+        processes.add(new ProcessAccelerate());
         
         processes.add(new ProcessExplosion());
         processes.add(new ProcessShockwave());
         processes.add(new ProcessFirebomb());
         processes.add(new ProcessFireShockwave());
+
+        processes.add(new ProcessParticle());
+        processes.add(new ProcessDecomposition());
         
         for (MagicProcess process : processes)
         {

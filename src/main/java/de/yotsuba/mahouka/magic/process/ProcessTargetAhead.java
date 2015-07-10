@@ -37,7 +37,7 @@ public class ProcessTargetAhead extends MagicProcess
     @Override
     public String getName()
     {
-        return "offset_ahead";
+        return "target_ahead";
     }
 
     @Override

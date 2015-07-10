@@ -11,7 +11,7 @@ public class ProcessTargetTracking extends MagicProcess
     @Override
     public String getName()
     {
-        return "tracking";
+        return "target_tracking";
     }
 
     @Override

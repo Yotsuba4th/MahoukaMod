@@ -1,28 +1,47 @@
+
+############################################################
 # Item group
+
 itemGroup.Mahouka=Mahouka Koukou
 
+############################################################
 # Blocks
+
 tile.process_programmer.name=Magic Process Programmer
 tile.sequence_programmer.name=Activation Sequence Programmer
 tile.cad_programmer.name=CAD Programmer
 
+############################################################
 # Items
+
 item.cad.name=CAD
 
+############################################################
 # Magic processes
+
 mahouka.process.sequence=Magic Sequence
 mahouka.process.parallel=Parallel Sequence
-mahouka.process.particle=Heart Particles
+
+mahouka.process.target_offset=Offset
+mahouka.process.target_tracking=Tracking
+mahouka.process.target_ahead=Tracking
+
+mahouka.process.fireball=Fireball
+mahouka.process.icecrystal=Ice Crystal
+
+mahouka.process.destabilize=Destabilize
+
+mahouka.process.accelerate=Accelerate
+
 mahouka.process.explosion=Explosion
 mahouka.process.firebomb=Firebomb
 mahouka.process.shockwave=Shockwave
 mahouka.process.fire_shockwave=Fire Shockwave
-mahouka.process.offset=Offset
-mahouka.process.offset_moving=Offset (following)
-mahouka.process.fireball=Fireball
-mahouka.process.icecrystal=Ice Crystal
-mahouka.process.accelerate=Accelerate
+
+mahouka.process.particle=Heart Particles
 mahouka.process.decomposition=Decomposition
 
+############################################################
 # Gui related strings
+
 mahouka.gui.no_settings=No settings available

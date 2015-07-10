@@ -1,10 +1,14 @@
 package de.yotsuba.mahouka.util;
 
+import java.util.Random;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.util.Vec3;
 
 public final class MathUtils
 {
+
+    public static final Random rand = new Random();
 
     public static Vec3 copyVector(Vec3 vector)
     {
