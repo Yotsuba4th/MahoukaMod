@@ -22,6 +22,10 @@ public class BlockCadProgrammer extends Block
 
     public static final String ID = "cad_programmer";
 
+    protected IIcon iconTop;
+
+    protected IIcon iconBottom;
+
     protected BlockCadProgrammer(Material material)
     {
         super(material);
@@ -41,14 +45,16 @@ public class BlockCadProgrammer extends Block
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister iconRegister)
     {
-        blockIcon = iconRegister.registerIcon(getTextureName());
+        iconTop = iconRegister.registerIcon(getTextureName() + "_top");
+        blockIcon = iconRegister.registerIcon(getTextureName() + "_side");
+        iconBottom = iconRegister.registerIcon(getTextureName() + "_bottom");
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(int side, int front)
     {
-        return blockIcon;
+        return side == ForgeDirection.UP.ordinal() ? iconTop : (side == ForgeDirection.DOWN.ordinal() ? iconBottom : blockIcon);
     }
 
     @Override
