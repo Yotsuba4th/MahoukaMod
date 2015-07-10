@@ -72,4 +72,10 @@ public class TargetArea extends Target
         return false;
     }
 
+    @Override
+    public int hashCode()
+    {
+        return (center.hashCode() * 89 + size.hashCode()) * 89 + shape.hashCode();
+    }
+
 }

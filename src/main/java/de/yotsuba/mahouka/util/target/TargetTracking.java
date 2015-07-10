@@ -62,4 +62,10 @@ public class TargetTracking extends Target
         return false;
     }
 
+    @Override
+    public int hashCode()
+    {
+        return source.hashCode() * 89 + 7;
+    }
+
 }

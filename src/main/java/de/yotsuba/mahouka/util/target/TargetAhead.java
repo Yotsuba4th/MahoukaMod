@@ -86,4 +86,10 @@ public class TargetAhead extends Target
         return false;
     }
 
+    @Override
+    public int hashCode()
+    {
+        return source.hashCode() * 89 + Float.hashCode(offset);
+    }
+
 }

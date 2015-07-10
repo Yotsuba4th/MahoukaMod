@@ -37,6 +37,9 @@ public abstract class Target
     @Override
     public abstract boolean equals(Object obj);
 
+    @Override
+    public abstract int hashCode();
+
     /* ------------------------------------------------------------ */
 
     public static Target fromBytes(World world, ByteBuf buf)

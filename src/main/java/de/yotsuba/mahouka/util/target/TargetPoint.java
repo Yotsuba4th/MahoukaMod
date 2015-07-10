@@ -53,4 +53,10 @@ public class TargetPoint extends Target
         return false;
     }
 
+    @Override
+    public int hashCode()
+    {
+        return getClass().hashCode() + point.hashCode();
+    }
+
 }
