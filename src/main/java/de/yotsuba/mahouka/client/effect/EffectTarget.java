@@ -57,4 +57,19 @@ public class EffectTarget extends Effect
         }
     }
 
+    @Override
+    public boolean isSimilarTo(Effect fx)
+    {
+        if (!(fx instanceof EffectTarget))
+            return false;
+        EffectTarget fxTarget = (EffectTarget) fx;
+        if (!super.isSimilarTo(fxTarget))
+            return false;
+        if (target != fxTarget.target && (target == null || fxTarget.target == null))
+            return false;
+        if (target != null && !target.equals(fxTarget.target))
+            return false;
+        return true;
+    }
+
 }

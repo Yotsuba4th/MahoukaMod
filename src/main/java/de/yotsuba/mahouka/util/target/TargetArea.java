@@ -59,4 +59,15 @@ public class TargetArea extends Target
         return shape;
     }
 
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (obj instanceof TargetArea)
+        {
+            TargetArea t = (TargetArea) obj;
+            return MathUtils.equals(center, t.center) && MathUtils.equals(size, t.size) && shape == t.shape;
+        }
+        return false;
+    }
+
 }

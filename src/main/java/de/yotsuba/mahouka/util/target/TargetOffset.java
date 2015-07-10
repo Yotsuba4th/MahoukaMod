@@ -4,6 +4,7 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import de.yotsuba.mahouka.util.BufUtils;
+import de.yotsuba.mahouka.util.MathUtils;
 
 public class TargetOffset extends Target
 {
@@ -63,6 +64,17 @@ public class TargetOffset extends Target
     public Vec3 getSourcePoint()
     {
         return source.getPoint();
+    }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (obj instanceof TargetOffset)
+        {
+            TargetOffset t = (TargetOffset) obj;
+            return source.equals(t.source) && MathUtils.equals(offset, t.offset);
+        }
+        return false;
     }
 
 }

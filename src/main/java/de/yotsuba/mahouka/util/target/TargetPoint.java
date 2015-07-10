@@ -39,4 +39,15 @@ public class TargetPoint extends Target
         return MathUtils.copyVector(point);
     }
 
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (obj instanceof TargetPoint)
+        {
+            TargetPoint t = (TargetPoint) obj;
+            return MathUtils.equals(point, t.point);
+        }
+        return false;
+    }
+
 }

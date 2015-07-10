@@ -111,4 +111,15 @@ public class TargetEntity extends TargetPoint
         return isConstructed;
     }
 
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (obj instanceof TargetEntity)
+        {
+            TargetEntity t = (TargetEntity) obj;
+            return entity.equals(t.entity);
+        }
+        return false;
+    }
+
 }

@@ -9,6 +9,7 @@ import java.util.Map.Entry;
 import java.util.UUID;
 import java.util.concurrent.Callable;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.crash.CrashReport;
 import net.minecraft.crash.CrashReportCategory;
 import net.minecraft.entity.Entity;
@@ -75,6 +76,11 @@ public abstract class EffectRenderer
 
     public static void updateEffects()
     {
+        if (Minecraft.getMinecraft().theWorld == null)
+        {
+            fxMap.clear();
+            return;
+        }
         for (Iterator<Entry<UUID, List<Effect>>> itList = fxMap.entrySet().iterator(); itList.hasNext();)
         {
             Entry<UUID, List<Effect>> effectList = itList.next();
@@ -178,9 +184,12 @@ public abstract class EffectRenderer
         {
             for (Effect effect : effectList.getValue())
             {
-                if (effect.getClass().equals(fx.getClass()) && Math.abs(effect.age - fx.age) < 2 && effect.icon == fx.icon && effect.x == fx.x
-                        && effect.y == fx.y && effect.z == fx.z)
+                if (effect.isSimilarTo(fx))
+                {
+                    // Adjust maxAge of previous effect
+                    effect.maxAge = effect.age + Math.max(effect.maxAge - effect.age, fx.maxAge - fx.age);
                     return true;
+                }
             }
         }
         return false;

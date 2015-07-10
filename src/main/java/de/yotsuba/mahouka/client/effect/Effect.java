@@ -23,6 +23,8 @@ public class Effect
 
     public int maxAge;
 
+    protected String tag;
+
     protected IIcon icon;
 
     public double x;
@@ -111,6 +113,16 @@ public class Effect
     public void setDead()
     {
         isDead = true;
+    }
+
+    public String getTag()
+    {
+        return tag;
+    }
+
+    public void setTag(String tag)
+    {
+        this.tag = tag;
     }
 
     public void lookAt(Vec3 lookAt)
@@ -204,6 +216,19 @@ public class Effect
     public boolean isDead()
     {
         return isDead;
+    }
+
+    public boolean isSimilarTo(Effect fx)
+    {
+        if (tag != null && !tag.equals(fx.tag))
+            return false;
+        double dx = x - fx.x;
+        double dy = y - fx.y;
+        double dz = z - fx.z;
+        if (dx * dx + dy * dy + dz * dz > 0.1)
+            return false;
+
+        return true;
     }
 
 }

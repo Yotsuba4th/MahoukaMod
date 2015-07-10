@@ -73,4 +73,15 @@ public class TargetAhead extends Target
         return offset;
     }
 
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (obj instanceof TargetAhead)
+        {
+            TargetAhead t = (TargetAhead) obj;
+            return source.equals(t.source) && offset == t.offset;
+        }
+        return false;
+    }
+
 }

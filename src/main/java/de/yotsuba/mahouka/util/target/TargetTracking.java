@@ -49,4 +49,15 @@ public class TargetTracking extends Target
         return source;
     }
 
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (obj instanceof TargetTracking)
+        {
+            TargetTracking t = (TargetTracking) obj;
+            return source.equals(t.source);
+        }
+        return false;
+    }
+
 }

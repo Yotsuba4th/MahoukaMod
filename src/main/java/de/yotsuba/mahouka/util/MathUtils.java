@@ -25,6 +25,11 @@ public final class MathUtils
         vector.zCoord += addVector.zCoord;
     }
 
+    public static boolean equals(Vec3 a, Vec3 b)
+    {
+        return a.xCoord == b.xCoord && a.yCoord == b.yCoord && a.zCoord == b.zCoord;
+    }
+
     public static Vec3 getEntityPosition(Entity entity)
     {
         return Vec3.createVectorHelper(entity.posX, entity.posY, entity.posZ);

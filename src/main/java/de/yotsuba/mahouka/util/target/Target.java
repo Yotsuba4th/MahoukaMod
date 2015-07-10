@@ -4,6 +4,7 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
+// TODO (2) Implement equals
 public abstract class Target
 {
 
@@ -21,6 +22,9 @@ public abstract class Target
         buf.writeByte(getType().ordinal());
     }
 
+    @Override
+    public abstract boolean equals(Object obj);
+    
     /* ------------------------------------------------------------ */
 
     public static Target fromBytes(World world, ByteBuf buf)
