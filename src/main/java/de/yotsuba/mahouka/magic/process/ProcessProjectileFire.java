@@ -36,7 +36,7 @@ public class ProcessProjectileFire extends ProcessProjectile
     @Override
     public Entity createProjectile(CastingProcess cp, Target target)
     {
-        return new EntityMagicProjectileFire(cp.getCaster().worldObj, cp.getCaster(), 0, 0, 0);
+        return new EntityMagicProjectileFire(target.getWorld(), cp.getCaster(), 0, 0, 0);
     }
     
 }

@@ -89,7 +89,7 @@ public abstract class ProcessProjectile extends MagicProcess
         if (entity instanceof Targeting)
             ((Targeting) entity).setTarget(target);
 
-        cp.getCaster().worldObj.spawnEntityInWorld(entity);
+        target.getWorld().spawnEntityInWorld(entity);
         return new TargetEntity(entity, false, true);
     }
 

@@ -11,11 +11,13 @@ public class TargetTracking extends Target
 
     public TargetTracking(Target source)
     {
+        super(source.getWorld());
         this.source = source;
     }
 
     public TargetTracking(World world, ByteBuf buf)
     {
+        super(world);
         source = Target.fromBytes(world, buf);
     }
 

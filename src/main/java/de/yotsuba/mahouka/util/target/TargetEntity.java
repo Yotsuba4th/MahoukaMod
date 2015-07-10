@@ -28,7 +28,7 @@ public class TargetEntity extends TargetPoint
 
     public TargetEntity(Entity entity, boolean isSelf, boolean isConstructed, Vec3 point)
     {
-        super(point);
+        super(entity.worldObj, point);
         this.entity = entity;
         this.isConstructed = isConstructed;
         if (entity instanceof EntityPlayer)
@@ -52,7 +52,7 @@ public class TargetEntity extends TargetPoint
 
     public TargetEntity(World world, ByteBuf buf, TargetType type)
     {
-        super(buf);
+        super(world, buf);
         this.type = type;
         this.entity = world.getEntityByID(buf.readInt());
         this.isConstructed = buf.readBoolean();
@@ -60,7 +60,7 @@ public class TargetEntity extends TargetPoint
 
     private TargetEntity(Entity entity, TargetType type, boolean isConstructed, Vec3 point)
     {
-        super(point);
+        super(entity.worldObj, point);
         this.type = type;
         this.entity = entity;
         this.isConstructed = isConstructed;

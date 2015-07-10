@@ -48,7 +48,7 @@ public abstract class ProcessExplosionBase extends MagicProcess
         // entity = ((TargetEntity) target).getEntity();
 
         Vec3 point = target.getPoint();
-        cp.getCaster().worldObj.newExplosion(entity, point.xCoord, point.yCoord, point.zCoord, strength, fire, blockDamage);
+        target.getWorld().newExplosion(entity, point.xCoord, point.yCoord, point.zCoord, strength, fire, blockDamage);
 
         return target;
     }

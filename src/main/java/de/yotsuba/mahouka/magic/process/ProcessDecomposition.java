@@ -82,7 +82,7 @@ public class ProcessDecomposition extends MagicProcess
                 double x = point.xCoord + MathUtils.rand.nextGaussian() * entity.width * scale;
                 double y = point.yCoord + MathUtils.rand.nextDouble() * entity.height;
                 double z = point.zCoord + MathUtils.rand.nextGaussian() * entity.width * scale;
-                cp.getWorld().spawnParticle(fx, x, y, z, 0, 0, 0);
+                target.getWorld().spawnParticle(fx, x, y, z, 0, 0, 0);
             }
         }
         else
@@ -91,7 +91,7 @@ public class ProcessDecomposition extends MagicProcess
             double x = point.xCoord + MathUtils.rand.nextGaussian() * scale;
             double y = point.yCoord + MathUtils.rand.nextGaussian() * scale;
             double z = point.zCoord + MathUtils.rand.nextGaussian() * scale;
-            cp.getWorld().spawnParticle(fx, x, y, z, 0, 0, 0);
+            target.getWorld().spawnParticle(fx, x, y, z, 0, 0, 0);
         }
     }
 
@@ -110,11 +110,11 @@ public class ProcessDecomposition extends MagicProcess
             // TODO (5) Trigger BlockBreak event and check if block breakable
             if (block.getBlock().getBlockHardness(null, 0, 0, 0) >= 0)
             {
-                cp.getWorld().setBlock(block.getX(), block.getY(), block.getZ(), Blocks.air);
+                target.getWorld().setBlock(block.getX(), block.getY(), block.getZ(), Blocks.air);
             }
         }
 
-        return new TargetPoint(target.getCurrentPoint());
+        return new TargetPoint(target.getWorld(), target.getPoint());
     }
 
 }

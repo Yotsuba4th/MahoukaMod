@@ -2,6 +2,7 @@ package de.yotsuba.mahouka.magic.cad;
 
 import java.util.UUID;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.item.ItemStack;
@@ -171,8 +172,8 @@ public class CadBase extends InventoryBasic
         if (result.typeOfHit == MovingObjectType.ENTITY)
             return new TargetEntity(result.entityHit, false, false);
         if (result.typeOfHit == MovingObjectType.BLOCK)
-            return new TargetBlock(player.worldObj, result.blockX, result.blockY, result.blockZ, result.hitVec);
-        return new TargetPoint(result.hitVec);
+            return new TargetBlock(Minecraft.getMinecraft().theWorld, result.blockX, result.blockY, result.blockZ, result.hitVec);
+        return new TargetPoint(Minecraft.getMinecraft().theWorld, result.hitVec);
     }
 
     /* ------------------------------------------------------------ */

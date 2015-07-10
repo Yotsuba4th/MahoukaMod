@@ -2,6 +2,7 @@ package de.yotsuba.mahouka.util.target;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.util.Vec3;
+import net.minecraft.world.World;
 import de.yotsuba.mahouka.util.BufUtils;
 import de.yotsuba.mahouka.util.MathUtils;
 import de.yotsuba.mahouka.util.Shape;
@@ -15,8 +16,9 @@ public class TargetArea extends Target
 
     private Shape shape;
 
-    public TargetArea(ByteBuf buf)
+    public TargetArea(World world, ByteBuf buf)
     {
+        super(world);
         center = Vec3.createVectorHelper(buf.readDouble(), buf.readDouble(), buf.readDouble());
         size = Vec3.createVectorHelper(buf.readDouble(), buf.readDouble(), buf.readDouble());
         shape = Shape.values()[buf.readByte()];

@@ -36,7 +36,7 @@ public class ProcessProjectileIce extends ProcessProjectile
     @Override
     public Entity createProjectile(CastingProcess cp, Target target)
     {
-        return new EntityMagicProjectileIce(cp.getCaster().worldObj, cp.getCaster(), 0, 0, 0);
+        return new EntityMagicProjectileIce(target.getWorld(), cp.getCaster(), 0, 0, 0);
     }
 
     @Override

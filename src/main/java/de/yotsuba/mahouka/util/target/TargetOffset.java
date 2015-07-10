@@ -15,12 +15,14 @@ public class TargetOffset extends Target
 
     public TargetOffset(Target source, Vec3 offset)
     {
+        super(source.getWorld());
         this.source = source;
         this.offset = offset;
     }
 
     public TargetOffset(World world, ByteBuf buf)
     {
+        super(world);
         source = Target.fromBytes(world, buf);
         offset = Vec3.createVectorHelper(buf.readDouble(), buf.readDouble(), buf.readDouble());
     }

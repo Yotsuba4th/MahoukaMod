@@ -57,14 +57,14 @@ public class ProcessDestabilize extends MagicProcess
         double x = point.xCoord + MathUtils.rand.nextGaussian() * scale;
         double y = point.yCoord + MathUtils.rand.nextGaussian() * scale;
         double z = point.zCoord + MathUtils.rand.nextGaussian() * scale;
-        cp.getWorld().spawnParticle("cloud", x, y, z, 0, 0, 0);
+        target.getWorld().spawnParticle("cloud", x, y, z, 0, 0, 0);
     }
 
     @Override
     public Target castEnd(CastingProcess cp, Target target)
     {
         TargetBlock t = (TargetBlock) target;
-        EntityFallingBlock entity = new EntityFallingBlock(cp.getWorld(), t.getX() + 0.5, t.getY() + 0.5, t.getZ() + 0.5, t.getBlock());
+        EntityFallingBlock entity = new EntityFallingBlock(target.getWorld(), t.getX() + 0.5, t.getY() + 0.5, t.getZ() + 0.5, t.getBlock());
         entity.worldObj.spawnEntityInWorld(entity);
         return new TargetEntity(entity, false, false);
     }

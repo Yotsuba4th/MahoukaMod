@@ -18,7 +18,7 @@ public class TargetBlock extends TargetPoint
 
     public TargetBlock(World world, ByteBuf buf)
     {
-        super(buf);
+        super(world, buf);
         x = buf.readInt();
         y = buf.readInt();
         z = buf.readInt();
@@ -27,7 +27,7 @@ public class TargetBlock extends TargetPoint
 
     public TargetBlock(World world, int x, int y, int z, Vec3 point)
     {
-        super(point);
+        super(world, point);
         this.x = x;
         this.y = y;
         this.z = z;

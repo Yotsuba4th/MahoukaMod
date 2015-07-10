@@ -2,6 +2,7 @@ package de.yotsuba.mahouka.util.target;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.util.Vec3;
+import net.minecraft.world.World;
 import de.yotsuba.mahouka.util.BufUtils;
 import de.yotsuba.mahouka.util.MathUtils;
 
@@ -10,13 +11,15 @@ public class TargetPoint extends Target
 
     protected Vec3 point;
 
-    public TargetPoint(Vec3 point)
+    public TargetPoint(World world, Vec3 point)
     {
+        super(world);
         this.point = point;
     }
 
-    public TargetPoint(ByteBuf buf)
+    public TargetPoint(World world, ByteBuf buf)
     {
+        super(world);
         point = Vec3.createVectorHelper(buf.readDouble(), buf.readDouble(), buf.readDouble());
     }
 

@@ -16,12 +16,14 @@ public class TargetAhead extends Target
 
     public TargetAhead(TargetEntity source, float offset)
     {
+        super(source.getWorld());
         this.source = source;
         this.offset = offset;
     }
 
     public TargetAhead(World world, ByteBuf buf)
     {
+        super(world);
         source = (TargetEntity) Target.fromBytes(world, buf);
         offset = buf.readFloat();
     }

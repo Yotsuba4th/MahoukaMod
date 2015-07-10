@@ -8,7 +8,19 @@ import net.minecraft.world.World;
 public abstract class Target
 {
 
+    protected World world;
+
+    public Target(World world)
+    {
+        this.world = world;
+    }
+
     public abstract Vec3 getPoint();
+
+    public World getWorld()
+    {
+        return world;
+    }
 
     public Vec3 getCurrentPoint()
     {
@@ -24,7 +36,7 @@ public abstract class Target
 
     @Override
     public abstract boolean equals(Object obj);
-    
+
     /* ------------------------------------------------------------ */
 
     public static Target fromBytes(World world, ByteBuf buf)
@@ -43,7 +55,7 @@ public abstract class Target
             target = new TargetEntity(world, buf, type);
             break;
         case POINT:
-            target = new TargetPoint(buf);
+            target = new TargetPoint(world, buf);
             break;
         case OFFSET:
             target = new TargetOffset(world, buf);
@@ -55,7 +67,7 @@ public abstract class Target
             target = new TargetAhead(world, buf);
             break;
         case AREA:
-            target = new TargetArea(buf);
+            target = new TargetArea(world, buf);
             break;
         case BLOCK:
             target = new TargetBlock(world, buf);
