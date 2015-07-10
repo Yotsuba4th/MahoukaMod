@@ -23,7 +23,13 @@ public class ProcessDestabilize extends MagicProcess
     @Override
     public boolean isTargetValid(Target target)
     {
-        return target instanceof TargetBlock;
+        if (target instanceof TargetBlock)
+        {
+            TargetBlock tBlock = (TargetBlock) target;
+            if (tBlock.getBlockHardness() >= 0)
+                return true;
+        }
+        return false;
     }
 
     @Override
@@ -41,9 +47,10 @@ public class ProcessDestabilize extends MagicProcess
     @Override
     public int getCastDuration(Target target)
     {
-        // TargetBlock t = (TargetBlock) target;
-        // int hardness = t.getBlock().getBlockHardness(t.getWorld(), t.getX(), t.getY(), t.getZ());
-        return 2;
+        float hardness = ((TargetBlock) target).getBlockHardness();
+        if (hardness < 0)
+            return Integer.MAX_VALUE;
+        return (int) (hardness * 20);
     }
 
     /* ------------------------------------------------------------ */

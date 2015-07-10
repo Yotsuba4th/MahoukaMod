@@ -69,4 +69,9 @@ public class TargetBlock extends TargetPoint
         return block;
     }
 
+    public float getBlockHardness()
+    {
+        return block.getBlockHardness(world, x, y, z);
+    }
+
 }
