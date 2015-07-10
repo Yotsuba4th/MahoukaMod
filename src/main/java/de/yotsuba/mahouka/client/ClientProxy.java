@@ -63,10 +63,9 @@ public class ClientProxy extends CommonProxy
     @SubscribeEvent
     public void clientTickEvent(ClientTickEvent event)
     {
-        if (event.phase == Phase.END)
-        {
-            EffectRenderer.updateEffects();
-        }
+        if (event.phase != Phase.END || Minecraft.getMinecraft().isGamePaused())
+            return;
+        EffectRenderer.updateEffects();
     }
 
     @SubscribeEvent

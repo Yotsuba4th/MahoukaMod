@@ -3,6 +3,7 @@ package de.yotsuba.mahouka.magic.cad;
 import java.util.UUID;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.item.ItemStack;
@@ -11,8 +12,10 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.MovingObjectPosition.MovingObjectType;
+import net.minecraft.util.ResourceLocation;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import de.yotsuba.mahouka.MahoukaMod;
 import de.yotsuba.mahouka.core.PlayerData;
 import de.yotsuba.mahouka.item.ItemMagicProcess;
 import de.yotsuba.mahouka.magic.MagicProcess;
@@ -120,43 +123,47 @@ public class CadBase extends InventoryBasic
         if (CastingManager.isClientCasting(id))
         {
             if (player.isSneaking())
+            {
                 S4CancelCast.send(id);
+            }
             else
+            {
                 player.addChatMessage(new ChatComponentText("Another magic is still active!"));
+                // TODO (6) Custom error sound
+                PositionedSoundRecord sound = PositionedSoundRecord.createPositionedSoundRecord(new ResourceLocation(MahoukaMod.MODID + ":cad.fail"));
+                Minecraft.getMinecraft().getSoundHandler().playSound(sound);
+            }
         }
         else
         {
             MagicProcess sequence = getSelectedSequence();
             if (sequence == null)
             {
-                // TODO (4) Error sound
                 player.addChatMessage(new ChatComponentText("No sequence selected!"));
+                // TODO (6) Custom error sound
+                PositionedSoundRecord sound = PositionedSoundRecord.createPositionedSoundRecord(new ResourceLocation(MahoukaMod.MODID + ":cad.fail"));
+                Minecraft.getMinecraft().getSoundHandler().playSound(sound);
                 return;
             }
 
             PlayerData playerData = new PlayerData(player);
             if (playerData.getPsion() < sequence.getPsionCost())
             {
-                // TODO (4) Error sound
                 player.addChatMessage(new ChatComponentText("Not enough psion!"));
+                // TODO (6) Custom error sound
+                PositionedSoundRecord sound = PositionedSoundRecord.createPositionedSoundRecord(new ResourceLocation(MahoukaMod.MODID + ":cad.fail"));
+                Minecraft.getMinecraft().getSoundHandler().playSound(sound);
                 return;
             }
 
             Target target = player.isSneaking() ? new TargetEntity(player, true, false) : selectTarget(player);
-            if (target == null)
-            {
-                // TODO (4) Error sound
-                player.addChatMessage(new ChatComponentText("No target selected!"));
-                return;
-            }
-
-            if (!sequence.isTargetValid(target))
+            if (target == null || !sequence.isTargetValid(target))
             {
                 target = new TargetEntity(player, true, false);
                 if (!sequence.isTargetValid(target))
                 {
-                    // TODO (4) Error sound
-                    // player.addChatMessage(new ChatComponentText("Invalid target!"));
+                    PositionedSoundRecord sound = PositionedSoundRecord.createPositionedSoundRecord(new ResourceLocation(MahoukaMod.MODID + ":cad.fail"));
+                    Minecraft.getMinecraft().getSoundHandler().playSound(sound);
                     return;
                 }
             }
