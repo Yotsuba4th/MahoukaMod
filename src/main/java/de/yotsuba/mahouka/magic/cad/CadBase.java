@@ -156,7 +156,7 @@ public class CadBase extends InventoryBasic
                 if (!sequence.isTargetValid(target))
                 {
                     // TODO (4) Error sound
-                    player.addChatMessage(new ChatComponentText("Invalid target!"));
+                    // player.addChatMessage(new ChatComponentText("Invalid target!"));
                     return;
                 }
             }
