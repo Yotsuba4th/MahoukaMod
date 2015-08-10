@@ -51,7 +51,7 @@ minecraft {
  */
 
 dependencies {
-	compile group: "com.forgeessentials", name: "forgeessentials", version: "1.4.1-SNAPSHOT", classifier: "dev", changing: true
+	compile group: "com.forgeessentials", name: "forgeessentials", version: "1.4.2-SNAPSHOT", classifier: "dev", changing: true
 }
 
 /************************************************************

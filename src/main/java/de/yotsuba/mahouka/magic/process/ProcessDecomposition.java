@@ -108,7 +108,7 @@ public class ProcessDecomposition extends MagicProcess
         {
             TargetBlock block = (TargetBlock) target;
             // TODO (5) Trigger BlockBreak event and check if block breakable
-            if (block.getBlock().getBlockHardness(null, 0, 0, 0) >= 0)
+            if (block.getBlock().getBlockHardness(target.getWorld(), block.getX(), block.getY(), block.getZ()) >= 0)
             {
                 target.getWorld().setBlock(block.getX(), block.getY(), block.getZ(), Blocks.air);
             }
