@@ -39,7 +39,7 @@ apply plugin: 'forge'
 
 version = "0.1"
 group= "de.yotsuba.mahouka"
-archivesBaseName = "Mahouka-1.7.10"
+archivesBaseName = "Mahouka"
 
 minecraft {
     version = "1.7.10-10.13.4.1481-1.7.10"
