@@ -129,7 +129,7 @@ public class CadBase extends InventoryBasic
             }
             else
             {
-                player.addChatMessage(new ChatComponentText("Another magic is still active!"));
+                player.addChatMessage(new ChatComponentText("Another magic is still active"));
                 // TODO (6) Custom error sound
                 PositionedSoundRecord sound = PositionedSoundRecord.func_147673_a(new ResourceLocation(MahoukaMod.MODID + ":cad.fail"));
                 Minecraft.getMinecraft().getSoundHandler().playSound(sound);
@@ -140,7 +140,7 @@ public class CadBase extends InventoryBasic
             MagicProcess sequence = getSelectedSequence();
             if (sequence == null)
             {
-                player.addChatMessage(new ChatComponentText("No sequence selected!"));
+                player.addChatMessage(new ChatComponentText("No sequence selected"));
                 // TODO (6) Custom error sound
                 PositionedSoundRecord sound = PositionedSoundRecord.func_147673_a(new ResourceLocation(MahoukaMod.MODID + ":cad.fail"));
                 Minecraft.getMinecraft().getSoundHandler().playSound(sound);
@@ -150,7 +150,7 @@ public class CadBase extends InventoryBasic
             PlayerData playerData = new PlayerData(player);
             if (playerData.getPsion() < sequence.getPsionCost())
             {
-                player.addChatMessage(new ChatComponentText("Not enough psion!"));
+                player.addChatMessage(new ChatComponentText("Not enough psion"));
                 // TODO (6) Custom error sound
                 PositionedSoundRecord sound = PositionedSoundRecord.func_147673_a(new ResourceLocation(MahoukaMod.MODID + ":cad.fail"));
                 Minecraft.getMinecraft().getSoundHandler().playSound(sound);
