@@ -119,7 +119,7 @@ public final class Utils
                 {
                     int slotLimit = Math.min(stack.getMaxStackSize(), slot.getSlotStackLimit());
                     if (slotStack != null && slotStack.getItem() == stack.getItem()
-                            && (!stack.getHasSubtypes() || stack.getCurrentDurability() == slotStack.getCurrentDurability())
+                            && (!stack.getHasSubtypes() || stack.getItemDamage() == slotStack.getItemDamage())
                             && ItemStack.areItemStackTagsEqual(stack, slotStack))
                     {
                         int total = slotStack.stackSize + stack.stackSize;

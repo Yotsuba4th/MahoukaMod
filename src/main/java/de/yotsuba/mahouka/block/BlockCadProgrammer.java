@@ -32,8 +32,8 @@ public class BlockCadProgrammer extends Block
         setHardness(2.0F);
         setResistance(10.0F);
         setLightLevel(0.0F);
-        setUnlocalizedName(ID);
-        setTextureName(MahoukaMod.MODID + ":" + ID);
+        setBlockName(ID);
+        setBlockTextureName(MahoukaMod.MODID + ":" + ID);
         setCreativeTab(MahoukaMod.creativeTab);
         setLightOpacity(0);
         setStepSound(Block.soundTypeMetal);
@@ -43,7 +43,7 @@ public class BlockCadProgrammer extends Block
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister iconRegister)
+    public void registerBlockIcons(IIconRegister iconRegister)
     {
         iconTop = iconRegister.registerIcon(getTextureName() + "_top");
         blockIcon = iconRegister.registerIcon(getTextureName() + "_side");

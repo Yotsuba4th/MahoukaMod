@@ -116,6 +116,7 @@ public class CadBase extends InventoryBasic
 
     /* ------------------------------------------------------------ */
 
+    @SideOnly(Side.CLIENT)
     public void rightClick(ItemStack stack, EntityPlayer player)
     {
         if (!player.worldObj.isRemote)
@@ -130,7 +131,7 @@ public class CadBase extends InventoryBasic
             {
                 player.addChatMessage(new ChatComponentText("Another magic is still active!"));
                 // TODO (6) Custom error sound
-                PositionedSoundRecord sound = PositionedSoundRecord.createPositionedSoundRecord(new ResourceLocation(MahoukaMod.MODID + ":cad.fail"));
+                PositionedSoundRecord sound = PositionedSoundRecord.func_147673_a(new ResourceLocation(MahoukaMod.MODID + ":cad.fail"));
                 Minecraft.getMinecraft().getSoundHandler().playSound(sound);
             }
         }
@@ -141,7 +142,7 @@ public class CadBase extends InventoryBasic
             {
                 player.addChatMessage(new ChatComponentText("No sequence selected!"));
                 // TODO (6) Custom error sound
-                PositionedSoundRecord sound = PositionedSoundRecord.createPositionedSoundRecord(new ResourceLocation(MahoukaMod.MODID + ":cad.fail"));
+                PositionedSoundRecord sound = PositionedSoundRecord.func_147673_a(new ResourceLocation(MahoukaMod.MODID + ":cad.fail"));
                 Minecraft.getMinecraft().getSoundHandler().playSound(sound);
                 return;
             }
@@ -151,7 +152,7 @@ public class CadBase extends InventoryBasic
             {
                 player.addChatMessage(new ChatComponentText("Not enough psion!"));
                 // TODO (6) Custom error sound
-                PositionedSoundRecord sound = PositionedSoundRecord.createPositionedSoundRecord(new ResourceLocation(MahoukaMod.MODID + ":cad.fail"));
+                PositionedSoundRecord sound = PositionedSoundRecord.func_147673_a(new ResourceLocation(MahoukaMod.MODID + ":cad.fail"));
                 Minecraft.getMinecraft().getSoundHandler().playSound(sound);
                 return;
             }
@@ -162,7 +163,7 @@ public class CadBase extends InventoryBasic
                 target = new TargetEntity(player, true, false);
                 if (!sequence.isTargetValid(target))
                 {
-                    PositionedSoundRecord sound = PositionedSoundRecord.createPositionedSoundRecord(new ResourceLocation(MahoukaMod.MODID + ":cad.fail"));
+                    PositionedSoundRecord sound = PositionedSoundRecord.func_147673_a(new ResourceLocation(MahoukaMod.MODID + ":cad.fail"));
                     Minecraft.getMinecraft().getSoundHandler().playSound(sound);
                     return;
                 }

@@ -73,8 +73,8 @@ public final class WorldUtils
         Vec3 rayEnd = start.addVector(dir.xCoord * maxDistance, dir.yCoord * maxDistance, dir.zCoord * maxDistance);
 
         // First check block hit
-        Vec3 blockStart = Vec3.createVectorHelper(start.xCoord, start.yCoord, start.zCoord);// viewEntity.getPosition(1);
-        MovingObjectPosition result = viewEntity.worldObj.rayTraceBlocks(blockStart, rayEnd, false, false, true);
+        Vec3 blockStart = Vec3.createVectorHelper(start.xCoord, start.yCoord, start.zCoord); // viewEntity.getPosition(1);
+        MovingObjectPosition result = viewEntity.worldObj.func_147447_a(blockStart, rayEnd, false, false, true);
         double blockHitDistance = maxDistance;
         if (result != null)
             blockHitDistance = result.hitVec.distanceTo(start);

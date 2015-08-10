@@ -15,7 +15,27 @@ buildscript {
     }
 }
 
+repositories {
+        maven {
+            name = "forge"
+            url = "http://files.minecraftforge.net/maven"
+        }
+        maven {
+        name = "sk89q"
+        url = "http://maven.sk89q.com/repo/"
+    }
+    maven {
+        name = "sponge"
+        url = "http://repo.spongepowered.org/maven/"
+    }
+}
+
+
 apply plugin: 'forge'
+
+/************************************************************
+ * General configuration
+ */
 
 version = "0.1"
 group= "de.yotsuba.mahouka"
@@ -24,7 +44,23 @@ archivesBaseName = "Mahouka-1.7.10"
 minecraft {
     version = "1.7.10-10.13.4.1481-1.7.10"
     runDir = "eclipse"
-    mappings = 'stable_12'
+}
+
+/************************************************************
+ * Dependencies
+ */
+
+dependencies {
+	compile group: "com.forgeessentials", name: "forgeessentials", version: "1.4.1-SNAPSHOT", classifier: "dev", changing: true
+}
+
+/************************************************************
+ * Build config
+ */
+
+// Configure server jar (default)
+jar {
+	appendix = minecraft.version
 }
 
 processResources
@@ -34,11 +70,12 @@ processResources
     inputs.property "mcversion", project.minecraft.version
 
     // replace stuff in mcmod.info, nothing else
-    from(sourceSets.main.resources.srcDirs) {
+    from (sourceSets.main.resources.srcDirs) {
         include 'mcmod.info'
-                
-        // replace version and mcversion
-        expand 'version':project.version, 'mcversion':project.minecraft.version
+        expand (
+			'version':project.version,
+			'mcversion':project.minecraft.version,
+		)
     }
         
     // copy everything else, thats not the mcmod.info
@@ -47,11 +84,18 @@ processResources
     }
 }
 
-task deobfJar(type: Jar, dependsOn: 'jar') {
-    from "build/source/main"
+task deobfJar (type: Jar, dependsOn: 'jar') {
     classifier "dev"
+	appendix = minecraft.version
+	
+    from "build/source/main"
 }
 
+/************************************************************
+ * Other
+ */
+
+// Add default artifacts for task "build"
 artifacts {
     archives deobfJar
 }

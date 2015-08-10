@@ -2,12 +2,15 @@ package de.yotsuba.mahouka.item;
 
 import java.util.List;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
@@ -36,7 +39,7 @@ public class ItemCad extends Item
     }
 
     @Override
-    public int getMaxDurability()
+    public int getMaxDamage()
     {
         // Constant 100 max damage - stack damage will be set individually based on CAD data
         return 100;
@@ -51,20 +54,26 @@ public class ItemCad extends Item
     @Override
     public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player)
     {
+        if (world.isRemote)
+            onItemRightClickClient(stack, player);
+        return stack;
+    }
+
+    @SideOnly(Side.CLIENT)
+    protected void onItemRightClickClient(ItemStack stack, EntityPlayer player)
+    {
         CadBase cad = CadManager.getCad(stack);
         if (cad == null)
         {
-            if (world.isRemote)
-            {
-                // TODO: Play error sound
-                player.addChatMessage(new ChatComponentText("No sequence selected"));
-            }
+            // TODO: Play error sound
+            player.addChatMessage(new ChatComponentText("No sequence selected"));
+            PositionedSoundRecord sound = PositionedSoundRecord.func_147673_a(new ResourceLocation(MahoukaMod.MODID + ":cad.fail"));
+            Minecraft.getMinecraft().getSoundHandler().playSound(sound);
         }
         else
         {
             cad.rightClick(stack, player);
         }
-        return stack;
     }
 
     @Override
